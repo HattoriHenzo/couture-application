@@ -1,44 +1,40 @@
 package com.imaginesoft.application.couture.service;
 
-import com.imaginesoft.application.couture.model.Order;
-import com.imaginesoft.application.couture.repository.OrderRepository;
+import com.imaginesoft.application.couture.model.Orders;
+import com.imaginesoft.application.couture.repository.OrdersRepository;
+import com.imaginesoft.application.couture.service.generic.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class OrderService implements GenericService<Order> {
+public class OrderService extends GenericService<Orders> {
 
-    private OrderRepository repository;
+    private OrdersRepository repository;
 
     @Autowired
-    public OrderService(OrderRepository repository) {
+    public OrderService(OrdersRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public Order getById(Long id) {
+    public Orders getById(Long id) {
         return null;
     }
 
     @Override
-    public List<Order> getAll() {
+    public List<Orders> getAll() {
         return null;
     }
 
     @Override
-    public boolean create(Order object) {
-        return false;
+    public Orders createOrUpdate(Orders object) {
+        return null;
     }
 
     @Override
-    public boolean update(Order object) {
-        return false;
-    }
-
-    @Override
-    public boolean delete(Long id) {
-        return false;
+    public Orders delete(Orders order) {
+        return null;
     }
 }

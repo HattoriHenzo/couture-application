@@ -2,13 +2,14 @@ package com.imaginesoft.application.couture.service;
 
 import com.imaginesoft.application.couture.model.ModelType;
 import com.imaginesoft.application.couture.repository.ModelTypeRepository;
+import com.imaginesoft.application.couture.service.generic.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ModelTypeService implements GenericService<ModelType> {
+public class ModelTypeService extends GenericService<ModelType> {
 
     private ModelTypeRepository repository;
 
@@ -28,17 +29,12 @@ public class ModelTypeService implements GenericService<ModelType> {
     }
 
     @Override
-    public boolean create(ModelType object) {
-        return false;
+    public ModelType createOrUpdate(ModelType object) {
+        return null;
     }
 
     @Override
-    public boolean update(ModelType object) {
-        return false;
-    }
-
-    @Override
-    public boolean delete(Long id) {
-        return false;
+    public ModelType delete(ModelType modelType) {
+        return null;
     }
 }

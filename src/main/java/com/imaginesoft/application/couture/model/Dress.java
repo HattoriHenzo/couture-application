@@ -90,8 +90,7 @@ public class Dress {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Dress dress = (Dress) o;
-
-        return Objects.equals(id, dress.id);
+        return id != null && Objects.equals(id, dress.id);
     }
 
     @Override

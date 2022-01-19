@@ -1,14 +1,16 @@
 package com.imaginesoft.application.couture.service;
 
+import com.imaginesoft.application.couture.controller.exception.RecordNotFoundException;
 import com.imaginesoft.application.couture.model.Client;
 import com.imaginesoft.application.couture.repository.ClientRepository;
+import com.imaginesoft.application.couture.service.generic.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ClientService implements GenericService<Client> {
+public class ClientService extends GenericService<Client> {
 
     private ClientRepository repository;
 
@@ -19,26 +21,28 @@ public class ClientService implements GenericService<Client> {
 
     @Override
     public Client getById(Long id) {
-        return null;
+        return repository.getById(id);
     }
 
     @Override
-    public List<Client> getAll() {
-        return null;
+    public List<Client> getAll() throws RecordNotFoundException {
+        List<Client> clients = repository.findAll();
+        if(clients.isEmpty()) {
+            throw new RecordNotFoundException("No record found");
+        }
+        return clients;
     }
 
     @Override
-    public boolean create(Client object) {
-        return false;
+    public Client createOrUpdate(Client client) {
+        validateDomainRecord(client);
+        return repository.save(client);
     }
 
     @Override
-    public boolean update(Client object) {
-        return false;
-    }
-
-    @Override
-    public boolean delete(Long id) {
-        return false;
+    public Client delete(Client client) {
+        Client clientToDelete = repository.getById(client.getId());
+        repository.delete(clientToDelete);
+        return clientToDelete;
     }
 }
