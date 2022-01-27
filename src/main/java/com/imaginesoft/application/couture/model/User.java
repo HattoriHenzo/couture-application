@@ -44,10 +44,10 @@ public class User extends GenericPerson {
     public String toString() {
         return getClass().getSimpleName() + "(" +
                 "id = " + getId() + ", " +
+                "userCategory = " + getUserCategory() + ", " +
                 "firstName = " + getFirstName() + ", " +
                 "lastName = " + getLastName() + ", " +
                 "telephone = " + getTelephone() + ", " +
-                "gender = " + getGender() + ", " +
-                "userCategory = " + userCategory + ")";
+                "gender = " + getGender() + ")";
     }
 }

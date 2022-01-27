@@ -2,13 +2,14 @@ package com.imaginesoft.application.couture.service;
 
 import com.imaginesoft.application.couture.model.MaterialType;
 import com.imaginesoft.application.couture.repository.MaterialTypeRepository;
+import com.imaginesoft.application.couture.service.generic.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class MaterialTypeService implements GenericService<MaterialType> {
+public class MaterialTypeService extends GenericService<MaterialType> {
 
     private MaterialTypeRepository repository;
 
@@ -28,17 +29,12 @@ public class MaterialTypeService implements GenericService<MaterialType> {
     }
 
     @Override
-    public boolean create(MaterialType object) {
-        return false;
+    public MaterialType createOrUpdate(MaterialType materialType) {
+        return null;
     }
 
     @Override
-    public boolean update(MaterialType object) {
-        return false;
-    }
-
-    @Override
-    public boolean delete(Long id) {
-        return false;
+    public MaterialType delete(MaterialType materialType) {
+        return null;
     }
 }

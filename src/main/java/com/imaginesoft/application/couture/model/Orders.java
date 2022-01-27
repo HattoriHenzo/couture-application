@@ -7,21 +7,19 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "ORDER")
-public class Order {
+@Table(name = "ORDERS")
+public class Orders {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 
     @Column(name = "NUMBER")
     private String number;
 
-    @Temporal(TemporalType.DATE)
     @Column(name = "DATE")
     private LocalDateTime date;
 
-    @Temporal(TemporalType.DATE)
     @Column(name = "DELIVERY_DATE")
     private LocalDateTime deliveryDate;
 
@@ -29,7 +27,7 @@ public class Order {
     @JoinColumn(name = "CLIENT_ID", referencedColumnName = "ID")
     private Client client;
 
-    public Order() {
+    public Orders() {
         // Default constructor
     }
 
@@ -77,7 +75,7 @@ public class Order {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Order order = (Order) o;
+        Orders order = (Orders) o;
 
         return Objects.equals(id, order.id);
     }

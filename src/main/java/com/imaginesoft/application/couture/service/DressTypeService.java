@@ -2,13 +2,14 @@ package com.imaginesoft.application.couture.service;
 
 import com.imaginesoft.application.couture.model.DressType;
 import com.imaginesoft.application.couture.repository.DressRepository;
+import com.imaginesoft.application.couture.service.generic.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class DressTypeService implements GenericService<DressType> {
+public class DressTypeService extends GenericService<DressType> {
 
     private DressRepository repository;
 
@@ -28,17 +29,12 @@ public class DressTypeService implements GenericService<DressType> {
     }
 
     @Override
-    public boolean create(DressType object) {
-        return false;
+    public DressType createOrUpdate(DressType object) {
+        return null;
     }
 
     @Override
-    public boolean update(DressType object) {
-        return false;
-    }
-
-    @Override
-    public boolean delete(Long id) {
-        return false;
+    public DressType delete(DressType dressType) {
+        return null;
     }
 }

@@ -2,13 +2,14 @@ package com.imaginesoft.application.couture.service;
 
 import com.imaginesoft.application.couture.model.Employee;
 import com.imaginesoft.application.couture.repository.EmployeeRepository;
+import com.imaginesoft.application.couture.service.generic.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class EmployeeService implements GenericService<Employee> {
+public class EmployeeService extends GenericService<Employee> {
 
     private EmployeeRepository repository;
 
@@ -28,17 +29,12 @@ public class EmployeeService implements GenericService<Employee> {
     }
 
     @Override
-    public boolean create(Employee object) {
-        return false;
+    public Employee createOrUpdate(Employee object) {
+        return null;
     }
 
     @Override
-    public boolean update(Employee object) {
-        return false;
-    }
-
-    @Override
-    public boolean delete(Long id) {
-        return false;
+    public Employee delete(Employee employee) {
+        return null;
     }
 }

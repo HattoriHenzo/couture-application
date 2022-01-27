@@ -2,13 +2,14 @@ package com.imaginesoft.application.couture.service;
 
 import com.imaginesoft.application.couture.model.MeasureType;
 import com.imaginesoft.application.couture.repository.MeasureTypeRepository;
+import com.imaginesoft.application.couture.service.generic.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class MeasureTypeService implements GenericService<MeasureType> {
+public class MeasureTypeService extends GenericService<MeasureType> {
 
     private MeasureTypeRepository repository;
 
@@ -28,17 +29,12 @@ public class MeasureTypeService implements GenericService<MeasureType> {
     }
 
     @Override
-    public boolean create(MeasureType object) {
-        return false;
+    public MeasureType createOrUpdate(MeasureType measureType) {
+        return null;
     }
 
     @Override
-    public boolean update(MeasureType object) {
-        return false;
-    }
-
-    @Override
-    public boolean delete(Long id) {
-        return false;
+    public MeasureType delete(MeasureType measureType) {
+        return null;
     }
 }

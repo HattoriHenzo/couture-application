@@ -1,25 +1,27 @@
 package com.imaginesoft.application.couture.model.generic;
 
 import com.imaginesoft.application.couture.model.Gender;
-import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.Objects;
+import javax.validation.constraints.NotEmpty;
 
 @MappedSuperclass
 public abstract class GenericPerson {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 
+    @NotEmpty(message = "The First Name can't be empty")
     @Column(name = "FIRST_NAME")
     private String firstName;
 
+    @NotEmpty(message = "The Last Name can't be empty")
     @Column(name = "LAST_NAME")
     private String lastName;
 
+    @NotEmpty(message = "The Telephone can't be empty")
     @Column(name = "TELEPHONE")
     private String telephone;
 
@@ -70,27 +72,4 @@ public abstract class GenericPerson {
         this.gender = gender;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        GenericPerson that = (GenericPerson) o;
-
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "firstName = " + firstName + ", " +
-                "lastName = " + lastName + ", " +
-                "telephone = " + telephone + ", " +
-                "gender = " + gender + ")";
-    }
 }
