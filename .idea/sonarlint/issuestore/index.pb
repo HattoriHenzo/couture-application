@@ -44,16 +44,8 @@ Wsrc/main/java/com/imaginesoft/application/couture/repository/MeasureTypeReposit
 Xsrc/test/java/com/imaginesoft/application/couture/repository/EmployeeRepositoryTest.java,8\c\8c7cd19903be7d5c83f573f1387d7a233e8abe00
 y
 Isrc/main/java/com/imaginesoft/application/couture/model/UserCategory.java,0\9\09641d6ddd0a1827fedad4c75496d477de86c3e9
-r
-Bsrc/main/java/com/imaginesoft/application/couture/model/Dress.java,a\c\ac6d3467bc0b46a0eb0baa26bac0513505b72a2c
 v
 Fsrc/main/java/com/imaginesoft/application/couture/model/DressType.java,b\0\b0d92caf822aede34f2afe00477f67b7f2eea12f
-u
-Esrc/main/java/com/imaginesoft/application/couture/model/Employee.java,4\b\4b3dd5df9fe1d11d7baf8deadbeb402052336560
-€
-Psrc/main/java/com/imaginesoft/application/couture/model/generic/GenericType.java,1\c\1cd3553898360c59bcf26b725b43779f788c8df5
-y
-Isrc/main/java/com/imaginesoft/application/couture/model/MaterialType.java,2\a\2a73e09d2f2a933c38808382596c652e51da1e6f
 x
 Hsrc/main/java/com/imaginesoft/application/couture/model/MeasureType.java,c\8\c873babe374e3ffd970f6dbc21d73dd36c24144d
 v
@@ -88,14 +80,10 @@ Ssrc/main/java/com/imaginesoft/application/couture/dto/generic/GenericPersonDto.
 ]src/main/java/com/imaginesoft/application/couture/service/exception/DomainRulesException.java,2\6\26c7b566a4c175f5e88d77fb904fea675a984c26
 ‹
 [src/main/java/com/imaginesoft/application/couture/controller/generic/GenericController.java,5\9\5968be0cf614b6a8d8d2649bc520cea96a2ebb17
-|
-Lsrc/main/java/com/imaginesoft/application/couture/service/ClientService.java,f\0\f01d3c3ddff31ca507473e357db351ad1c32825f
 t
 Dsrc/main/java/com/imaginesoft/application/couture/dto/ClientDto.java,2\c\2c94b8876d907f34cc73c8799a1a324a266e50b6
 r
 Bsrc/main/java/com/imaginesoft/application/couture/Application.java,b\e\be8fac589915b8cf95b8eb391e3d2f38245ccf8c
-y
-Isrc/main/java/com/imaginesoft/application/couture/util/MapperWrapper.java,e\c\eca277e5fe0ff96527c9dd54ef0ef1c805f07dfd
 †
 Vsrc/main/java/com/imaginesoft/application/couture/configuration/ApplicationConfig.java,e\e\ee1e356f451344c00ee0257510673b1cc66e3be3
 {
@@ -106,5 +94,3 @@ x
 Hsrc/test/java/com/imaginesoft/application/couture/dto/DummyModelDto.java,8\e\8ec422b81519bf585384b4476e97d871591343db
 w
 Gsrc/test/java/com/imaginesoft/application/couture/model/DummyModel.java,e\b\ebde54be91f3e0b75fc42240f27c6733a3ee4c24
-…
-Usrc/test/java/com/imaginesoft/application/couture/repository/DressRepositoryTest.java,1\4\14a59fbe4143293ce1eab851a6f2c4575dec10a0

@@ -33,20 +33,6 @@ public class ClientController extends GenericController<Success, ClientDto> {
     }
 
     @Override
-    @GetMapping("/clients/{id}")
-    public ResponseEntity<Success> getById(@PathVariable("id") Long id) {
-
-        var client = service.getById(id);
-        var clientResponse = mapper.performMapping(client, ClientDto.class);
-        var success = new Success(HttpStatus.OK,
-                dateTimeWrapper.getCurrentDateTime(Clock.systemDefaultZone()),
-                String.format("Get the client with id %d", id),
-                clientResponse);
-
-        return ResponseEntity.status(HttpStatus.OK).body(success);
-    }
-
-    @Override
     @GetMapping("/clients")
     public ResponseEntity<Success> getAll() throws RecordNotFoundException {
         var clients = service.getAll();
@@ -57,6 +43,20 @@ public class ClientController extends GenericController<Success, ClientDto> {
                 dateTimeWrapper.getCurrentDateTime(Clock.systemDefaultZone()),
                 "Get the list of all the clients",
                 clientsDtoResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(success);
+    }
+
+    @Override
+    @GetMapping("/clients/{id}")
+    public ResponseEntity<Success> getById(@PathVariable("id") Long id) {
+
+        var client = service.getById(id);
+        var clientResponse = mapper.performMapping(client, ClientDto.class);
+        var success = new Success(HttpStatus.OK,
+                dateTimeWrapper.getCurrentDateTime(Clock.systemDefaultZone()),
+                String.format("Get the client with id %d", id),
+                clientResponse);
+
         return ResponseEntity.status(HttpStatus.OK).body(success);
     }
 

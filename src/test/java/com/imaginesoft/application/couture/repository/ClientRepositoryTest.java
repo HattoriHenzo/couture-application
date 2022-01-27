@@ -14,7 +14,7 @@ import static com.imaginesoft.application.couture.util.TestDataFactory.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DataJpaTest
-@ActiveProfiles("h2-test")
+@ActiveProfiles("test")
 class ClientRepositoryTest implements WithAssertions {
 
     @Autowired
