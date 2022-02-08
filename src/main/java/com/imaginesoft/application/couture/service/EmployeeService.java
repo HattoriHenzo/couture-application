@@ -19,12 +19,12 @@ public class EmployeeService extends GenericService<Employee> {
     }
 
     @Override
-    public Employee getById(Long id) {
+    public Employee findById(Long id) {
         return null;
     }
 
     @Override
-    public List<Employee> getAll() {
+    public List<Employee> findAll() {
         return null;
     }
 

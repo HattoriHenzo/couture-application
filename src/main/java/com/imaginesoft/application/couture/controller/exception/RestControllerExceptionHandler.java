@@ -20,6 +20,16 @@ public class RestControllerExceptionHandler {
         this.dateTimeWrapper = dateTimeWrapper;
     }
 
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<Error> handleBadRequestException(BadRequestException exception) {
+
+        Error error = new Error(HttpStatus.BAD_REQUEST,
+                dateTimeWrapper.getCurrentDateTime(Clock.systemDefaultZone()),
+                exception.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
     @ExceptionHandler(RecordNotFoundException.class)
     public ResponseEntity<Error> handleRecordNotFoundException(RecordNotFoundException exception) {
 

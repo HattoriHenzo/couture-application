@@ -23,8 +23,7 @@ class ClientRepositoryTest implements WithAssertions {
     @Test
     void givenClients_whenGettingClients_thenGetAllClients() {
 
-        int numberOfClients = repository.findAll().size();
-        assertThat(numberOfClients).isEqualTo(NUMBER_OF_CLIENTS);
+        assertThat(repository.findAll()).isNotEmpty();
     }
 
     @Test
@@ -66,9 +65,9 @@ class ClientRepositoryTest implements WithAssertions {
     @Test
     void givenClient_whenDeleteClient_thenClientDoesNotExists() {
 
-        Client clientToDelete = repository.getById(CLIENT_DELETED_ID);
-        repository.delete(clientToDelete);
-        Optional<Client> deletedClient = repository.findById(CLIENT_DELETED_ID);
+        Optional<Client> clientToDelete = repository.findById(CLIENT_TO_DELETE);
+        repository.delete(clientToDelete.get());
+        Optional<Client> deletedClient = repository.findById(CLIENT_TO_DELETE);
 
         assertThat(deletedClient).isNotPresent();
     }

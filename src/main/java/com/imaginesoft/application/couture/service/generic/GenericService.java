@@ -1,6 +1,6 @@
 package com.imaginesoft.application.couture.service.generic;
 
-import com.imaginesoft.application.couture.service.exception.DomainRulesException;
+import com.imaginesoft.application.couture.service.validator.field.DomainRulesException;
 import com.imaginesoft.application.couture.controller.exception.RecordNotFoundException;
 
 import javax.validation.ConstraintViolation;
@@ -36,8 +36,8 @@ public abstract class GenericService<T> {
         return validator.validate(object);
     }
 
-    public abstract T getById(Long id);
-    public abstract List<T> getAll() throws RecordNotFoundException;
+    public abstract T findById(Long id) throws RecordNotFoundException;
+    public abstract List<T> findAll() throws RecordNotFoundException;
     public abstract T createOrUpdate(T object);
     public abstract T delete(T object);
 

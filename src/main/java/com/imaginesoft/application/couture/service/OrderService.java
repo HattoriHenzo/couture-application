@@ -19,12 +19,12 @@ public class OrderService extends GenericService<Orders> {
     }
 
     @Override
-    public Orders getById(Long id) {
+    public Orders findById(Long id) {
         return null;
     }
 
     @Override
-    public List<Orders> getAll() {
+    public List<Orders> findAll() {
         return null;
     }
 

@@ -1,17 +1,17 @@
 package com.imaginesoft.application.couture.model.generic;
 
-import org.hibernate.Hibernate;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @MappedSuperclass
 public abstract class GenericType {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 
+    @NotEmpty(message = "The name can't be empty")
     @Column(name = "NAME")
     private String name;
 

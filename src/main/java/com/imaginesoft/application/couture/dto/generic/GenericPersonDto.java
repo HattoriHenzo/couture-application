@@ -1,5 +1,6 @@
 package com.imaginesoft.application.couture.dto.generic;
 
+
 public abstract class GenericPersonDto {
 
     private Long id;
@@ -7,6 +8,10 @@ public abstract class GenericPersonDto {
     private String lastName;
     private String telephone;
     private String gender;
+
+    protected GenericPersonDto() {
+
+    }
 
     public Long getId() {
         return id;

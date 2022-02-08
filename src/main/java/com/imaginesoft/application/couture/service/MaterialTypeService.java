@@ -19,12 +19,12 @@ public class MaterialTypeService extends GenericService<MaterialType> {
     }
 
     @Override
-    public MaterialType getById(Long id) {
+    public MaterialType findById(Long id) {
         return null;
     }
 
     @Override
-    public List<MaterialType> getAll() {
+    public List<MaterialType> findAll() {
         return null;
     }
 

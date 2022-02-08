@@ -1,80 +1,67 @@
 package com.imaginesoft.application.couture.repository;
 
 import com.imaginesoft.application.couture.model.DressType;
-import org.junit.jupiter.api.*;
+import org.assertj.core.api.WithAssertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.imaginesoft.application.couture.util.TestDataFactory.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DataJpaTest
-@TestPropertySource(locations = {"classpath:application-test.properties"})
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class DressTypeRepositoryTest {
+@ActiveProfiles("test")
+class DressTypeRepositoryTest implements WithAssertions {
 
-    private final Long ID_1 = 1L;
-    private final Long ID_2 = 2L;
-
-    private final String NAME = "Pants";
-    private final String EDITED_NAME = "Jacket";
-
-    @Autowired
-    private TestEntityManager entityManager;
+    private final String NAME = "PANTS";
+    private final String EDITED_NAME = "JACKET";
 
     @Autowired
     private DressTypeRepository repository;
 
     @Test
-    @Order(1)
+    void givenDressTypes_whenGettingDressType_thenGetAllDressTypes() {
+
+        assertThat(repository.findAll()).isNotEmpty();
+    }
+
+    @Test
     void givenDressType_whenCreateDressType_thenDressTypeExists() {
 
         DressType newDressType = createNewDressType();
-        DressType createdDressType = entityManager.persist(newDressType);
+        newDressType.setId(5L);
+        DressType createdDressType = repository.save(newDressType);
 
-        Assertions.assertAll(
+        assertAll(
                 () -> assertThat(createdDressType).isNotNull(),
                 () -> assertThat(createdDressType.getName()).isEqualTo(NAME)
         );
     }
 
     @Test
-    @Order(2)
     void givenDressType_whenUpdateDressType_thenDressTypeHasChanged() {
 
-        DressType newDressType = createNewDressType();
+        Optional<DressType> dressTypeToUpdate = repository.findById(DRESS_TYPE_ID);
+        dressTypeToUpdate.ifPresent(value -> value.setName(EDITED_NAME));
 
-        DressType dressTypeToUpdate = entityManager.persist(newDressType);
-        dressTypeToUpdate.setName(EDITED_NAME);
+        DressType updatedDressType = repository.save(dressTypeToUpdate.get());
 
-        DressType updatedDressType = repository.save(newDressType);
-
-        Assertions.assertAll(
-                () -> assertThat(updatedDressType.getId()).isEqualTo(dressTypeToUpdate.getId()),
+        assertAll(
+                () -> assertThat(updatedDressType.getId()).isEqualTo(dressTypeToUpdate.get().getId()),
                 () -> assertThat(updatedDressType.getName()).isEqualTo(EDITED_NAME)
         );
     }
 
     @Test
-    @Order(3)
     void givenDressType_whenDeleteDressType_thenDressTypeDoesNotExists() {
 
-        DressType newDressType = createNewDressType();
+        Optional<DressType> dressTypeToDelete = repository.findById(DRESS_TYPE_TO_DELETE);
+        repository.delete(dressTypeToDelete.get());
+        Optional<DressType> deletedClient = repository.findById(DRESS_TYPE_TO_DELETE);
 
-        DressType dressTypeToDelete = entityManager.persist(newDressType);
-        repository.delete(dressTypeToDelete);
-
-        Optional<DressType> deletedDressType = repository.findById(ID_1);
-
-        assertThat(deletedDressType).isNotPresent();
-    }
-
-    private DressType createNewDressType() {
-        DressType newDressType = new DressType();
-        newDressType.setName(NAME);
-        return newDressType;
+        assertThat(deletedClient).isNotPresent();
     }
 }

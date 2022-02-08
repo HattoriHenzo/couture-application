@@ -19,12 +19,12 @@ public class MeasureTypeService extends GenericService<MeasureType> {
     }
 
     @Override
-    public MeasureType getById(Long id) {
+    public MeasureType findById(Long id) {
         return null;
     }
 
     @Override
-    public List<MeasureType> getAll() {
+    public List<MeasureType> findAll() {
         return null;
     }
 

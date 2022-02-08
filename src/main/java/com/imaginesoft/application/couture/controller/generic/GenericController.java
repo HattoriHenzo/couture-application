@@ -1,16 +1,27 @@
 package com.imaginesoft.application.couture.controller.generic;
 
 import com.imaginesoft.application.couture.controller.exception.RecordNotFoundException;
+import com.imaginesoft.application.couture.service.generic.GenericService;
+import com.imaginesoft.application.couture.util.DateTimeWrapper;
+import com.imaginesoft.application.couture.util.MapperWrapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-public abstract class GenericController<M, P> {
+public abstract class GenericController<R, D, S> {
 
-    public abstract ResponseEntity<M> getById(Long id);
-    public abstract ResponseEntity<M> getAll() throws RecordNotFoundException;
-    public abstract ResponseEntity<M> create(@RequestBody P object);
-    public abstract ResponseEntity<M> update(@RequestBody P object);
-    public abstract ResponseEntity<M> delete(Long id) throws RecordNotFoundException;
+    protected GenericService<S> service;
+    protected MapperWrapper mapper;
+    protected DateTimeWrapper dateTime;
+
+    protected GenericController(GenericService<S> service, MapperWrapper mapper, DateTimeWrapper dateTime) {
+        this.service = service;
+        this.mapper = mapper;
+        this.dateTime = dateTime;
+    }
+
+    protected abstract ResponseEntity<R> findById(Long id) throws RecordNotFoundException;
+    protected abstract ResponseEntity<R> findAll() throws RecordNotFoundException;
+    protected abstract ResponseEntity<R> create(D object);
+    protected abstract ResponseEntity<R> update(D object);
+    protected abstract ResponseEntity<R> delete(Long id) throws RecordNotFoundException;
 
 }

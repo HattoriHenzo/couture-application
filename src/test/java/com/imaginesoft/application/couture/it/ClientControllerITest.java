@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.imaginesoft.application.couture.controller.message.Success;
 import com.imaginesoft.application.couture.dto.ClientDto;
 import com.imaginesoft.application.couture.model.Gender;
+import com.imaginesoft.application.couture.util.DataFactory;
 import com.imaginesoft.application.couture.util.TestDataFactory;
-import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,7 +17,7 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 
-class ClientControllerITest extends BaseIntegrationTest implements WithAssertions {
+class ClientControllerITest extends BaseIntegrationTest {
 
     private static Long ID = 2L;
     private static String FIRSTNAME = "STEPHEN";
@@ -26,14 +26,11 @@ class ClientControllerITest extends BaseIntegrationTest implements WithAssertion
     private static Gender GENDER = Gender.MALE;
     private static String UPDATED_FIRSTNAME = "UPDATED_FIRSTNAME";
 
-    @Autowired
-    private ObjectMapper mapper;
-
     @Test
-    void integrationTest_For_GetAll() {
+    void integrationTest_For_FindAll() {
 
         webTestClient.get()
-                .uri("/api/clients")
+                .uri(DataFactory.API_V1 + "/clients")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -43,10 +40,10 @@ class ClientControllerITest extends BaseIntegrationTest implements WithAssertion
     }
 
     @Test
-    void integrationTest_For_GetById() {
+    void integrationTest_For_FindById() {
 
         webTestClient.get()
-                .uri("/api/clients/{ID}", ID)
+                .uri(DataFactory.API_V1 + "/clients/{ID}", ID)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -71,7 +68,7 @@ class ClientControllerITest extends BaseIntegrationTest implements WithAssertion
         var newClient = TestDataFactory.createNewClientDto();
 
         webTestClient.post()
-                .uri("/api/client")
+                .uri(DataFactory.API_V1 + "/client")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(newClient)
                 .exchange()
@@ -99,7 +96,7 @@ class ClientControllerITest extends BaseIntegrationTest implements WithAssertion
         clientToUpdate.setFirstName(UPDATED_FIRSTNAME);
 
         webTestClient.put()
-                .uri("/api/client")
+                .uri(DataFactory.API_V1 + "/client")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(clientToUpdate)
                 .exchange()
@@ -119,14 +116,13 @@ class ClientControllerITest extends BaseIntegrationTest implements WithAssertion
                     );
 
                 });
-
     }
 
     @Test
     void integrationTest_For_Delete() {
 
         webTestClient.delete()
-                .uri("/api/clients/{ID}", ID)
+                .uri(DataFactory.API_V1 + "/clients/{ID}", ID)
                 .exchange()
                 .expectStatus().isOk();
     }

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class ClientService extends GenericService<Client> {
@@ -16,16 +18,22 @@ public class ClientService extends GenericService<Client> {
 
     @Autowired
     public ClientService(ClientRepository repository) {
+
         this.repository = repository;
     }
 
     @Override
-    public Client getById(Long id) {
-        return repository.getById(id);
+    public Client findById(Long id) throws RecordNotFoundException {
+
+        Optional<Client> client = repository.findById(id);
+        return client.orElseThrow(
+                () -> new RecordNotFoundException("No record found")
+        );
     }
 
     @Override
-    public List<Client> getAll() throws RecordNotFoundException {
+    public List<Client> findAll() throws RecordNotFoundException {
+
         List<Client> clients = repository.findAll();
         if(clients.isEmpty()) {
             throw new RecordNotFoundException("No record found");
@@ -35,14 +43,23 @@ public class ClientService extends GenericService<Client> {
 
     @Override
     public Client createOrUpdate(Client client) {
+
         validateDomainRecord(client);
         return repository.save(client);
     }
 
     @Override
     public Client delete(Client client) {
-        Client clientToDelete = repository.getById(client.getId());
-        repository.delete(clientToDelete);
-        return clientToDelete;
+
+        Optional<Client> clientToDelete = repository.findById(client.getId());
+        AtomicReference<Client> deletedClient = new AtomicReference<>();
+
+        clientToDelete.ifPresent(value -> {
+            repository.delete(value);
+            deletedClient.set(clientToDelete.get());
+
+        });
+
+        return deletedClient.get();
     }
 }

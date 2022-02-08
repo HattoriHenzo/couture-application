@@ -19,7 +19,7 @@ public class Employee extends GenericPerson {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Employee employee = (Employee) o;
+        var employee = (Employee) o;
         return getId() != null && Objects.equals(getId(), employee.getId());
     }
 

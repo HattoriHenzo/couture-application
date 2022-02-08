@@ -19,12 +19,12 @@ public class UserService extends GenericService<User> {
     }
 
     @Override
-    public User getById(Long id) {
+    public User findById(Long id) {
         return null;
     }
 
     @Override
-    public List<User> getAll() {
+    public List<User> findAll() {
         return null;
     }
 
