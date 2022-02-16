@@ -1,5 +1,6 @@
 package com.imaginesoft.application.couture.service;
 
+import com.imaginesoft.application.couture.controller.exception.RecordNotFoundException;
 import com.imaginesoft.application.couture.model.MeasureType;
 import com.imaginesoft.application.couture.repository.MeasureTypeRepository;
 import com.imaginesoft.application.couture.service.generic.GenericService;
@@ -7,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class MeasureTypeService extends GenericService<MeasureType> {
@@ -19,22 +22,41 @@ public class MeasureTypeService extends GenericService<MeasureType> {
     }
 
     @Override
-    public MeasureType findById(Long id) {
-        return null;
+    public MeasureType findById(Long id) throws RecordNotFoundException {
+
+        Optional<MeasureType> measureType = repository.findById(id);
+        return measureType.orElseThrow(
+                () -> new RecordNotFoundException("No record found")
+        );
     }
 
     @Override
-    public List<MeasureType> findAll() {
-        return null;
+    public List<MeasureType> findAll() throws RecordNotFoundException {
+
+        List<MeasureType> measureTypes = repository.findAll();
+        if(measureTypes.isEmpty()) {
+            throw new RecordNotFoundException("No record found");
+        }
+        return measureTypes;
     }
 
     @Override
     public MeasureType createOrUpdate(MeasureType measureType) {
-        return null;
+
+        validateDomainRecord(measureType);
+        return repository.save(measureType);
     }
 
     @Override
     public MeasureType delete(MeasureType measureType) {
-        return null;
+
+        Optional<MeasureType> measureTypeToDelete = repository.findById(measureType.getId());
+        AtomicReference<MeasureType> deletedMeasureType = new AtomicReference<>();
+
+        measureTypeToDelete.ifPresent(value -> {
+            repository.delete(value);
+            deletedMeasureType.set(value);
+        });
+        return deletedMeasureType.get();
     }
 }

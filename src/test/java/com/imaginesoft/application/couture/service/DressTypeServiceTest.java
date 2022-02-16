@@ -32,6 +32,7 @@ class DressTypeServiceTest implements WithAssertions {
 
     @BeforeEach
     void setUp() {
+
     }
 
     @Test
@@ -46,7 +47,6 @@ class DressTypeServiceTest implements WithAssertions {
 
         var newDressType = createNewDressType();
         when(repository.save(newDressType)).thenReturn(newDressType);
-
         var createdDressType = underTest.createOrUpdate(newDressType);
 
         assertThat(createdDressType).isNotNull();
@@ -57,7 +57,6 @@ class DressTypeServiceTest implements WithAssertions {
 
         var newDressType = createNewDressType();
         newDressType.setName("");
-
         var exception = assertThrows(DomainRulesException.class,
                 () -> underTest.createOrUpdate(newDressType));
 
@@ -86,7 +85,6 @@ class DressTypeServiceTest implements WithAssertions {
 
         var dressTypeToDelete = createNewDressType();
         when(repository.findById(anyLong())).thenReturn(Optional.of(dressTypeToDelete));
-
         var deletedDressType = underTest.delete(dressTypeToDelete);
 
         assertThat(deletedDressType).isNotNull();

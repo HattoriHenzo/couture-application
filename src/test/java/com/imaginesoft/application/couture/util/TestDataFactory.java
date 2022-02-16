@@ -2,9 +2,11 @@ package com.imaginesoft.application.couture.util;
 
 import com.imaginesoft.application.couture.dto.ClientDto;
 import com.imaginesoft.application.couture.dto.DressTypeDto;
+import com.imaginesoft.application.couture.dto.MeasureTypeDto;
 import com.imaginesoft.application.couture.dto.ModelTypeDto;
 import com.imaginesoft.application.couture.model.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,17 +19,27 @@ public class TestDataFactory {
     public static final String BAD_BODY = "bad body";
     public static final String SUCCESS_DATE = "2022-01-04";
 
+    public static final Long EMPLOYEE_ID = 3L;
+    public static final String EMPLOYEE_FIRST_NAME = "Samuel";
+    public static final String EMPLOYEE_EDITED_FIRST_NAME = "Thierry";
+    public static final String EMPLOYEE_LAST_NAME = "Jeans";
+    public static final String EMPLOYEE_TELEPHONE = "418-555-9999";
+    public static final String EMPLOYEE_EDITED_TELEPHONE = "418-333-9988";
+    public static final Gender EMPLOYEE_GENDER_MALE = Gender.MALE;
+
     public static final Long CLIENT_ID = 1L;
     public static final Long CLIENT_ADDED_ID = 6L;
     public static final Long CLIENT_TO_DELETE = 3L;
     public static final int NUMBER_OF_CLIENTS = 5;
-    public static final String FIRST_NAME = "CARLOS";
-    public static final String EDITED_FIRST_NAME = "THIERRY";
-    public static final String LAST_NAME = "JEANS";
-    public static final String TELEPHONE = "514-999-4800";
-    public static final String EDITED_TELEPHONE = "418-333-9988";
+    public static final String CLIENT_FIRST_NAME = "CARLOS";
+    public static final String CLIENT_EDITED_FIRST_NAME = "THIERRY";
+    public static final String CLIENT_LAST_NAME = "JEANS";
+    public static final String CLIENT_TELEPHONE = "514-999-4800";
+    public static final String CLIENT_EDITED_TELEPHONE = "418-333-9988";
+    public static final Gender CLIENT_GENDER_MALE = Gender.MALE;
 
     public static final Long DRESS_ID = 1L;
+    public static final Long DRESS_ID_TO_DELETE = 2L;
     public static final int DRESS_AMOUNT = 1000;
 
     public static final Long DRESS_TYPE_ID = 1L;
@@ -35,17 +47,43 @@ public class TestDataFactory {
     public static final String DRESS_TYPE_NAME = "PANTS";
 
     public static final Long MODEL_TYPE_ID = 3L;
-    public static final String MODEL_TYPE_NAME = "Sherpa";
-    public static final String MODEL_TYPE_EDITED_NAME = "African";
+    public static final String MODEL_TYPE_NAME = "SHERPA";
+    public static final String MODEL_TYPE_EDITED_NAME = "AFRICAN";
+
+    public static final Long MEASURE_TYPE_ID = 3L;
+    public static final Long MEASURE_TYPE_TO_DELETE = 4L;
+    public static final String MEASURE_TYPE_NAME = "SHOULDER";
+    public static final String MEASURE_TYPE_EDITED_NAME = "HARM";
+
+    public static final Long MEASURE_ID = 3L;
+    public static final int MEASURE_VALUE = 10;
+    public static final int MEASURE_EDITED_VALUE = 12;
+
+    public static final Long MATERIAL_TYPE_ID = 3L;
+    public static final String MATERIAL_TYPE_NAME = "COTTON";
+    public static final String MATERIAL_TYPE_EDITED_NAME = "NYLON";
+    public static final String MATERIAL_TYPE_IMAGE = "image_path";
+    public static final String MATERIAL_TYPE_EDITED_IMAGE = "image_path_edit";
+
+    public static final Long ORDERS_ID = 3L;
+    public static final String ORDERS_NUMBER = "0001";
+    public static final String ORDERS_EDITED_NUMBER = "0002";
+    public static final LocalDateTime ORDERS_DATE = LocalDateTime.now();
+    public static final LocalDateTime ORDERS_DELIVERY_DATE = LocalDateTime.now();
+
+    public static final Long LOGIN_ID = 1L;
+    public static final String LOGIN_USERNAME = "superuser";
+    public static final String LOGIN_PASSWORD = "super_password";
+    public static final LoginCategory LOGIN_CATEGORY = LoginCategory.EMPLOYEE;
 
     public static Client createNewClient() {
 
         var newClient = new Client();
         newClient.setId(CLIENT_ID );
-        newClient.setFirstName(FIRST_NAME);
-        newClient.setLastName(LAST_NAME);
+        newClient.setFirstName(CLIENT_FIRST_NAME);
+        newClient.setLastName(CLIENT_LAST_NAME);
         newClient.setGender(Gender.MALE);
-        newClient.setTelephone(TELEPHONE);
+        newClient.setTelephone(CLIENT_TELEPHONE);
 
         List<Orders> ordersList = new ArrayList<>();
         ordersList.add(new Orders());
@@ -59,10 +97,10 @@ public class TestDataFactory {
 
         var newClientDto = new ClientDto();
         newClientDto.setId(CLIENT_ID );
-        newClientDto.setFirstName(FIRST_NAME);
-        newClientDto.setLastName(LAST_NAME);
+        newClientDto.setFirstName(CLIENT_FIRST_NAME);
+        newClientDto.setLastName(CLIENT_LAST_NAME);
         newClientDto.setGender(Gender.MALE.name());
-        newClientDto.setTelephone(TELEPHONE);
+        newClientDto.setTelephone(CLIENT_TELEPHONE);
 
         return newClientDto;
     }
@@ -140,10 +178,78 @@ public class TestDataFactory {
     }
 
     public static List<ModelType> createNewModelTypes() {
+
         return List.of(
                 new ModelType(),
                 new ModelType(),
                 new ModelType()
         );
+    }
+
+    public static Measure createNewMeasure() {
+        Measure newMeasure = new Measure();
+        newMeasure.setValue(MEASURE_VALUE);
+        newMeasure.setDress(new Dress());
+        newMeasure.setMeasureType(new MeasureType());
+        return newMeasure;
+    }
+
+    public static MeasureType createNewMeasureType() {
+
+        MeasureType newMeasureType = new MeasureType();
+        newMeasureType.setName(MEASURE_TYPE_NAME);
+        newMeasureType.setMeasures(createNewMeasures());
+
+        return newMeasureType;
+    }
+
+    public static MeasureTypeDto createNewMeasureTypeDto() {
+
+        MeasureTypeDto newMeasureTypeDto = new MeasureTypeDto();
+        newMeasureTypeDto.setName(MEASURE_TYPE_NAME);
+
+        return newMeasureTypeDto;
+    }
+
+    public static List<MeasureType> createNewMeasureTypes() {
+
+        return List.of(
+                new MeasureType(),
+                new MeasureType(),
+                new MeasureType()
+        );
+    }
+
+    public static MaterialType createNewMaterialType() {
+        MaterialType newMaterialType = new MaterialType();
+        newMaterialType.setName(MATERIAL_TYPE_NAME);
+        newMaterialType.setImage(MATERIAL_TYPE_IMAGE);
+        return newMaterialType;
+    }
+
+    public static Employee createNewEmployee() {
+        Employee newEmployee = new Employee();
+        newEmployee.setFirstName(EMPLOYEE_FIRST_NAME);
+        newEmployee.setLastName(EMPLOYEE_LAST_NAME);
+        newEmployee.setTelephone(EMPLOYEE_TELEPHONE);
+        newEmployee.setGender(EMPLOYEE_GENDER_MALE);
+        return newEmployee;
+    }
+
+    public static Orders createNewOrders() {
+        var newOrders = new Orders();
+        newOrders.setNumber(ORDERS_NUMBER);
+        newOrders.setClient(new Client());
+        newOrders.setDate(ORDERS_DATE);
+        newOrders.setDeliveryDate(ORDERS_DELIVERY_DATE);
+        return newOrders;
+    }
+
+    public static Login createNewLogin() {
+        var newLogin = new Login();
+        newLogin.setUsername(LOGIN_USERNAME);
+        newLogin.setPassword(LOGIN_PASSWORD);
+        newLogin.setLoginCategory(LOGIN_CATEGORY);
+        return newLogin;
     }
 }

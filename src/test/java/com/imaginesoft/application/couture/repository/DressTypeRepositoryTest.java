@@ -1,13 +1,10 @@
 package com.imaginesoft.application.couture.repository;
 
-import com.imaginesoft.application.couture.model.DressType;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
-
-import java.util.Optional;
 
 import static com.imaginesoft.application.couture.util.TestDataFactory.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -31,9 +28,9 @@ class DressTypeRepositoryTest implements WithAssertions {
     @Test
     void givenDressType_whenCreateDressType_thenDressTypeExists() {
 
-        DressType newDressType = createNewDressType();
+        var newDressType = createNewDressType();
         newDressType.setId(5L);
-        DressType createdDressType = repository.save(newDressType);
+        var createdDressType = repository.save(newDressType);
 
         assertAll(
                 () -> assertThat(createdDressType).isNotNull(),
@@ -44,10 +41,10 @@ class DressTypeRepositoryTest implements WithAssertions {
     @Test
     void givenDressType_whenUpdateDressType_thenDressTypeHasChanged() {
 
-        Optional<DressType> dressTypeToUpdate = repository.findById(DRESS_TYPE_ID);
+        var dressTypeToUpdate = repository.findById(DRESS_TYPE_ID);
         dressTypeToUpdate.ifPresent(value -> value.setName(EDITED_NAME));
 
-        DressType updatedDressType = repository.save(dressTypeToUpdate.get());
+        var updatedDressType = repository.save(dressTypeToUpdate.get());
 
         assertAll(
                 () -> assertThat(updatedDressType.getId()).isEqualTo(dressTypeToUpdate.get().getId()),
@@ -58,9 +55,9 @@ class DressTypeRepositoryTest implements WithAssertions {
     @Test
     void givenDressType_whenDeleteDressType_thenDressTypeDoesNotExists() {
 
-        Optional<DressType> dressTypeToDelete = repository.findById(DRESS_TYPE_TO_DELETE);
+        var dressTypeToDelete = repository.findById(DRESS_TYPE_TO_DELETE);
         repository.delete(dressTypeToDelete.get());
-        Optional<DressType> deletedClient = repository.findById(DRESS_TYPE_TO_DELETE);
+        var deletedClient = repository.findById(DRESS_TYPE_TO_DELETE);
 
         assertThat(deletedClient).isNotPresent();
     }

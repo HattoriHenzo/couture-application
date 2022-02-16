@@ -1,90 +1,59 @@
 package com.imaginesoft.application.couture.repository;
 
-import com.imaginesoft.application.couture.model.Employee;
-import com.imaginesoft.application.couture.model.Gender;
-import com.imaginesoft.application.couture.model.generic.GenericPerson;
-import org.junit.jupiter.api.*;
+import org.assertj.core.api.WithAssertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.imaginesoft.application.couture.util.TestDataFactory.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DataJpaTest
-@TestPropertySource(locations = {"classpath:application-test.properties"})
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class EmployeeRepositoryTest {
-
-    private final Long ID_3 = 3L;
-    private final String FIRST_NAME = "Samuel";
-    private final String EDITED_FIRST_NAME = "Thierry";
-    private final String LAST_NAME = "Jeans";
-    private final String TELEPHONE = "418-555-9999";
-    private final String EDITED_TELEPHONE = "418-333-9988";
-    private final Gender GENDER_MALE = Gender.MALE;
-
-    @Autowired
-    private TestEntityManager entityManager;
+@ActiveProfiles("test")
+class EmployeeRepositoryTest implements WithAssertions {
 
     @Autowired
     private EmployeeRepository repository;
 
     @Test
-    @Order(1)
     void givenEmployee_whenCreateEmployee_thenEmployeeExists() {
 
-        GenericPerson newEmployee = createNewEmployee();
-        GenericPerson createdEmployee = entityManager.persist(newEmployee);
+        var newEmployee = createNewEmployee();
+        var createdEmployee = repository.save(newEmployee);
 
-        Assertions.assertAll(
+        assertAll(
                 () -> assertThat(createdEmployee).isNotNull(),
-                () -> assertThat(createdEmployee.getFirstName()).isEqualTo(FIRST_NAME),
-                () -> assertThat(createdEmployee.getLastName()).isEqualTo(LAST_NAME),
-                () -> assertThat(createdEmployee.getTelephone()).isEqualTo(TELEPHONE)
+                () -> assertThat(createdEmployee.getFirstName()).isEqualTo(EMPLOYEE_FIRST_NAME),
+                () -> assertThat(createdEmployee.getLastName()).isEqualTo(EMPLOYEE_LAST_NAME),
+                () -> assertThat(createdEmployee.getTelephone()).isEqualTo(EMPLOYEE_TELEPHONE)
         );
     }
 
     @Test
-    @Order(2)
     void givenClient_whenUpdateEmployee_thenEmployeeHasChanged() {
 
-        Employee newEmployee = createNewEmployee();
+        var newEmployee = createNewEmployee();
 
-        Employee employeeToUpdate = entityManager.persist(newEmployee);
-        employeeToUpdate.setFirstName(EDITED_FIRST_NAME);
-        employeeToUpdate.setTelephone(EDITED_TELEPHONE);
+        var employeeToUpdate = repository.save(newEmployee);
+        employeeToUpdate.setFirstName(EMPLOYEE_EDITED_FIRST_NAME);
+        employeeToUpdate.setTelephone(EMPLOYEE_EDITED_TELEPHONE);
 
-        Employee updatedEmployee = repository.save(employeeToUpdate);
+        var updatedEmployee = repository.save(employeeToUpdate);
 
-        Assertions.assertAll(
-                () -> assertThat(updatedEmployee.getFirstName()).isEqualTo(EDITED_FIRST_NAME),
-                () -> assertThat(updatedEmployee.getTelephone()).isEqualTo(EDITED_TELEPHONE)
+        assertAll(
+                () -> assertThat(updatedEmployee.getFirstName()).isEqualTo(EMPLOYEE_EDITED_FIRST_NAME),
+                () -> assertThat(updatedEmployee.getTelephone()).isEqualTo(EMPLOYEE_EDITED_TELEPHONE)
         );
     }
 
     @Test
-    @Order(3)
     void givenClient_whenDeleteEmployee_thenEmployeeDoesNotExists() {
 
-        Employee newEmployee = createNewEmployee();
-
-        Employee employeeToDelete = entityManager.persist(newEmployee);
-        repository.delete(employeeToDelete);
-
-        Optional<Employee> deletedEmployee = repository.findById(ID_3);
+        var employeeToDelete = repository.findById(EMPLOYEE_ID);
+        repository.delete(employeeToDelete.get());
+        var deletedEmployee = repository.findById(EMPLOYEE_ID);
 
         assertThat(deletedEmployee).isNotPresent();
-    }
-
-    private Employee createNewEmployee() {
-        Employee newEmployee = new Employee();
-        newEmployee.setFirstName(FIRST_NAME);
-        newEmployee.setLastName(LAST_NAME);
-        newEmployee.setTelephone(TELEPHONE);
-        newEmployee.setGender(GENDER_MALE);
-        return newEmployee;
     }
 }

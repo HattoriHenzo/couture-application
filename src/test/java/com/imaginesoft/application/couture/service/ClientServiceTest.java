@@ -47,7 +47,6 @@ class ClientServiceTest implements WithAssertions {
 
         var newClient = createNewClient();
         when(repository.save(newClient)).thenReturn(newClient);
-
         var createdClient = underTest.createOrUpdate(newClient);
 
         assertThat(createdClient).isNotNull();

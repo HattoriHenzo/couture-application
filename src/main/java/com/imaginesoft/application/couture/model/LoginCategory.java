@@ -1,6 +1,6 @@
 package com.imaginesoft.application.couture.model;
 
-public enum UserCategory {
+public enum LoginCategory {
     ADMINISTRATOR,
     MANAGER,
     EMPLOYEE

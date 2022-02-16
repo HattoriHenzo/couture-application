@@ -3,13 +3,24 @@ package com.imaginesoft.application.couture.model;
 import com.imaginesoft.application.couture.model.generic.GenericPerson;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "EMPLOYEE")
 public class Employee extends GenericPerson {
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "login_id", referencedColumnName = "id")
+    private Login login;
+
+    public Login getLogin() {
+        return login;
+    }
+
+    public void setLogin(Login user) {
+        this.login = user;
+    }
 
     public Employee() {
         super();

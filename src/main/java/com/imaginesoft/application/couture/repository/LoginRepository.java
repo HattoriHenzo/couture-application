@@ -1,9 +1,9 @@
 package com.imaginesoft.application.couture.repository;
 
-import com.imaginesoft.application.couture.model.User;
+import com.imaginesoft.application.couture.model.Login;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface LoginRepository extends JpaRepository<Login, Long> {
 }

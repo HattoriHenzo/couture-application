@@ -1,7 +1,7 @@
 package com.imaginesoft.application.couture.service;
 
-import com.imaginesoft.application.couture.model.User;
-import com.imaginesoft.application.couture.repository.UserRepository;
+import com.imaginesoft.application.couture.model.Login;
+import com.imaginesoft.application.couture.repository.LoginRepository;
 import com.imaginesoft.application.couture.service.generic.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,32 +9,32 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserService extends GenericService<User> {
+public class UserService extends GenericService<Login> {
 
-    private UserRepository repository;
+    private LoginRepository repository;
 
     @Autowired
-    public UserService(UserRepository repository) {
+    public UserService(LoginRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public User findById(Long id) {
+    public Login findById(Long id) {
         return null;
     }
 
     @Override
-    public List<User> findAll() {
+    public List<Login> findAll() {
         return null;
     }
 
     @Override
-    public User createOrUpdate(User user) {
+    public Login createOrUpdate(Login user) {
         return null;
     }
 
     @Override
-    public User delete(User user) {
+    public Login delete(Login user) {
         return null;
     }
 }

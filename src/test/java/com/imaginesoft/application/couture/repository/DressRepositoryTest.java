@@ -1,22 +1,20 @@
 package com.imaginesoft.application.couture.repository;
 
-import com.imaginesoft.application.couture.model.Dress;
 import org.assertj.core.api.WithAssertions;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.Optional;
-
+import static com.imaginesoft.application.couture.util.TestDataFactory.DRESS_ID_TO_DELETE;
 import static com.imaginesoft.application.couture.util.TestDataFactory.createNewDress;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DataJpaTest
 @ActiveProfiles("test")
 class DressRepositoryTest implements WithAssertions {
 
-    private final Long ID_1 = 1L;
+    private final Long ID = 1L;
     private final int EDITED_AMOUNT = 1500;
 
     @Autowired
@@ -25,10 +23,10 @@ class DressRepositoryTest implements WithAssertions {
     @Test
     void givenDress_whenCreateDress_thenDressExists() {
 
-        Dress newDress = createNewDress();
-        Dress createdDress = repository.save(newDress);
+        var newDress = createNewDress();
+        var createdDress = repository.save(newDress);
 
-        Assertions.assertAll(
+        assertAll(
                 () -> assertThat(createdDress).isNotNull(),
                 () -> assertThat(createdDress.getDressType()).isNotNull(),
                 () -> assertThat(createdDress.getModelType()).isNotNull(),
@@ -40,14 +38,14 @@ class DressRepositoryTest implements WithAssertions {
     @Test
     void givenDress_whenUpdateDress_thenDressHasChanged() {
 
-        Dress newDress = createNewDress();
+        var newDress = createNewDress();
 
-        Dress dressToUpdate = repository.save(newDress);
+        var dressToUpdate = repository.save(newDress);
         dressToUpdate.setAmount(EDITED_AMOUNT);
 
-        Dress updatedDress = repository.save(newDress);
+        var updatedDress = repository.save(newDress);
 
-        Assertions.assertAll(
+        assertAll(
                 () -> assertThat(updatedDress.getId()).isEqualTo(dressToUpdate.getId()),
                 () -> assertThat(updatedDress.getAmount()).isEqualTo(EDITED_AMOUNT)
         );
@@ -56,10 +54,9 @@ class DressRepositoryTest implements WithAssertions {
     @Test
     void givenDress_whenDeleteDress_thenDressDoesNotExists() {
 
-        Dress newDress =  createNewDress();
-        Dress dressToDelete = repository.save(newDress);
-        repository.delete(dressToDelete);
-        Optional<Dress> deletedDress = repository.findById(ID_1);
+        var dressToDelete = repository.findById(DRESS_ID_TO_DELETE);
+        repository.delete(dressToDelete.get());
+        var deletedDress = repository.findById(DRESS_ID_TO_DELETE);
 
         assertThat(deletedDress).isNotPresent();
     }

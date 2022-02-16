@@ -16,3 +16,9 @@ INSERT INTO model_type(id, name) VALUES(1,'SHERPA');
 INSERT INTO model_type(id, name) VALUES(2, 'JACKET');
 INSERT INTO model_type(id, name) VALUES(3, 'SWEAT');
 INSERT INTO model_type(id, name) VALUES(4, 'TINY');
+
+-- Inserting data in MeasureType table
+INSERT INTO measure_type(id, name) VALUES(1,'SHOULDER');
+INSERT INTO measure_type(id, name) VALUES(2, 'HIPS');
+INSERT INTO measure_type(id, name) VALUES(3, 'HAND');
+INSERT INTO measure_type(id, name) VALUES(4, 'LEG');
