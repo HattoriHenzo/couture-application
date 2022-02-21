@@ -7,7 +7,7 @@ import com.imaginesoft.application.couture.dto.ClientDto;
 import com.imaginesoft.application.couture.dto.DressTypeDto;
 import com.imaginesoft.application.couture.model.DressType;
 import com.imaginesoft.application.couture.service.generic.GenericService;
-import com.imaginesoft.application.couture.util.DataFactory;
+import com.imaginesoft.application.couture.util.ApplicationDataFactory;
 import com.imaginesoft.application.couture.util.DateTimeWrapper;
 import com.imaginesoft.application.couture.util.MapperWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping(value = DataFactory.API_V1)
+@RequestMapping(value = ApplicationDataFactory.API_V1)
 public class DressTypeController extends GenericController<Success, DressTypeDto, DressType> {
 
     @Autowired
@@ -32,7 +32,6 @@ public class DressTypeController extends GenericController<Success, DressTypeDto
     @Override
     @GetMapping("/dress-types/{id}")
     protected ResponseEntity<Success> findById(@PathVariable("id") Long id) throws RecordNotFoundException {
-
         var dressType = service.findById(id);
         var dressTypeResponse = mapper.performMapping(dressType, DressTypeDto.class);
         var success = new Success(HttpStatus.OK,
@@ -46,7 +45,6 @@ public class DressTypeController extends GenericController<Success, DressTypeDto
     @Override
     @GetMapping("/dress-types")
     protected ResponseEntity<Success> findAll() throws RecordNotFoundException {
-
         var dressTypes = service.findAll();
         var dressTypesDtoResponse = dressTypes.stream()
                 .map(dressType -> mapper.performMapping(dressType, DressTypeDto.class))
@@ -62,7 +60,6 @@ public class DressTypeController extends GenericController<Success, DressTypeDto
     @Override
     @PostMapping("/dress-types")
     protected ResponseEntity<Success> create(@RequestBody DressTypeDto dressTypeDto) {
-
         var dressTypeToCreate = mapper.performMapping(dressTypeDto, DressType.class);
         var createdDressType = service.createOrUpdate(dressTypeToCreate);
         var dressTypeResponse = mapper.performMapping(createdDressType, DressTypeDto.class);
@@ -77,7 +74,6 @@ public class DressTypeController extends GenericController<Success, DressTypeDto
     @Override
     @PutMapping("/dress-types")
     protected ResponseEntity<Success> update(@RequestBody DressTypeDto dressTypeDto) {
-
         var dressTypeToUpdate = mapper.performMapping(dressTypeDto, DressType.class);
         var updatedDressType = service.createOrUpdate(dressTypeToUpdate);
         var success = new Success(HttpStatus.OK,
@@ -91,7 +87,6 @@ public class DressTypeController extends GenericController<Success, DressTypeDto
     @Override
     @DeleteMapping("/dress-types/{id}")
     protected ResponseEntity<Success> delete(@PathVariable("id") Long id) throws RecordNotFoundException {
-
         var dressTypeToDelete = service.findById(id);
 
         if(Objects.isNull(dressTypeToDelete)) {

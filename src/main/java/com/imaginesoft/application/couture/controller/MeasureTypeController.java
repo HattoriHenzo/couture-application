@@ -3,13 +3,10 @@ package com.imaginesoft.application.couture.controller;
 import com.imaginesoft.application.couture.controller.exception.RecordNotFoundException;
 import com.imaginesoft.application.couture.controller.generic.GenericController;
 import com.imaginesoft.application.couture.controller.message.Success;
-import com.imaginesoft.application.couture.dto.ClientDto;
-import com.imaginesoft.application.couture.dto.DressTypeDto;
 import com.imaginesoft.application.couture.dto.MeasureTypeDto;
-import com.imaginesoft.application.couture.model.DressType;
 import com.imaginesoft.application.couture.model.MeasureType;
 import com.imaginesoft.application.couture.service.generic.GenericService;
-import com.imaginesoft.application.couture.util.DataFactory;
+import com.imaginesoft.application.couture.util.ApplicationDataFactory;
 import com.imaginesoft.application.couture.util.DateTimeWrapper;
 import com.imaginesoft.application.couture.util.MapperWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +19,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = DataFactory.API_V1)
+@RequestMapping(value = ApplicationDataFactory.API_V1)
 public class MeasureTypeController extends GenericController<Success, MeasureTypeDto, MeasureType> {
 
     @Autowired

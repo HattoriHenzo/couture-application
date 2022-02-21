@@ -1,40 +1,58 @@
 package com.imaginesoft.application.couture.service;
 
-import com.imaginesoft.application.couture.model.Orders;
-import com.imaginesoft.application.couture.repository.OrdersRepository;
+import com.imaginesoft.application.couture.controller.exception.RecordNotFoundException;
+import com.imaginesoft.application.couture.model.Order;
+import com.imaginesoft.application.couture.repository.OrderRepository;
 import com.imaginesoft.application.couture.service.generic.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
-public class OrderService extends GenericService<Orders> {
+public class OrderService extends GenericService<Order> {
 
-    private OrdersRepository repository;
+    private OrderRepository repository;
 
     @Autowired
-    public OrderService(OrdersRepository repository) {
+    public OrderService(OrderRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public Orders findById(Long id) {
-        return null;
+    public Order findById(Long id) throws RecordNotFoundException {
+        var order = repository.findById(id);
+        return order.orElseThrow(
+                () -> new RecordNotFoundException("No record found")
+        );
     }
 
     @Override
-    public List<Orders> findAll() {
-        return null;
+    public List<Order> findAll() throws RecordNotFoundException {
+        var orders = repository.findAll();
+        if(orders.isEmpty()) {
+            throw new RecordNotFoundException("No record found");
+        }
+        return orders;
     }
 
     @Override
-    public Orders createOrUpdate(Orders object) {
-        return null;
+    public Order createOrUpdate(Order order) {
+        validateDomainRecord(order);
+        return repository.save(order);
     }
 
     @Override
-    public Orders delete(Orders order) {
-        return null;
+    public Order delete(Order order) {
+        var orderToDelete = repository.findById(order.getId());
+        var deletedOrder = new AtomicReference<Order>();
+
+        orderToDelete.ifPresent(value -> {
+            repository.delete(value);
+            deletedOrder.set(value);
+        });
+
+        return deletedOrder.get();
     }
 }

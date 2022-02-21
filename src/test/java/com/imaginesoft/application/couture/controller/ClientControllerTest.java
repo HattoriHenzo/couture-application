@@ -3,8 +3,8 @@ package com.imaginesoft.application.couture.controller;
 import com.imaginesoft.application.couture.dto.ClientDto;
 import com.imaginesoft.application.couture.model.Client;
 import com.imaginesoft.application.couture.service.ClientService;
-import com.imaginesoft.application.couture.util.DataFactory;
-import com.imaginesoft.application.couture.util.TestDataFactory;
+import com.imaginesoft.application.couture.util.ApplicationDataFactory;
+import com.imaginesoft.application.couture.TestDataFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -13,7 +13,7 @@ import org.springframework.http.MediaType;
 
 import java.time.Clock;
 
-import static com.imaginesoft.application.couture.util.TestDataFactory.*;
+import static com.imaginesoft.application.couture.TestDataFactory.*;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -35,7 +35,6 @@ class ClientControllerTest extends BaseControllerTest {
 
     @Test
     void givenId_whenCallFindById_thenReturns_200_OK() throws Exception {
-
         var client = TestDataFactory.createNewClient();
         var clientDto = TestDataFactory.createNewClientDto();
 
@@ -43,7 +42,7 @@ class ClientControllerTest extends BaseControllerTest {
         when(mapperMock.performMapping(client, ClientDto.class)).thenReturn(clientDto);
         when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(get(DataFactory.API_V1 + "/clients/{id}", ID)
+        mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/clients/{id}", ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isOk(),
@@ -55,17 +54,15 @@ class ClientControllerTest extends BaseControllerTest {
 
     @Test
     void givenId_whenCallFindById_thenReturns_400_BAD_REQUEST() throws Exception {
-
         when(serviceMock.findById(anyLong())).thenReturn(new Client());
 
-        mockMvc.perform(get(DataFactory.API_V1 + "/clients/ID", BAD_PATH_PARAM)
+        mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/clients/ID", BAD_PATH_PARAM)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     void givenId_whenCallFindById_thenReturns_404_NOT_FOUND() throws Exception {
-
         when(serviceMock.findById(anyLong())).thenReturn(new Client());
 
         mockMvc.perform(get(BAD_URI, ID)
@@ -75,7 +72,6 @@ class ClientControllerTest extends BaseControllerTest {
 
     @Test
     void givenAll_whenCallFindAll_thenReturns_200_OK() throws Exception {
-
         var client = TestDataFactory.createNewClient();
         var clients = TestDataFactory.createNewClients();
         var clientDto = TestDataFactory.createNewClientDto();
@@ -84,7 +80,7 @@ class ClientControllerTest extends BaseControllerTest {
         when(mapperMock.performMapping(client, ClientDto.class)).thenReturn(clientDto);
         when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(get(DataFactory.API_V1 + "/clients")
+        mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/clients")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isOk(),
@@ -96,7 +92,6 @@ class ClientControllerTest extends BaseControllerTest {
 
     @Test
     void givenAll_whenCallFindAll_thenReturns_404_BAD_REQUEST() throws Exception {
-
         when(serviceMock.findAll()).thenReturn(TestDataFactory.createNewClients());
 
         mockMvc.perform(get(BAD_URI)
@@ -106,7 +101,6 @@ class ClientControllerTest extends BaseControllerTest {
 
     @Test
     void givenClient_whenCallCreate_thenReturns_400_BAD_REQUEST() throws Exception {
-
         var clientRequest = BAD_BODY;
         var clientToCreate = TestDataFactory.createNewClient();
         var createdClient = TestDataFactory.createNewClient();
@@ -117,7 +111,7 @@ class ClientControllerTest extends BaseControllerTest {
         when(mapperMock.performMapping(createdClient, ClientDto.class)).thenReturn(clientResponse);
         when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(post(DataFactory.API_V1 + "/clients")
+        mockMvc.perform(post(ApplicationDataFactory.API_V1 + "/clients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(clientRequest)))
                 .andExpect(status().isBadRequest());
@@ -125,7 +119,6 @@ class ClientControllerTest extends BaseControllerTest {
 
     @Test
     void givenClient_whenCallCreate_thenReturns_200_OK() throws Exception {
-
         var clientRequest = TestDataFactory.createNewClientDto();
         var clientToCreate = TestDataFactory.createNewClient();
         var createdClient = TestDataFactory.createNewClient();
@@ -136,7 +129,7 @@ class ClientControllerTest extends BaseControllerTest {
         when(mapperMock.performMapping(createdClient, ClientDto.class)).thenReturn(clientResponse);
         when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(post(DataFactory.API_V1 + "/clients")
+        mockMvc.perform(post(ApplicationDataFactory.API_V1 + "/clients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(clientRequest)))
                 .andExpectAll(
@@ -150,7 +143,6 @@ class ClientControllerTest extends BaseControllerTest {
 
     @Test
     void givenClient_whenCallUpdate_thenReturns_200_OK() throws Exception {
-
         var clientRequest = TestDataFactory.createNewClientDto();
         var clientToCreate = TestDataFactory.createNewClient();
         var createdClient = TestDataFactory.createNewClient();
@@ -161,7 +153,7 @@ class ClientControllerTest extends BaseControllerTest {
         when(mapperMock.performMapping(createdClient, ClientDto.class)).thenReturn(clientResponse);
         when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(put(DataFactory.API_V1 + "/clients")
+        mockMvc.perform(put(ApplicationDataFactory.API_V1 + "/clients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(clientRequest)))
                 .andExpectAll(
@@ -175,7 +167,6 @@ class ClientControllerTest extends BaseControllerTest {
 
     @Test
     void givenClient_whenCallUpdate_thenReturns_400_BAD_REQUEST() throws Exception {
-
         var clientRequest = BAD_BODY;
         var clientToCreate = TestDataFactory.createNewClient();
         var createdClient = TestDataFactory.createNewClient();
@@ -186,7 +177,7 @@ class ClientControllerTest extends BaseControllerTest {
         when(mapperMock.performMapping(createdClient, ClientDto.class)).thenReturn(clientResponse);
         when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(put(DataFactory.API_V1 + "/clients")
+        mockMvc.perform(put(ApplicationDataFactory.API_V1 + "/clients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(clientRequest)))
                 .andExpect(status().isBadRequest());
@@ -194,7 +185,6 @@ class ClientControllerTest extends BaseControllerTest {
 
     @Test
     void givenClient_whenCallDelete_thenReturns_200_OK() throws Exception {
-
         var clientToDelete = TestDataFactory.createNewClient();
         var deletedClient = clientToDelete;
         var clientResponse = TestDataFactory.createNewClientDto();
@@ -204,7 +194,7 @@ class ClientControllerTest extends BaseControllerTest {
         when(mapperMock.performMapping(deletedClient, ClientDto.class)).thenReturn(clientResponse);
         when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(DataFactory.API_V1 + "/clients/{id}", ID)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/clients/{id}", ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isOk(),
@@ -217,7 +207,6 @@ class ClientControllerTest extends BaseControllerTest {
 
     @Test
     void givenClient_whenCallDelete_thenReturns_400_BAD_REQUEST() throws Exception {
-
         var clientToDelete = TestDataFactory.createNewClient();
         var deletedClient = clientToDelete;
         var clientResponse = TestDataFactory.createNewClientDto();
@@ -227,7 +216,7 @@ class ClientControllerTest extends BaseControllerTest {
         when(mapperMock.performMapping(deletedClient, ClientDto.class)).thenReturn(clientResponse);
         when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(DataFactory.API_V1 + "/clients/ID", BAD_PATH_PARAM)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/clients/ID", BAD_PATH_PARAM)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
@@ -244,7 +233,7 @@ class ClientControllerTest extends BaseControllerTest {
         when(mapperMock.performMapping(deletedClient, ClientDto.class)).thenReturn(clientResponse);
         when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(DataFactory.API_V1 + "/clients/{id}", ID)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/clients/{id}", ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isNotFound(),

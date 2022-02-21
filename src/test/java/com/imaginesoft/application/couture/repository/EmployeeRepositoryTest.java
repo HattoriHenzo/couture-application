@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import static com.imaginesoft.application.couture.util.TestDataFactory.*;
+import static com.imaginesoft.application.couture.TestDataFactory.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DataJpaTest
@@ -32,13 +32,10 @@ class EmployeeRepositoryTest implements WithAssertions {
 
     @Test
     void givenClient_whenUpdateEmployee_thenEmployeeHasChanged() {
-
         var newEmployee = createNewEmployee();
-
         var employeeToUpdate = repository.save(newEmployee);
         employeeToUpdate.setFirstName(EMPLOYEE_EDITED_FIRST_NAME);
         employeeToUpdate.setTelephone(EMPLOYEE_EDITED_TELEPHONE);
-
         var updatedEmployee = repository.save(employeeToUpdate);
 
         assertAll(
@@ -49,7 +46,6 @@ class EmployeeRepositoryTest implements WithAssertions {
 
     @Test
     void givenClient_whenDeleteEmployee_thenEmployeeDoesNotExists() {
-
         var employeeToDelete = repository.findById(EMPLOYEE_ID);
         repository.delete(employeeToDelete.get());
         var deletedEmployee = repository.findById(EMPLOYEE_ID);

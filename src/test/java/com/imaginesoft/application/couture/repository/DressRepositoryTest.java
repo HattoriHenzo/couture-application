@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import static com.imaginesoft.application.couture.util.TestDataFactory.DRESS_ID_TO_DELETE;
-import static com.imaginesoft.application.couture.util.TestDataFactory.createNewDress;
+import static com.imaginesoft.application.couture.TestDataFactory.DRESS_ID_TO_DELETE;
+import static com.imaginesoft.application.couture.TestDataFactory.createNewDress;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DataJpaTest

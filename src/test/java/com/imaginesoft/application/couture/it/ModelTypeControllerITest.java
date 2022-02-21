@@ -4,14 +4,14 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.imaginesoft.application.couture.controller.message.Success;
 import com.imaginesoft.application.couture.dto.DressTypeDto;
 import com.imaginesoft.application.couture.dto.ModelTypeDto;
-import com.imaginesoft.application.couture.util.DataFactory;
+import com.imaginesoft.application.couture.util.ApplicationDataFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
 import java.util.List;
 import java.util.Objects;
 
-import static com.imaginesoft.application.couture.util.TestDataFactory.createNewDressTypeDto;
+import static com.imaginesoft.application.couture.TestDataFactory.createNewDressTypeDto;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 class ModelTypeControllerITest extends BaseIntegrationTest {
@@ -24,7 +24,7 @@ class ModelTypeControllerITest extends BaseIntegrationTest {
     void integrationTest_For_FindAll() {
 
         webTestClient.get()
-                .uri(DataFactory.API_V1 + "/model-types")
+                .uri(ApplicationDataFactory.API_V1 + "/model-types")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -37,7 +37,7 @@ class ModelTypeControllerITest extends BaseIntegrationTest {
     void integrationTest_For_FindById() {
 
         webTestClient.get()
-                .uri(DataFactory.API_V1 + "/model-types/{ID}", ID)
+                .uri(ApplicationDataFactory.API_V1 + "/model-types/{ID}", ID)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -59,7 +59,7 @@ class ModelTypeControllerITest extends BaseIntegrationTest {
         var newModelTypeDto = createNewDressTypeDto();
 
         webTestClient.post()
-                .uri(DataFactory.API_V1 + "/model-types")
+                .uri(ApplicationDataFactory.API_V1 + "/model-types")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(newModelTypeDto)
                 .exchange()
@@ -84,7 +84,7 @@ class ModelTypeControllerITest extends BaseIntegrationTest {
         modelTypeToUpdateDto.setName(UPDATED_NAME);
 
         webTestClient.put()
-                .uri(DataFactory.API_V1 + "/model-types")
+                .uri(ApplicationDataFactory.API_V1 + "/model-types")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(modelTypeToUpdateDto)
                 .exchange()
@@ -106,7 +106,7 @@ class ModelTypeControllerITest extends BaseIntegrationTest {
     void integrationTest_For_Delete() {
 
         webTestClient.delete()
-                .uri(DataFactory.API_V1 + "/model-types/{ID}", ID)
+                .uri(ApplicationDataFactory.API_V1 + "/model-types/{ID}", ID)
                 .exchange()
                 .expectStatus().isOk();
     }

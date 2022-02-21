@@ -52,8 +52,8 @@ INSERT INTO employee(id, first_name, last_name, gender, telephone, login_id) VAL
 INSERT INTO employee(id, first_name, last_name, gender, telephone, login_id) VALUES(3, 'JEANNE', 'SOSSOU', 'FEMALE', '99110952', 3);
 INSERT INTO employee(id, first_name, last_name, gender, telephone, login_id) VALUES(4, 'ERIC', 'CANTONA', 'MALE', '92990252', 4);
 
--- Inserting data in Orders table
-INSERT INTO orders(id, number, date, delivery_date, client_id) VALUES(1, 'order-00001', '2021-09-20 18:00:00.69', '2021-09-30 18:00:00.69', 1);
-INSERT INTO orders(id, number, date, delivery_date, client_id) VALUES(2, 'order-00002', '2021-06-07 18:00:00.69', '2021-06-20 18:00:00.69', 1);
-INSERT INTO orders(id, number, date, delivery_date, client_id) VALUES(3, 'order-00003', '2021-09-20 18:00:00.69', '2021-09-30 18:00:00.69', 2);
-INSERT INTO orders(id, number, date, delivery_date, client_id) VALUES(4, 'order-00004', '2021-09-20 18:00:00.69', '2021-09-30 18:00:00.69', 3);
+-- Inserting data in Order table
+INSERT INTO "order"(id, number, date, delivery_date, client_id) VALUES(1, 'order-00001', '2021-09-20 18:00:00.69', '2021-09-30 18:00:00.69', 1);
+INSERT INTO "order"(id, number, date, delivery_date, client_id) VALUES(2, 'order-00002', '2021-06-07 18:00:00.69', '2021-06-20 18:00:00.69', 1);
+INSERT INTO "order"(id, number, date, delivery_date, client_id) VALUES(3, 'order-00003', '2021-09-20 18:00:00.69', '2021-09-30 18:00:00.69', 2);
+INSERT INTO "order"(id, number, date, delivery_date, client_id) VALUES(4, 'order-00004', '2021-09-20 18:00:00.69', '2021-09-30 18:00:00.69', 3);

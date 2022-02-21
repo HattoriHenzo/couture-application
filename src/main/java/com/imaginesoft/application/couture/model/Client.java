@@ -14,17 +14,17 @@ import java.util.Objects;
 public class Client extends GenericPerson {
 
     @OneToMany(mappedBy = "client")
-    private List<Orders> orders;
+    private List<Order> orders;
 
     public Client() {
         super();
     }
 
-    public List<Orders> getOrders() {
+    public List<Order> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Orders> orders) {
+    public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
 

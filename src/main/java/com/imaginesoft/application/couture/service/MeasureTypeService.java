@@ -32,7 +32,6 @@ public class MeasureTypeService extends GenericService<MeasureType> {
 
     @Override
     public List<MeasureType> findAll() throws RecordNotFoundException {
-
         List<MeasureType> measureTypes = repository.findAll();
         if(measureTypes.isEmpty()) {
             throw new RecordNotFoundException("No record found");
@@ -42,16 +41,14 @@ public class MeasureTypeService extends GenericService<MeasureType> {
 
     @Override
     public MeasureType createOrUpdate(MeasureType measureType) {
-
         validateDomainRecord(measureType);
         return repository.save(measureType);
     }
 
     @Override
     public MeasureType delete(MeasureType measureType) {
-
-        Optional<MeasureType> measureTypeToDelete = repository.findById(measureType.getId());
-        AtomicReference<MeasureType> deletedMeasureType = new AtomicReference<>();
+        var measureTypeToDelete = repository.findById(measureType.getId());
+        var deletedMeasureType = new AtomicReference<MeasureType>();
 
         measureTypeToDelete.ifPresent(value -> {
             repository.delete(value);

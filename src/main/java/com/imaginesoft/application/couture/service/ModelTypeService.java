@@ -24,8 +24,7 @@ public class ModelTypeService extends GenericService<ModelType> {
 
     @Override
     public ModelType findById(Long id) throws RecordNotFoundException {
-
-        Optional<ModelType> modelType = repository.findById(id);
+        var modelType = repository.findById(id);
         return modelType.orElseThrow(
                 () -> new RecordNotFoundException("No record found")
         );
@@ -33,8 +32,7 @@ public class ModelTypeService extends GenericService<ModelType> {
 
     @Override
     public List<ModelType> findAll() throws RecordNotFoundException {
-
-        List<ModelType> modelTypes = repository.findAll();
+        var modelTypes = repository.findAll();
         if(modelTypes.isEmpty()) {
             throw new RecordNotFoundException("No record found");
         }
@@ -43,15 +41,13 @@ public class ModelTypeService extends GenericService<ModelType> {
 
     @Override
     public ModelType createOrUpdate(ModelType modelType) {
-
         validateDomainRecord(modelType);
         return repository.save(modelType);
     }
 
     @Override
     public ModelType delete(ModelType modelType) {
-
-        Optional<ModelType> modelTypeToDelete = repository.findById(modelType.getId());
+        var modelTypeToDelete = repository.findById(modelType.getId());
         AtomicReference<ModelType> deletedModelType = new AtomicReference<>();
 
         modelTypeToDelete.ifPresent(value -> {

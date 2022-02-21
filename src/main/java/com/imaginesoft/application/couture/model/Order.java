@@ -3,17 +3,19 @@ package com.imaginesoft.application.couture.model;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "ORDERS")
-public class Orders {
+@Table(name = "\"ORDER\"")
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 
+    @NotEmpty(message = "The order number can't be empty")
     @Column(name = "NUMBER")
     private String number;
 
@@ -27,7 +29,7 @@ public class Orders {
     @JoinColumn(name = "CLIENT_ID", referencedColumnName = "ID")
     private Client client;
 
-    public Orders() {
+    public Order() {
         // Default constructor
     }
 
@@ -75,7 +77,7 @@ public class Orders {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Orders order = (Orders) o;
+        Order order = (Order) o;
 
         return Objects.equals(id, order.id);
     }

@@ -1,7 +1,7 @@
 package com.imaginesoft.application.couture.it;
 
 import com.imaginesoft.application.couture.controller.message.Success;
-import com.imaginesoft.application.couture.util.DataFactory;
+import com.imaginesoft.application.couture.util.ApplicationDataFactory;
 import org.junit.jupiter.api.Test;
 
 class MeasureTypeControllerITest extends BaseIntegrationTest {
@@ -10,7 +10,7 @@ class MeasureTypeControllerITest extends BaseIntegrationTest {
     void integrationTest_For_FindAll() {
 
         webTestClient.get()
-                .uri(DataFactory.API_V1 + "/measure-types")
+                .uri(ApplicationDataFactory.API_V1 + "/measure-types")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)

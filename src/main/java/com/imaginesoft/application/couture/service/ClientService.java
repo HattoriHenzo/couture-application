@@ -25,7 +25,7 @@ public class ClientService extends GenericService<Client> {
     @Override
     public Client findById(Long id) throws RecordNotFoundException {
 
-        Optional<Client> client = repository.findById(id);
+        var client = repository.findById(id);
         return client.orElseThrow(
                 () -> new RecordNotFoundException("No record found")
         );
@@ -34,7 +34,7 @@ public class ClientService extends GenericService<Client> {
     @Override
     public List<Client> findAll() throws RecordNotFoundException {
 
-        List<Client> clients = repository.findAll();
+        var clients = repository.findAll();
         if(clients.isEmpty()) {
             throw new RecordNotFoundException("No record found");
         }
@@ -43,15 +43,13 @@ public class ClientService extends GenericService<Client> {
 
     @Override
     public Client createOrUpdate(Client client) {
-
         validateDomainRecord(client);
         return repository.save(client);
     }
 
     @Override
     public Client delete(Client client) {
-
-        Optional<Client> clientToDelete = repository.findById(client.getId());
+        var clientToDelete = repository.findById(client.getId());
         AtomicReference<Client> deletedClient = new AtomicReference<>();
 
         clientToDelete.ifPresent(value -> {

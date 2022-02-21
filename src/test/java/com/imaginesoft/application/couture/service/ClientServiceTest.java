@@ -4,7 +4,7 @@ import com.imaginesoft.application.couture.controller.exception.RecordNotFoundEx
 import com.imaginesoft.application.couture.model.Client;
 import com.imaginesoft.application.couture.repository.ClientRepository;
 import com.imaginesoft.application.couture.service.validator.field.DomainRulesException;
-import com.imaginesoft.application.couture.util.TestDataFactory;
+import com.imaginesoft.application.couture.TestDataFactory;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,8 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static com.imaginesoft.application.couture.util.TestDataFactory.CLIENT_ID;
-import static com.imaginesoft.application.couture.util.TestDataFactory.createNewClient;
+import static com.imaginesoft.application.couture.TestDataFactory.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -36,15 +35,13 @@ class ClientServiceTest implements WithAssertions {
     }
 
     @Test
-    void givenClients_whenGettingClients_thenGetAllClients() throws RecordNotFoundException {
-
-        when(repository.findAll()).thenReturn(TestDataFactory.createNewClients());
+    void givenClients_whenFindingClients_thenFindAllClients() throws RecordNotFoundException {
+        when(repository.findAll()).thenReturn(createNewClients());
         assertThat(underTest.findAll()).isNotEmpty();
     }
 
     @Test
     void givenClient_whenCreateClient_thenClientIsCreated() {
-
         var newClient = createNewClient();
         when(repository.save(newClient)).thenReturn(newClient);
         var createdClient = underTest.createOrUpdate(newClient);
@@ -54,7 +51,6 @@ class ClientServiceTest implements WithAssertions {
 
     @Test
     void givenClient_whenFirstNameIsEmpty_thenClientThrowException() {
-
         var newClient = createNewClient();
         newClient.setFirstName("");
         var exception = assertThrows(DomainRulesException.class,
@@ -65,7 +61,6 @@ class ClientServiceTest implements WithAssertions {
 
     @Test
     void givenClient_whenLastNameIsEmpty_thenClientThrowException() {
-
         var newClient = createNewClient();
         newClient.setLastName("");
         var exception = assertThrows(DomainRulesException.class,
@@ -76,7 +71,6 @@ class ClientServiceTest implements WithAssertions {
 
     @Test
     void givenClient_whenTelephoneIsEmpty_thenClientThrowException() {
-
         var newClient = createNewClient();
         newClient.setTelephone("");
         var exception = assertThrows(DomainRulesException.class,
@@ -87,7 +81,6 @@ class ClientServiceTest implements WithAssertions {
 
     @Test
     void givenClient_whenUpdateClient_thenClientIsUpdated() {
-
         var client = createNewClient();
         client.setFirstName("POLO");
         when(repository.save(client)).thenReturn(client);
@@ -109,11 +102,9 @@ class ClientServiceTest implements WithAssertions {
 
     @Test
     void givenClient_whenDeleteClient_thenClientIsDeleted() {
-
         var deletedClient = createNewClient();
         when(repository.findById(anyLong())).thenReturn(Optional.of(deletedClient));
 
         assertThat(underTest.delete(deletedClient)).isNotNull();
     }
-
 }

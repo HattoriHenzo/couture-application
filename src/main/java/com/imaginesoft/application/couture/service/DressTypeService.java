@@ -18,22 +18,19 @@ public class DressTypeService extends GenericService<DressType> {
 
     @Autowired
     public DressTypeService(DressTypeRepository repository) {
-
         this.repository = repository;
     }
 
     @Override
     public DressType findById(Long id) throws RecordNotFoundException {
-
-        Optional<DressType> dressType = repository.findById(id);
+        var dressType = repository.findById(id);
         return dressType.orElseThrow(
                 () -> new RecordNotFoundException("No record found"));
     }
 
     @Override
     public List<DressType> findAll() throws RecordNotFoundException {
-
-        List<DressType> dressTypes = repository.findAll();
+        var dressTypes = repository.findAll();
         if(dressTypes.isEmpty()) {
             throw new RecordNotFoundException("No record found");
         }
@@ -42,15 +39,13 @@ public class DressTypeService extends GenericService<DressType> {
 
     @Override
     public DressType createOrUpdate(DressType dressType) {
-
         validateDomainRecord(dressType);
         return repository.save(dressType);
     }
 
     @Override
     public DressType delete(DressType dressType) {
-
-        Optional<DressType> dressTypeToDelete = repository.findById(dressType.getId());
+        var dressTypeToDelete = repository.findById(dressType.getId());
         AtomicReference<DressType> deletedDressType = new AtomicReference<>();
 
         dressTypeToDelete.ifPresent(value -> {

@@ -3,7 +3,6 @@ package com.imaginesoft.application.couture.service;
 import com.imaginesoft.application.couture.controller.exception.RecordNotFoundException;
 import com.imaginesoft.application.couture.repository.MeasureTypeRepository;
 import com.imaginesoft.application.couture.service.validator.field.DomainRulesException;
-import com.imaginesoft.application.couture.util.TestDataFactory;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,14 +13,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static com.imaginesoft.application.couture.util.TestDataFactory.*;
+import static com.imaginesoft.application.couture.TestDataFactory.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class MeasureTypeServiceTest implements WithAssertions {
+class MeasureTypeServiceTest implements WithAssertions {
 
     @Mock
     private MeasureTypeRepository repository;
@@ -36,14 +35,12 @@ public class MeasureTypeServiceTest implements WithAssertions {
 
     @Test
     void givenMeasureTypes_whenFindingMeasureTypes_thenFindAllMeasureTypes() throws RecordNotFoundException {
-
         when(repository.findAll()).thenReturn(createNewMeasureTypes());
         assertThat(underTest.findAll()).isNotEmpty();
     }
 
     @Test
     void givenMeasureType_whenCreateMeasureType_thenMeasureTypeIsCreated() {
-
         var newMeasureType = createNewMeasureType();
         when(repository.save(newMeasureType)).thenReturn(newMeasureType);
         var createdMeasureType = underTest.createOrUpdate(newMeasureType);
@@ -53,7 +50,6 @@ public class MeasureTypeServiceTest implements WithAssertions {
 
     @Test
     void givenMeasureType_whenNameIsEmpty_thenMeasureTypeThrowException() {
-
         var newMeasureType = createNewMeasureType();
         newMeasureType.setName("");
         var exception = assertThrows(DomainRulesException.class,
@@ -64,7 +60,6 @@ public class MeasureTypeServiceTest implements WithAssertions {
 
     @Test
     void givenMeasureType_whenUpdateMeasureType_thenMeasureTypeIsUpdated() {
-
         var measureType = createNewMeasureType();
         measureType.setName("SHOULDER");
         when(repository.save(measureType)).thenReturn(measureType);
@@ -80,10 +75,9 @@ public class MeasureTypeServiceTest implements WithAssertions {
     }
 
     @Test
-    void givenMeasureType_whenDeleteMeasureType_thenMeasureTypeIdDeleted() {
-
+    void givenMeasureType_whenDeleteMeasureType_thenMeasureTypeIsDeleted() {
         var measureTypeToDelete = createNewMeasureType();
-        when(repository.findById(measureTypeToDelete.getId())).thenReturn(Optional.of(measureTypeToDelete));
+        when(repository.findById(anyLong())).thenReturn(Optional.of(measureTypeToDelete));
         var deletedMeasureType = underTest.delete(measureTypeToDelete);
 
         assertThat(deletedMeasureType).isNotNull();

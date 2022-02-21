@@ -3,14 +3,14 @@ package com.imaginesoft.application.couture.it;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.imaginesoft.application.couture.controller.message.Success;
 import com.imaginesoft.application.couture.dto.DressTypeDto;
-import com.imaginesoft.application.couture.util.DataFactory;
+import com.imaginesoft.application.couture.util.ApplicationDataFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
 import java.util.List;
 import java.util.Objects;
 
-import static com.imaginesoft.application.couture.util.TestDataFactory.createNewDressTypeDto;
+import static com.imaginesoft.application.couture.TestDataFactory.createNewDressTypeDto;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 class DressTypeControllerITest extends BaseIntegrationTest {
@@ -23,7 +23,7 @@ class DressTypeControllerITest extends BaseIntegrationTest {
     void integrationTest_For_FindAll() {
 
         webTestClient.get()
-                .uri(DataFactory.API_V1 + "/dress-types")
+                .uri(ApplicationDataFactory.API_V1 + "/dress-types")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -36,7 +36,7 @@ class DressTypeControllerITest extends BaseIntegrationTest {
     void integrationTest_For_FindById() {
 
         webTestClient.get()
-                .uri(DataFactory.API_V1 + "/dress-types/{ID}", ID)
+                .uri(ApplicationDataFactory.API_V1 + "/dress-types/{ID}", ID)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -58,7 +58,7 @@ class DressTypeControllerITest extends BaseIntegrationTest {
         var newDressTypeDto = createNewDressTypeDto();
 
         webTestClient.post()
-                .uri(DataFactory.API_V1 + "/dress-types")
+                .uri(ApplicationDataFactory.API_V1 + "/dress-types")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(newDressTypeDto)
                 .exchange()
@@ -83,7 +83,7 @@ class DressTypeControllerITest extends BaseIntegrationTest {
         dressTypeToUpdateDto.setName(UPDATED_NAME);
 
         webTestClient.put()
-                .uri(DataFactory.API_V1 + "/dress-types")
+                .uri(ApplicationDataFactory.API_V1 + "/dress-types")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(dressTypeToUpdateDto)
                 .exchange()
@@ -105,7 +105,7 @@ class DressTypeControllerITest extends BaseIntegrationTest {
     void integrationTest_For_Delete() {
 
         webTestClient.delete()
-                .uri(DataFactory.API_V1 + "/dress-types/{ID}", ID)
+                .uri(ApplicationDataFactory.API_V1 + "/dress-types/{ID}", ID)
                 .exchange()
                 .expectStatus().isOk();
     }

@@ -3,6 +3,7 @@ package com.imaginesoft.application.couture.model;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.Objects;
 
 @Entity
@@ -14,6 +15,7 @@ public class Measure {
     @Column(name = "ID")
     private Long id;
 
+    @PositiveOrZero(message = "The value can't be less than zero(0)")
     @Column(name = "VALUE")
     private int value;
 

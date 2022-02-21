@@ -1,4 +1,4 @@
-package com.imaginesoft.application.couture.util;
+package com.imaginesoft.application.couture;
 
 import com.imaginesoft.application.couture.dto.ClientDto;
 import com.imaginesoft.application.couture.dto.DressTypeDto;
@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestDataFactory {
+
+    public static final String EMPTY_STRING = "";
 
     public static final Long ID = 1L;
     public static final Long BAD_ID = 5L;
@@ -41,6 +43,8 @@ public class TestDataFactory {
     public static final Long DRESS_ID = 1L;
     public static final Long DRESS_ID_TO_DELETE = 2L;
     public static final int DRESS_AMOUNT = 1000;
+    public static final int DRESS_NEGATIVE_AMOUNT = -500;
+    public static final int DRESS_UPDATED_AMOUNT = 1500;
 
     public static final Long DRESS_TYPE_ID = 1L;
     public static final Long DRESS_TYPE_TO_DELETE = 2L;
@@ -65,36 +69,52 @@ public class TestDataFactory {
     public static final String MATERIAL_TYPE_IMAGE = "image_path";
     public static final String MATERIAL_TYPE_EDITED_IMAGE = "image_path_edit";
 
-    public static final Long ORDERS_ID = 3L;
-    public static final String ORDERS_NUMBER = "0001";
-    public static final String ORDERS_EDITED_NUMBER = "0002";
-    public static final LocalDateTime ORDERS_DATE = LocalDateTime.now();
-    public static final LocalDateTime ORDERS_DELIVERY_DATE = LocalDateTime.now();
+    public static final Long ORDER_ID = 3L;
+    public static final String ORDER_NUMBER = "0001";
+    public static final String ORDER_EDITED_NUMBER = "0002";
+    public static final LocalDateTime ORDER_DATE = LocalDateTime.now();
+    public static final LocalDateTime ORDER_DELIVERY_DATE = LocalDateTime.now();
 
     public static final Long LOGIN_ID = 1L;
     public static final String LOGIN_USERNAME = "superuser";
     public static final String LOGIN_PASSWORD = "super_password";
     public static final LoginCategory LOGIN_CATEGORY = LoginCategory.EMPLOYEE;
 
-    public static Client createNewClient() {
+    public static Employee createNewEmployee() {
+        var newEmployee = new Employee();
+        newEmployee.setId(EMPLOYEE_ID);
+        newEmployee.setFirstName(EMPLOYEE_FIRST_NAME);
+        newEmployee.setLastName(EMPLOYEE_LAST_NAME);
+        newEmployee.setTelephone(EMPLOYEE_TELEPHONE);
+        newEmployee.setGender(EMPLOYEE_GENDER_MALE);
 
+        return newEmployee;
+    }
+
+    public static List<Employee> createNewEmployees() {
+        return List.of(
+                new Employee(),
+                new Employee(),
+                new Employee()
+        );
+    }
+
+    public static Client createNewClient() {
         var newClient = new Client();
         newClient.setId(CLIENT_ID );
         newClient.setFirstName(CLIENT_FIRST_NAME);
         newClient.setLastName(CLIENT_LAST_NAME);
         newClient.setGender(Gender.MALE);
         newClient.setTelephone(CLIENT_TELEPHONE);
-
-        List<Orders> ordersList = new ArrayList<>();
-        ordersList.add(new Orders());
-        ordersList.add(new Orders());
-        newClient.setOrders(ordersList);
+        List<Order> orders = new ArrayList<>();
+        orders.add(new Order());
+        orders.add(new Order());
+        newClient.setOrders(orders);
 
         return newClient;
     }
 
     public static ClientDto createNewClientDto() {
-
         var newClientDto = new ClientDto();
         newClientDto.setId(CLIENT_ID );
         newClientDto.setFirstName(CLIENT_FIRST_NAME);
@@ -114,8 +134,8 @@ public class TestDataFactory {
     }
 
     public static Dress createNewDress() {
-
         var newDress = new Dress();
+        newDress.setId(DRESS_ID);
         newDress.setAmount(DRESS_AMOUNT);
         newDress.setDressType(new DressType());
         newDress.setModelType(new ModelType());
@@ -125,16 +145,23 @@ public class TestDataFactory {
         return newDress;
     }
 
-    public static List<Measure> createNewMeasures() {
+    public static List<Dress> createNewDresses() {
+        return List.of(
+                new Dress(),
+                new Dress(),
+                new Dress()
+        );
+    }
 
+    public static List<Measure> createNewMeasures() {
         List<Measure> measures = new ArrayList<>();
         measures.add(new Measure());
         measures.add(new Measure());
+
         return measures;
     }
 
     public static DressType createNewDressType() {
-
         var newDressType = new DressType();
         newDressType.setId(DRESS_ID);
         newDressType.setName(DRESS_TYPE_NAME);
@@ -160,20 +187,16 @@ public class TestDataFactory {
     }
 
     public static ModelType createNewModelType() {
-
         var newModelType = new ModelType();
         newModelType.setId(MODEL_TYPE_ID);
         newModelType.setName(MODEL_TYPE_NAME);
-
         return newModelType;
     }
 
     public static ModelTypeDto createNewModelTypeDto() {
-
         var newModelTypeDto = new ModelTypeDto();
         newModelTypeDto.setId(MODEL_TYPE_ID);
         newModelTypeDto.setName(MODEL_TYPE_NAME);
-
         return newModelTypeDto;
     }
 
@@ -188,15 +211,17 @@ public class TestDataFactory {
 
     public static Measure createNewMeasure() {
         Measure newMeasure = new Measure();
+        newMeasure.setId(MEASURE_ID);
         newMeasure.setValue(MEASURE_VALUE);
         newMeasure.setDress(new Dress());
         newMeasure.setMeasureType(new MeasureType());
+
         return newMeasure;
     }
 
     public static MeasureType createNewMeasureType() {
-
         MeasureType newMeasureType = new MeasureType();
+        newMeasureType.setId(MEASURE_ID);
         newMeasureType.setName(MEASURE_TYPE_NAME);
         newMeasureType.setMeasures(createNewMeasures());
 
@@ -204,8 +229,7 @@ public class TestDataFactory {
     }
 
     public static MeasureTypeDto createNewMeasureTypeDto() {
-
-        MeasureTypeDto newMeasureTypeDto = new MeasureTypeDto();
+        var newMeasureTypeDto = new MeasureTypeDto();
         newMeasureTypeDto.setName(MEASURE_TYPE_NAME);
 
         return newMeasureTypeDto;
@@ -227,29 +251,46 @@ public class TestDataFactory {
         return newMaterialType;
     }
 
-    public static Employee createNewEmployee() {
-        Employee newEmployee = new Employee();
-        newEmployee.setFirstName(EMPLOYEE_FIRST_NAME);
-        newEmployee.setLastName(EMPLOYEE_LAST_NAME);
-        newEmployee.setTelephone(EMPLOYEE_TELEPHONE);
-        newEmployee.setGender(EMPLOYEE_GENDER_MALE);
-        return newEmployee;
+    public static List<MaterialType> createNewMaterialTypes() {
+        return List.of(
+                new MaterialType(),
+                new MaterialType(),
+                new MaterialType()
+        );
     }
 
-    public static Orders createNewOrders() {
-        var newOrders = new Orders();
-        newOrders.setNumber(ORDERS_NUMBER);
-        newOrders.setClient(new Client());
-        newOrders.setDate(ORDERS_DATE);
-        newOrders.setDeliveryDate(ORDERS_DELIVERY_DATE);
-        return newOrders;
+    public static Order createNewOrder() {
+        var newOrder = new Order();
+        newOrder.setId(ORDER_ID);
+        newOrder.setNumber(ORDER_NUMBER);
+        newOrder.setClient(new Client());
+        newOrder.setDate(ORDER_DATE);
+        newOrder.setDeliveryDate(ORDER_DELIVERY_DATE);
+        return newOrder;
+    }
+
+    public static List<Order> createNewOrders() {
+        return List.of(
+                new Order(),
+                new Order(),
+                new Order()
+        );
     }
 
     public static Login createNewLogin() {
         var newLogin = new Login();
+        newLogin.setId(LOGIN_ID);
         newLogin.setUsername(LOGIN_USERNAME);
         newLogin.setPassword(LOGIN_PASSWORD);
         newLogin.setLoginCategory(LOGIN_CATEGORY);
         return newLogin;
+    }
+
+    public static List<Login> createNewLogins() {
+        return List.of(
+                new Login(),
+                new Login(),
+                new Login()
+        );
     }
 }
