@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class MeasureTypeControllerTest extends BaseControllerTest {
 
     @MockBean
-    private MeasureTypeService serviceMock;
+    private MeasureTypeService service;
 
     @BeforeEach
     void setUp() {
@@ -34,13 +34,12 @@ class MeasureTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenId_whenCallFindById_thenReturns_200_OK() throws Exception {
-
         var measureType = createNewMeasureType();
         var measureTypeDto = createNewMeasureTypeDto();
 
-        when(serviceMock.findById(anyLong())).thenReturn(measureType);
-        when(mapperMock.performMapping(measureType, MeasureTypeDto.class)).thenReturn(measureTypeDto);
-        when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(service.findById(anyLong())).thenReturn(measureType);
+        when(mapper.performMapping(measureType, MeasureTypeDto.class)).thenReturn(measureTypeDto);
+        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
         mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/measure-types/{id}", ID)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -52,8 +51,7 @@ class MeasureTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenId_whenCallFindById_thenReturns_400_BAD_REQUEST() throws Exception {
-
-        when(serviceMock.findById(anyLong())).thenReturn(new MeasureType());
+        when(service.findById(anyLong())).thenReturn(new MeasureType());
 
         mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/measure-types/ID", BAD_PATH_PARAM)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -62,8 +60,7 @@ class MeasureTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenId_whenCallFindById_thenReturns_404_NOT_FOUND() throws Exception {
-
-        when(serviceMock.findById(anyLong())).thenReturn(new MeasureType());
+        when(service.findById(anyLong())).thenReturn(new MeasureType());
 
         mockMvc.perform(get(BAD_URI, ID)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -72,14 +69,13 @@ class MeasureTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenAll_whenCallFindAll_thenReturns_200_OK() throws Exception {
-
         var measureType = createNewMeasureType();
         var measureTypes = createNewMeasureTypes();
         var measureTypeDto = createNewMeasureTypeDto();
 
-        when(serviceMock.findAll()).thenReturn(measureTypes);
-        when(mapperMock.performMapping(measureType, MeasureTypeDto.class)).thenReturn(measureTypeDto);
-        when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(service.findAll()).thenReturn(measureTypes);
+        when(mapper.performMapping(measureType, MeasureTypeDto.class)).thenReturn(measureTypeDto);
+        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
         mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/measure-types")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -93,8 +89,7 @@ class MeasureTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenAll_whenCallFindAll_thenReturns_404_BAD_REQUEST() throws Exception {
-
-        when(serviceMock.findAll()).thenReturn(createNewMeasureTypes());
+        when(service.findAll()).thenReturn(createNewMeasureTypes());
 
         mockMvc.perform(get(BAD_URI)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -103,16 +98,15 @@ class MeasureTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenMeasureType_whenCallCreate_thenReturns_400_BAD_REQUEST() throws Exception {
-
         var measureTypeRequest = BAD_BODY;
         var measureTypeToCreate = createNewMeasureType();
         var createdMeasureType = createNewMeasureType();
         var measureTypeResponse = createNewMeasureTypeDto();
 
-        when(mapperMock.performMapping(measureTypeRequest, MeasureType.class)).thenReturn(measureTypeToCreate);
-        when(serviceMock.createOrUpdate(measureTypeToCreate)).thenReturn(createdMeasureType);
-        when(mapperMock.performMapping(createdMeasureType, MeasureTypeDto.class)).thenReturn(measureTypeResponse);
-        when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(mapper.performMapping(measureTypeRequest, MeasureType.class)).thenReturn(measureTypeToCreate);
+        when(service.createOrUpdate(measureTypeToCreate)).thenReturn(createdMeasureType);
+        when(mapper.performMapping(createdMeasureType, MeasureTypeDto.class)).thenReturn(measureTypeResponse);
+        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
         mockMvc.perform(post(ApplicationDataFactory.API_V1 + "/measure-types")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -122,16 +116,15 @@ class MeasureTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenMeasureType_whenCallCreate_thenReturns_200_OK() throws Exception {
-
         var measureTypeRequest = createNewMeasureTypeDto();
         var measureTypeToCreate = createNewMeasureType();
         var createdMeasureType = createNewMeasureType();
         var measureTypeResponse = createNewMeasureTypeDto();
 
-        when(mapperMock.performMapping(measureTypeRequest, MeasureType.class)).thenReturn(measureTypeToCreate);
-        when(serviceMock.createOrUpdate(measureTypeToCreate)).thenReturn(createdMeasureType);
-        when(mapperMock.performMapping(createdMeasureType, MeasureTypeDto.class)).thenReturn(measureTypeResponse);
-        when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(mapper.performMapping(measureTypeRequest, MeasureType.class)).thenReturn(measureTypeToCreate);
+        when(service.createOrUpdate(measureTypeToCreate)).thenReturn(createdMeasureType);
+        when(mapper.performMapping(createdMeasureType, MeasureTypeDto.class)).thenReturn(measureTypeResponse);
+        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
         mockMvc.perform(post(ApplicationDataFactory.API_V1 + "/measure-types")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -147,16 +140,15 @@ class MeasureTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenMeasureType_whenCallUpdate_thenReturns_200_OK() throws Exception {
-
         var measureTypeRequest = createNewMeasureTypeDto();
         var measureTypeToCreate = createNewMeasureType();
         var createdMeasureType = createNewMeasureType();
         var measureTypeResponse = createNewMeasureTypeDto();
 
-        when(mapperMock.performMapping(measureTypeRequest, MeasureType.class)).thenReturn(measureTypeToCreate);
-        when(serviceMock.createOrUpdate(measureTypeToCreate)).thenReturn(createdMeasureType);
-        when(mapperMock.performMapping(createdMeasureType, MeasureTypeDto.class)).thenReturn(measureTypeResponse);
-        when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(mapper.performMapping(measureTypeRequest, MeasureType.class)).thenReturn(measureTypeToCreate);
+        when(service.createOrUpdate(measureTypeToCreate)).thenReturn(createdMeasureType);
+        when(mapper.performMapping(createdMeasureType, MeasureTypeDto.class)).thenReturn(measureTypeResponse);
+        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
         mockMvc.perform(put(ApplicationDataFactory.API_V1 + "/measure-types")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -172,16 +164,15 @@ class MeasureTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenMeasureType_whenCallUpdate_thenReturns_400_BAD_REQUEST() throws Exception {
-
         var measureTypeRequest = BAD_BODY;
         var measureTypeToCreate = createNewMeasureType();
         var createdMeasureType = createNewMeasureType();
         var measureTypeResponse = createNewMeasureTypeDto();
 
-        when(mapperMock.performMapping(measureTypeRequest, MeasureType.class)).thenReturn(measureTypeToCreate);
-        when(serviceMock.createOrUpdate(measureTypeToCreate)).thenReturn(createdMeasureType);
-        when(mapperMock.performMapping(createdMeasureType, MeasureTypeDto.class)).thenReturn(measureTypeResponse);
-        when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(mapper.performMapping(measureTypeRequest, MeasureType.class)).thenReturn(measureTypeToCreate);
+        when(service.createOrUpdate(measureTypeToCreate)).thenReturn(createdMeasureType);
+        when(mapper.performMapping(createdMeasureType, MeasureTypeDto.class)).thenReturn(measureTypeResponse);
+        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
         mockMvc.perform(put(ApplicationDataFactory.API_V1 + "/measure-types")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -191,15 +182,14 @@ class MeasureTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenMeasureType_whenCallDelete_thenReturns_200_OK() throws Exception {
-
         var measureTypeToDelete = createNewMeasureType();
         var deletedMeasureType = measureTypeToDelete;
         var measureTypeResponse = createNewMeasureTypeDto();
 
-        when(serviceMock.findById(ID)).thenReturn(measureTypeToDelete);
-        when(serviceMock.delete(measureTypeToDelete)).thenReturn(deletedMeasureType);
-        when(mapperMock.performMapping(deletedMeasureType, MeasureTypeDto.class)).thenReturn(measureTypeResponse);
-        when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(service.findById(ID)).thenReturn(measureTypeToDelete);
+        when(service.delete(measureTypeToDelete.getId())).thenReturn(deletedMeasureType);
+        when(mapper.performMapping(deletedMeasureType, MeasureTypeDto.class)).thenReturn(measureTypeResponse);
+        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
         mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/measure-types/{id}", ID)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -214,15 +204,14 @@ class MeasureTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenMeasureType_whenCallDelete_thenReturns_400_BAD_REQUEST() throws Exception {
-
         var measureTypeToDelete = createNewMeasureType();
         var deletedMeasureType = measureTypeToDelete;
         var measureTypeResponse = createNewMeasureTypeDto();
 
-        when(serviceMock.findById(ID)).thenReturn(measureTypeToDelete);
-        when(serviceMock.delete(measureTypeToDelete)).thenReturn(deletedMeasureType);
-        when(mapperMock.performMapping(deletedMeasureType, MeasureTypeDto.class)).thenReturn(measureTypeResponse);
-        when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(service.findById(ID)).thenReturn(measureTypeToDelete);
+        when(service.delete(measureTypeToDelete.getId())).thenReturn(deletedMeasureType);
+        when(mapper.performMapping(deletedMeasureType, MeasureTypeDto.class)).thenReturn(measureTypeResponse);
+        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
         mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/measure-types/ID", BAD_PATH_PARAM)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -231,15 +220,14 @@ class MeasureTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenMeasureType_whenCallDelete_thenReturns_404_NOT_FOUND() throws Exception {
-
         var measureTypeToDelete = createNewMeasureType();
         var deletedMeasureType = measureTypeToDelete;
         var measureTypeResponse = createNewMeasureTypeDto();
 
-        when(serviceMock.findById(ID)).thenReturn(null);
-        when(serviceMock.delete(measureTypeToDelete)).thenReturn(deletedMeasureType);
-        when(mapperMock.performMapping(deletedMeasureType, MeasureTypeDto.class)).thenReturn(measureTypeResponse);
-        when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(service.findById(ID)).thenReturn(null);
+        when(service.delete(measureTypeToDelete.getId())).thenReturn(deletedMeasureType);
+        when(mapper.performMapping(deletedMeasureType, MeasureTypeDto.class)).thenReturn(measureTypeResponse);
+        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
         mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/measure-types/{id}", ID)
                         .contentType(MediaType.APPLICATION_JSON))

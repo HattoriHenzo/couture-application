@@ -3,45 +3,34 @@ package com.imaginesoft.application.couture.it;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.imaginesoft.application.couture.controller.message.Success;
 import com.imaginesoft.application.couture.dto.ClientDto;
-import com.imaginesoft.application.couture.model.Gender;
 import com.imaginesoft.application.couture.util.ApplicationDataFactory;
-import com.imaginesoft.application.couture.TestDataFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
 import java.util.List;
 import java.util.Objects;
 
+import static com.imaginesoft.application.couture.TestDataFactory.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
-
 
 class ClientControllerITest extends BaseIntegrationTest {
 
-    private static Long ID = 2L;
-    private static String FIRSTNAME = "STEPHEN";
-    private static String LASTNAME = "CURRY";
-    private static String TELEPHONE = "418-000-9090";
-    private static Gender GENDER = Gender.MALE;
-    private static String UPDATED_FIRSTNAME = "UPDATED_FIRSTNAME";
-
     @Test
     void integrationTest_For_FindAll() {
-
         webTestClient.get()
                 .uri(ApplicationDataFactory.API_V1 + "/clients")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
                 .consumeWith(result -> {
-                    assertThat(result.getResponseBody().getData()).isNotEmpty();
+                    assertThat(Objects.requireNonNull(result.getResponseBody()).getData()).isNotEmpty();
                 });
     }
 
     @Test
     void integrationTest_For_FindById() {
-
         webTestClient.get()
-                .uri(ApplicationDataFactory.API_V1 + "/clients/{ID}", ID)
+                .uri(ApplicationDataFactory.API_V1 + "/clients/{ID}", CLIENT_ID)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -49,24 +38,23 @@ class ClientControllerITest extends BaseIntegrationTest {
                     var clients = mapper.convertValue(Objects.requireNonNull(result.getResponseBody()).getData(),
                             new TypeReference<List<ClientDto>>() {
                             });
-                    var client = clients.get(0);
+                    var foundClient = clients.get(0);
                     assertAll(
-                            () -> assertThat(client.getId()).isEqualTo(ID),
-                            () -> assertThat(client.getFirstName()).isEqualTo(FIRSTNAME),
-                            () -> assertThat(client.getLastName()).isEqualTo(LASTNAME),
-                            () -> assertThat(client.getTelephone()).isEqualTo(TELEPHONE),
-                            () -> assertThat(client.getGender()).isEqualTo(GENDER.name())
+                            () -> assertThat(foundClient.getId()).isEqualTo(CLIENT_ID),
+                            () -> assertThat(foundClient.getFirstName()).isEqualTo(CLIENT_FIRST_NAME),
+                            () -> assertThat(foundClient.getLastName()).isEqualTo(CLIENT_LAST_NAME),
+                            () -> assertThat(foundClient.getTelephone()).isEqualTo(CLIENT_TELEPHONE),
+                            () -> assertThat(foundClient.getGender()).isEqualTo(CLIENT_GENDER_MALE.name())
                     );
                 });
     }
 
     @Test
     void integrationTest_For_Create() {
-
-        var newClient = TestDataFactory.createNewClientDto();
+        var newClient = createNewClientDto();
 
         webTestClient.post()
-                .uri(ApplicationDataFactory.API_V1 + "/client")
+                .uri(ApplicationDataFactory.API_V1 + "/clients")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(newClient)
                 .exchange()
@@ -89,12 +77,11 @@ class ClientControllerITest extends BaseIntegrationTest {
 
     @Test
     void integrationTest_For_Update() {
-
-        var clientToUpdate = TestDataFactory.createNewClientDto();
-        clientToUpdate.setFirstName(UPDATED_FIRSTNAME);
+        var clientToUpdate = createNewClientDto();
+        clientToUpdate.setFirstName(CLIENT_EDITED_FIRST_NAME);
 
         webTestClient.put()
-                .uri(ApplicationDataFactory.API_V1 + "/client")
+                .uri(ApplicationDataFactory.API_V1 + "/clients")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(clientToUpdate)
                 .exchange()
@@ -118,10 +105,9 @@ class ClientControllerITest extends BaseIntegrationTest {
 
     @Test
     void integrationTest_For_Delete() {
-
         webTestClient.delete()
-                .uri(ApplicationDataFactory.API_V1 + "/clients/{ID}", ID)
+                .uri(ApplicationDataFactory.API_V1 + "/clients/{ID}", CLIENT_ID)
                 .exchange()
-                .expectStatus().isOk();
+                 .expectStatus().isOk();
     }
 }

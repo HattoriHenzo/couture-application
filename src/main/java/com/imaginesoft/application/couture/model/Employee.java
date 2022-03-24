@@ -18,8 +18,8 @@ public class Employee extends GenericPerson {
         return login;
     }
 
-    public void setLogin(Login user) {
-        this.login = user;
+    public void setLogin(Login login) {
+        this.login = login;
     }
 
     public Employee() {

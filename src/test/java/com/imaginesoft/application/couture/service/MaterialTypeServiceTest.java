@@ -91,7 +91,7 @@ class MaterialTypeServiceTest implements WithAssertions {
 
         var materialTypeToDelete = createNewMaterialType();
         when(repository.findById(materialTypeToDelete.getId())).thenReturn(Optional.of(materialTypeToDelete));
-        var deletedMeasureType = underTest.delete(materialTypeToDelete);
+        var deletedMeasureType = underTest.delete(materialTypeToDelete.getId());
 
         assertThat(deletedMeasureType).isNotNull();
     }

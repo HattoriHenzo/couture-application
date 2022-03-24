@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class DressTypeControllerTest extends BaseControllerTest {
 
     @MockBean
-    private DressTypeService serviceMock;
+    private DressTypeService service;
 
     @BeforeEach
     void setUp() {
@@ -35,13 +35,12 @@ class DressTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenId_whenCallFindById_thenReturns_200_OK() throws Exception {
-
         var dressType = createNewDressType();
-        var dressTypeDto = createNewDressTypeDto();
+        var dressTypeResponse = createNewDressTypeDto();
 
-        when(serviceMock.findById(anyLong())).thenReturn(dressType);
-        when(mapperMock.performMapping(dressType, DressTypeDto.class)).thenReturn(dressTypeDto);
-        when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(service.findById(anyLong())).thenReturn(dressType);
+        when(mapper.performMapping(dressType, DressTypeDto.class)).thenReturn(dressTypeResponse);
+        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
         mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/dress-types/{id}", ID)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -53,8 +52,7 @@ class DressTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenId_whenCallFindById_thenReturns_400_BAD_REQUEST() throws Exception {
-
-        when(serviceMock.findById(anyLong())).thenReturn(new DressType());
+        when(service.findById(anyLong())).thenReturn(createNewDressType());
 
         mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/dress-types/ID", BAD_PATH_PARAM)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -63,8 +61,7 @@ class DressTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenId_whenCallFindById_thenReturns_404_NOT_FOUND() throws Exception {
-
-        when(serviceMock.findById(anyLong())).thenReturn(new DressType());
+        when(service.findById(anyLong())).thenReturn(createNewDressType());
 
         mockMvc.perform(get(BAD_URI, ID)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -73,14 +70,13 @@ class DressTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenAll_whenCallFindAll_thenReturns_200_OK() throws Exception {
+        var dressType = createNewDressType();
+        var dressTypes = createNewDressTypes();
+        var dressTypeResponse = createNewDressTypeDto();
 
-        var dressType = TestDataFactory.createNewDressType();
-        var dressTypes = TestDataFactory.createNewDressTypes();
-        var dressTypeDto = TestDataFactory.createNewDressTypeDto();
-
-        when(serviceMock.findAll()).thenReturn(dressTypes);
-        when(mapperMock.performMapping(dressType, DressTypeDto.class)).thenReturn(dressTypeDto);
-        when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(service.findAll()).thenReturn(dressTypes);
+        when(mapper.performMapping(dressType, DressTypeDto.class)).thenReturn(dressTypeResponse);
+        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
         mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/dress-types")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -94,8 +90,7 @@ class DressTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenAll_whenCallFindAll_thenReturns_404_BAD_REQUEST() throws Exception {
-
-        when(serviceMock.findAll()).thenReturn(TestDataFactory.createNewDressTypes());
+        when(service.findAll()).thenReturn(TestDataFactory.createNewDressTypes());
 
         mockMvc.perform(get(BAD_URI)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -104,16 +99,15 @@ class DressTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenDressType_whenCallCreate_thenReturns_400_BAD_REQUEST() throws Exception {
-
         var dressTypeRequest = BAD_BODY;
         var dressTypeToCreate = TestDataFactory.createNewDressType();
         var createdDressType = TestDataFactory.createNewDressType();
         var dressTypeResponse = TestDataFactory.createNewDressTypeDto();
 
-        when(mapperMock.performMapping(dressTypeRequest, DressType.class)).thenReturn(dressTypeToCreate);
-        when(serviceMock.createOrUpdate(dressTypeToCreate)).thenReturn(createdDressType);
-        when(mapperMock.performMapping(createdDressType, DressTypeDto.class)).thenReturn(dressTypeResponse);
-        when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(mapper.performMapping(dressTypeRequest, DressType.class)).thenReturn(dressTypeToCreate);
+        when(service.createOrUpdate(dressTypeToCreate)).thenReturn(createdDressType);
+        when(mapper.performMapping(createdDressType, DressTypeDto.class)).thenReturn(dressTypeResponse);
+        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
         mockMvc.perform(post(ApplicationDataFactory.API_V1 + "/dress-types")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -123,16 +117,15 @@ class DressTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenDressType_whenCallCreate_thenReturns_200_OK() throws Exception {
-
         var dressTypeRequest = TestDataFactory.createNewDressTypeDto();
         var dressTypeToCreate = TestDataFactory.createNewDressType();
         var dressTypeClient = TestDataFactory.createNewDressType();
         var dressTypeResponse = TestDataFactory.createNewDressTypeDto();
 
-        when(mapperMock.performMapping(dressTypeRequest, DressType.class)).thenReturn(dressTypeToCreate);
-        when(serviceMock.createOrUpdate(dressTypeToCreate)).thenReturn(dressTypeClient);
-        when(mapperMock.performMapping(dressTypeClient, DressTypeDto.class)).thenReturn(dressTypeResponse);
-        when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(mapper.performMapping(dressTypeRequest, DressType.class)).thenReturn(dressTypeToCreate);
+        when(service.createOrUpdate(dressTypeToCreate)).thenReturn(dressTypeClient);
+        when(mapper.performMapping(dressTypeClient, DressTypeDto.class)).thenReturn(dressTypeResponse);
+        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
         mockMvc.perform(post(ApplicationDataFactory.API_V1 + "/dress-types")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -148,16 +141,15 @@ class DressTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenDressType_whenCallUpdate_thenReturns_200_OK() throws Exception {
-
         var dressTypeRequest = TestDataFactory.createNewDressTypeDto();
         var dressTypeToCreate = TestDataFactory.createNewDressType();
         var createdDressType = TestDataFactory.createNewDressType();
         var dressTypeResponse = TestDataFactory.createNewDressTypeDto();
 
-        when(mapperMock.performMapping(dressTypeRequest, DressType.class)).thenReturn(dressTypeToCreate);
-        when(serviceMock.createOrUpdate(dressTypeToCreate)).thenReturn(createdDressType);
-        when(mapperMock.performMapping(createdDressType, DressTypeDto.class)).thenReturn(dressTypeResponse);
-        when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(mapper.performMapping(dressTypeRequest, DressType.class)).thenReturn(dressTypeToCreate);
+        when(service.createOrUpdate(dressTypeToCreate)).thenReturn(createdDressType);
+        when(mapper.performMapping(createdDressType, DressTypeDto.class)).thenReturn(dressTypeResponse);
+        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
         mockMvc.perform(put(ApplicationDataFactory.API_V1 + "/dress-types")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -173,16 +165,15 @@ class DressTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenDressType_whenCallUpdate_thenReturns_400_BAD_REQUEST() throws Exception {
-
         var dressTypeRequest = BAD_BODY;
         var dressTypeToCreate = TestDataFactory.createNewDressType();
         var createdDressType = TestDataFactory.createNewDressType();
         var dressTypeResponse = TestDataFactory.createNewDressTypeDto();
 
-        when(mapperMock.performMapping(dressTypeRequest, DressType.class)).thenReturn(dressTypeToCreate);
-        when(serviceMock.createOrUpdate(dressTypeToCreate)).thenReturn(createdDressType);
-        when(mapperMock.performMapping(createdDressType, DressTypeDto.class)).thenReturn(dressTypeResponse);
-        when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(mapper.performMapping(dressTypeRequest, DressType.class)).thenReturn(dressTypeToCreate);
+        when(service.createOrUpdate(dressTypeToCreate)).thenReturn(createdDressType);
+        when(mapper.performMapping(createdDressType, DressTypeDto.class)).thenReturn(dressTypeResponse);
+        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
         mockMvc.perform(put(ApplicationDataFactory.API_V1 + "/dress-types")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -192,15 +183,14 @@ class DressTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenClient_whenCallDelete_thenReturns_200_OK() throws Exception {
-
-        var dressTypeToDelete = TestDataFactory.createNewDressType();
+        var dressTypeToDelete = createNewDressType();
         var deletedDressType = dressTypeToDelete;
-        var dressTypeResponse = TestDataFactory.createNewDressTypeDto();
+        var dressTypeResponse = createNewDressTypeDto();
 
-        when(serviceMock.findById(ID)).thenReturn(dressTypeToDelete);
-        when(serviceMock.delete(dressTypeToDelete)).thenReturn(deletedDressType);
-        when(mapperMock.performMapping(deletedDressType, DressTypeDto.class)).thenReturn(dressTypeResponse);
-        when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(service.findById(ID)).thenReturn(dressTypeToDelete);
+        when(service.delete(dressTypeToDelete.getId())).thenReturn(deletedDressType);
+        when(mapper.performMapping(deletedDressType, DressTypeDto.class)).thenReturn(dressTypeResponse);
+        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
         mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/dress-types/{id}", ID)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -215,15 +205,14 @@ class DressTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenDressType_whenCallDelete_thenReturns_400_BAD_REQUEST() throws Exception {
-
-        var dressTypeToDelete = TestDataFactory.createNewDressType();
+        var dressTypeToDelete = createNewDressType();
         var deletedDressType = dressTypeToDelete;
-        var dressTypeResponse = TestDataFactory.createNewDressTypeDto();
+        var dressTypeResponse = createNewDressTypeDto();
 
-        when(serviceMock.findById(ID)).thenReturn(dressTypeToDelete);
-        when(serviceMock.delete(dressTypeToDelete)).thenReturn(deletedDressType);
-        when(mapperMock.performMapping(deletedDressType, DressTypeDto.class)).thenReturn(dressTypeResponse);
-        when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(service.findById(ID)).thenReturn(dressTypeToDelete);
+        when(service.delete(dressTypeToDelete.getId())).thenReturn(deletedDressType);
+        when(mapper.performMapping(deletedDressType, DressTypeDto.class)).thenReturn(dressTypeResponse);
+        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
         mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/dress-types/ID", BAD_PATH_PARAM)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -232,15 +221,14 @@ class DressTypeControllerTest extends BaseControllerTest {
 
     @Test
     void givenDressType_whenCallDelete_thenReturns_404_NOT_FOUND() throws Exception {
-
         var dressTypeToDelete = TestDataFactory.createNewDressType();
         var deletedDressType = dressTypeToDelete;
         var dressTypeResponse = TestDataFactory.createNewDressTypeDto();
 
-        when(serviceMock.findById(ID)).thenReturn(null);
-        when(serviceMock.delete(dressTypeToDelete)).thenReturn(deletedDressType);
-        when(mapperMock.performMapping(deletedDressType, DressTypeDto.class)).thenReturn(dressTypeResponse);
-        when(dateTimeMock.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(service.findById(ID)).thenReturn(null);
+        when(service.delete(dressTypeToDelete.getId())).thenReturn(deletedDressType);
+        when(mapper.performMapping(deletedDressType, DressTypeDto.class)).thenReturn(dressTypeResponse);
+        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
         mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/dress-types/{id}", ID)
                         .contentType(MediaType.APPLICATION_JSON))

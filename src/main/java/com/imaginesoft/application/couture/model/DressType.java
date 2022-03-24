@@ -1,8 +1,10 @@
 package com.imaginesoft.application.couture.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.imaginesoft.application.couture.model.generic.GenericType;
 import org.hibernate.Hibernate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -13,7 +15,8 @@ import java.util.Objects;
 @Table(name = "DRESS_TYPE")
 public class DressType extends GenericType {
 
-    @OneToMany(mappedBy = "dressType")
+    @OneToMany(mappedBy = "dressType", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
     private List<Dress> dresses;
 
     public DressType() {
@@ -32,7 +35,7 @@ public class DressType extends GenericType {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        DressType dressType = (DressType) o;
+        var dressType = (DressType) o;
         return getId() != null && Objects.equals(getId(), dressType.getId());
     }
 

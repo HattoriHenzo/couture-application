@@ -82,7 +82,7 @@ class DressTypeServiceTest implements WithAssertions {
 
         var dressTypeToDelete = createNewDressType();
         when(repository.findById(anyLong())).thenReturn(Optional.of(dressTypeToDelete));
-        var deletedDressType = underTest.delete(dressTypeToDelete);
+        var deletedDressType = underTest.delete(dressTypeToDelete.getId());
 
         assertThat(deletedDressType).isNotNull();
     }

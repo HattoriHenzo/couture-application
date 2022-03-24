@@ -1,5 +1,6 @@
 package com.imaginesoft.application.couture.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -19,12 +20,14 @@ public class Measure {
     @Column(name = "VALUE")
     private int value;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "MEASURE_TYPE_ID", referencedColumnName = "ID")
+    @JsonBackReference
     private MeasureType measureType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DRESS_ID", referencedColumnName = "ID")
+    @JsonBackReference
     private Dress dress;
 
     public Measure() {

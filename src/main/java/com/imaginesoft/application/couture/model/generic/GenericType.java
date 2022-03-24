@@ -16,6 +16,7 @@ public abstract class GenericType {
     private String name;
 
     protected GenericType() {
+        // Default constructor
     }
 
     public Long getId() {

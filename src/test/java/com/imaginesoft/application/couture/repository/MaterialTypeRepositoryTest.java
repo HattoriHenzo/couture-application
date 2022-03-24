@@ -8,6 +8,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static com.imaginesoft.application.couture.TestDataFactory.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assumptions.assumingThat;
 
 @DataJpaTest
 @ActiveProfiles("test")
@@ -17,8 +18,24 @@ class MaterialTypeRepositoryTest implements WithAssertions {
     private MaterialTypeRepository repository;
 
     @Test
-    void givenMaterialType_whenCreateMaterialType_thenMaterialTypeExists() {
+    void givenMaterialTypes_whenGettingMaterialTypes_thenGetAllMaterialTypes() {
+        assertThat(repository.findAll()).isNotEmpty();
+    }
 
+    @Test
+    void givenMaterialType_whenGettingMaterialTypeById_thenGetMaterialTypes() {
+        var foundMaterialType = repository.findById(MATERIAL_TYPE_ID);
+        assumingThat(foundMaterialType.isPresent(), () -> foundMaterialType.ifPresent(
+                value -> assertAll(
+                        () -> assertThat(value.getId()).isEqualTo(MATERIAL_TYPE_ID),
+                        () -> assertThat(value.getName()).isEqualTo(MATERIAL_TYPE_NAME),
+                        () -> assertThat(value.getImage()).isEqualTo(MATERIAL_TYPE_IMAGE)
+                )
+        ));
+    }
+
+    @Test
+    void givenMaterialType_whenCreateMaterialType_thenMaterialTypeExists() {
         var newMaterialType = createNewMaterialType();
         var createdMaterialType = repository.save(newMaterialType);
 
@@ -31,29 +48,30 @@ class MaterialTypeRepositoryTest implements WithAssertions {
 
     @Test
     void givenMaterialType_whenUpdateMaterialType_thenMaterialTypeHasChanged() {
-
-        var newMaterialType = createNewMaterialType();
-
-        var materialTypeToUpdate = repository.save(newMaterialType);
-        materialTypeToUpdate.setName(MATERIAL_TYPE_EDITED_NAME);
-        materialTypeToUpdate.setImage(MATERIAL_TYPE_EDITED_IMAGE);
-
-        var updatedMaterialType = repository.save(materialTypeToUpdate);
-
-        assertAll(
-                () -> assertThat(updatedMaterialType.getId()).isEqualTo(materialTypeToUpdate.getId()),
-                () -> assertThat(updatedMaterialType.getName()).isEqualTo(MATERIAL_TYPE_EDITED_NAME),
-                () -> assertThat(updatedMaterialType.getImage()).isEqualTo(MATERIAL_TYPE_EDITED_IMAGE)
-        );
+        var materialTypeToUpdate = repository.findById(MATERIAL_TYPE_ID);
+        assumingThat(materialTypeToUpdate.isPresent(), () -> materialTypeToUpdate.ifPresent(
+                value -> {
+                    value.setName(MATERIAL_TYPE_EDITED_NAME);
+                    value.setImage(MATERIAL_TYPE_EDITED_IMAGE);
+                    var updatedMaterialType = repository.save(value);
+                    assertAll(
+                            () -> assertThat(updatedMaterialType.getId()).isEqualTo(materialTypeToUpdate.get().getId()),
+                            () -> assertThat(updatedMaterialType.getName()).isEqualTo(materialTypeToUpdate.get().getName()),
+                            () -> assertThat(updatedMaterialType.getImage()).isEqualTo(materialTypeToUpdate.get().getImage())
+                    );
+                }
+        ));
     }
 
     @Test
     void givenMaterialType_whenDeleteMaterialType_thenMaterialTypeDoesNotExists() {
-
         var materialTypeToDelete = repository.findById(MATERIAL_TYPE_ID);
-        repository.delete(materialTypeToDelete.get());
-        var deletedMaterialType = repository.findById(MATERIAL_TYPE_ID);
-
-        assertThat(deletedMaterialType).isNotPresent();
+        assumingThat(materialTypeToDelete.isPresent(), () -> materialTypeToDelete.ifPresent(
+                value -> {
+                    repository.delete(value);
+                    var deletedMaterialType = repository.findById(MATERIAL_TYPE_ID);
+                    assertThat(deletedMaterialType).isNotPresent();
+                }
+        ));
     }
 }

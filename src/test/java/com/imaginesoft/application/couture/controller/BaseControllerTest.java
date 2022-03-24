@@ -1,7 +1,6 @@
 package com.imaginesoft.application.couture.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.imaginesoft.application.couture.service.DressTypeService;
 import com.imaginesoft.application.couture.util.DateTimeWrapper;
 import com.imaginesoft.application.couture.util.MapperWrapper;
 import org.assertj.core.api.WithAssertions;
@@ -18,9 +17,9 @@ public abstract class BaseControllerTest implements WithAssertions {
     protected ObjectMapper objectMapper;
 
     @MockBean
-    protected MapperWrapper mapperMock;
+    protected MapperWrapper mapper;
 
     @MockBean
-    protected DateTimeWrapper dateTimeMock;
+    protected DateTimeWrapper dateTime;
 
 }

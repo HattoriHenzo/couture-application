@@ -10,33 +10,27 @@ import org.springframework.http.MediaType;
 import java.util.List;
 import java.util.Objects;
 
-import static com.imaginesoft.application.couture.TestDataFactory.createNewDressTypeDto;
+import static com.imaginesoft.application.couture.TestDataFactory.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 class DressTypeControllerITest extends BaseIntegrationTest {
 
-    private static Long ID = 1L;
-    private static String NAME = "PANTS";
-    private static String UPDATED_NAME = "UPDATED_NAME";
-
     @Test
     void integrationTest_For_FindAll() {
-
         webTestClient.get()
                 .uri(ApplicationDataFactory.API_V1 + "/dress-types")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
                 .consumeWith(result -> {
-                    assertThat(result.getResponseBody().getData()).isNotEmpty();
+                    assertThat(Objects.requireNonNull(result.getResponseBody()).getData()).isNotEmpty();
                 });
     }
 
     @Test
     void integrationTest_For_FindById() {
-
         webTestClient.get()
-                .uri(ApplicationDataFactory.API_V1 + "/dress-types/{ID}", ID)
+                .uri(ApplicationDataFactory.API_V1 + "/dress-types/{ID}", DRESS_TYPE_ID)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -44,17 +38,16 @@ class DressTypeControllerITest extends BaseIntegrationTest {
                     var dressTypes = mapper.convertValue(Objects.requireNonNull(result.getResponseBody()).getData(),
                             new TypeReference<List<DressTypeDto>>() {
                             });
-                    var dressType = dressTypes.get(0);
+                    var foundDressType = dressTypes.get(0);
                     assertAll(
-                            () -> assertThat(dressType.getId()).isEqualTo(ID),
-                            () -> assertThat(dressType.getName()).isEqualTo(NAME)
+                            () -> assertThat(foundDressType.getId()).isEqualTo(DRESS_TYPE_ID),
+                            () -> assertThat(foundDressType.getName()).isEqualTo(DRESS_TYPE_NAME)
                     );
                 });
     }
 
     @Test
     void integrationTest_For_Create() {
-
         var newDressTypeDto = createNewDressTypeDto();
 
         webTestClient.post()
@@ -68,24 +61,23 @@ class DressTypeControllerITest extends BaseIntegrationTest {
                     var dressTypes = mapper.convertValue(Objects.requireNonNull(result.getResponseBody()).getData(),
                             new TypeReference<List<DressTypeDto>>() {
                             });
-                    var createdDressTypeDto = dressTypes.get(0);
+                    var createdDressType = dressTypes.get(0);
                     assertAll(
-                            () -> assertThat(createdDressTypeDto.getId()).isEqualTo(newDressTypeDto.getId()),
-                            () -> assertThat(createdDressTypeDto.getName()).isEqualTo(newDressTypeDto.getName())
+                            () -> assertThat(createdDressType.getId()).isEqualTo(newDressTypeDto.getId()),
+                            () -> assertThat(createdDressType.getName()).isEqualTo(newDressTypeDto.getName())
                     );
                 });
     }
 
     @Test
     void integrationTest_For_Update() {
-
-        var dressTypeToUpdateDto = createNewDressTypeDto();
-        dressTypeToUpdateDto.setName(UPDATED_NAME);
+        var dressTypeToUpdate = createNewDressTypeDto();
+        dressTypeToUpdate.setName(DRESS_TYPE_EDITED_NAME);
 
         webTestClient.put()
                 .uri(ApplicationDataFactory.API_V1 + "/dress-types")
                 .accept(MediaType.APPLICATION_JSON)
-                .bodyValue(dressTypeToUpdateDto)
+                .bodyValue(dressTypeToUpdate)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -93,19 +85,18 @@ class DressTypeControllerITest extends BaseIntegrationTest {
                     var dressTypes = mapper.convertValue(Objects.requireNonNull(result.getResponseBody()).getData(),
                             new TypeReference<List<DressTypeDto>>() {
                             });
-                    var updatedDressTypeDto = dressTypes.get(0);
+                    var updatedDressType = dressTypes.get(0);
                     assertAll(
-                            () -> assertThat(updatedDressTypeDto.getId()).isEqualTo(dressTypeToUpdateDto.getId()),
-                            () -> assertThat(updatedDressTypeDto.getName()).isEqualTo(dressTypeToUpdateDto.getName())
+                            () -> assertThat(updatedDressType.getId()).isEqualTo(dressTypeToUpdate.getId()),
+                            () -> assertThat(updatedDressType.getName()).isEqualTo(dressTypeToUpdate.getName())
                     );
                 });
     }
 
     @Test
     void integrationTest_For_Delete() {
-
         webTestClient.delete()
-                .uri(ApplicationDataFactory.API_V1 + "/dress-types/{ID}", ID)
+                .uri(ApplicationDataFactory.API_V1 + "/dress-types/{ID}", DRESS_TYPE_ID)
                 .exchange()
                 .expectStatus().isOk();
     }

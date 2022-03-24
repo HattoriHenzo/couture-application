@@ -4,7 +4,6 @@ import com.imaginesoft.application.couture.controller.exception.RecordNotFoundEx
 import com.imaginesoft.application.couture.model.Client;
 import com.imaginesoft.application.couture.repository.ClientRepository;
 import com.imaginesoft.application.couture.service.validator.field.DomainRulesException;
-import com.imaginesoft.application.couture.TestDataFactory;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -105,6 +104,6 @@ class ClientServiceTest implements WithAssertions {
         var deletedClient = createNewClient();
         when(repository.findById(anyLong())).thenReturn(Optional.of(deletedClient));
 
-        assertThat(underTest.delete(deletedClient)).isNotNull();
+        assertThat(underTest.delete(deletedClient.getId())).isNotNull();
     }
 }

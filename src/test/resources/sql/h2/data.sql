@@ -29,16 +29,16 @@ INSERT INTO material_type(id, name, image) VALUES(2, 'POLYESTER', '/image/path')
 INSERT INTO material_type(id, name, image) VALUES(3, 'SILK', '/image/path');
 
 -- Inserting data in Dress table
-INSERT INTO dress(id, amount, dress_type_id, material_type_id, model_type_id) VALUES(1, 500, 1, 2, 2);
+INSERT INTO dress(id, amount, dress_type_id, material_type_id, model_type_id) VALUES(1, 500, 1, 3, 3);
 INSERT INTO dress(id, amount, dress_type_id, material_type_id, model_type_id) VALUES(2, 1000, 2, 2, 3);
 INSERT INTO dress(id, amount, dress_type_id, material_type_id, model_type_id) VALUES(3, 750, 1, 3, 2);
 INSERT INTO dress(id, amount, dress_type_id, material_type_id, model_type_id) VALUES(4, 1500, 1, 2, 1);
 
 -- Inserting data in Measure table
-INSERT INTO measure(id, value, dress_id, measure_type_id) VALUES(1, 5, 1, 3);
-INSERT INTO measure(id, value, dress_id, measure_type_id) VALUES(2, 5, 1, 3);
-INSERT INTO measure(id, value, dress_id, measure_type_id) VALUES(3, 5, 1, 3);
-INSERT INTO measure(id, value, dress_id, measure_type_id) VALUES(4, 5, 1, 3);
+INSERT INTO measure(id, `value`, dress_id, measure_type_id) VALUES(1, 5, 1, 3);
+INSERT INTO measure(id, `value`, dress_id, measure_type_id) VALUES(2, 5, 1, 3);
+INSERT INTO measure(id, `value`, dress_id, measure_type_id) VALUES(3, 5, 1, 3);
+INSERT INTO measure(id, `value`, dress_id, measure_type_id) VALUES(4, 5, 1, 3);
 
 -- Inserting data in Login table
 INSERT INTO login(id, username, password, login_category) VALUES(1, 'username_1', 'password_1', 'ADMINISTRATOR');

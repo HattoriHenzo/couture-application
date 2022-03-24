@@ -30,6 +30,7 @@ public abstract class GenericPerson {
     private Gender gender;
 
     protected GenericPerson() {
+        // Default constructor
     }
 
     public Long getId() {

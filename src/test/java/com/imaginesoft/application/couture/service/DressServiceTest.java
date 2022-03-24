@@ -1,7 +1,6 @@
 package com.imaginesoft.application.couture.service;
 
 import com.imaginesoft.application.couture.controller.exception.RecordNotFoundException;
-import com.imaginesoft.application.couture.model.Client;
 import com.imaginesoft.application.couture.model.Dress;
 import com.imaginesoft.application.couture.repository.DressRepository;
 import com.imaginesoft.application.couture.service.validator.field.DomainRulesException;
@@ -18,6 +17,7 @@ import java.util.Optional;
 import static com.imaginesoft.application.couture.TestDataFactory.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -44,7 +44,7 @@ class DressServiceTest implements WithAssertions {
     @Test
     void givenDress_whenCreateDress_thenDressIsCreated() {
         var newDress = createNewDress();
-        when(repository.save(newDress)).thenReturn(newDress);
+        when(repository.save(any(Dress.class))).thenReturn(newDress);
         var createdDress = underTest.createOrUpdate(newDress);
 
         assertThat(createdDress).isNotNull();
@@ -63,14 +63,14 @@ class DressServiceTest implements WithAssertions {
     @Test
     void givenDress_whenUpdateDress_thenDressIsUpdated() {
         var dress = createNewDress();
-        dress.setAmount(DRESS_UPDATED_AMOUNT);
+        dress.setAmount(DRESS_EDITED_AMOUNT);
         when(repository.save(dress)).thenReturn(dress);
         when(repository.findById(anyLong())).thenReturn(Optional.of(dress));
 
         assertAll(
                 () -> assertThat(underTest.createOrUpdate(dress)).isNotNull(),
                 () -> {
-                    Dress updatedDress = underTest.findById(DRESS_ID);
+                    var updatedDress = underTest.findById(DRESS_ID);
                     assertThat(updatedDress.getAmount()).isEqualTo(dress.getAmount());
                 }
         );
@@ -80,8 +80,8 @@ class DressServiceTest implements WithAssertions {
     void givenDress_whenDeleteDress_thenDressIsDeleted() {
         var dressToDelete = createNewDress();
         when(repository.findById(anyLong())).thenReturn(Optional.of(dressToDelete));
-        var deletedDress = underTest.delete(dressToDelete);
+        var deletedDress = underTest.delete(dressToDelete.getId());
 
-        assertThat(underTest.delete(deletedDress)).isNotNull();
+        assertThat(underTest.delete(deletedDress.getId())).isNotNull();
     }
 }

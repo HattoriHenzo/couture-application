@@ -69,7 +69,7 @@ class MeasureServiceTest implements WithAssertions {
     void givenMeasure_whenDeleteMeasure_thenMeasureIsDeleted() {
         var measureToDelete = createNewMeasure();
         when(repository.findById(anyLong())).thenReturn(Optional.of(measureToDelete));
-        var deletedMeasure = underTest.delete(measureToDelete);
+        var deletedMeasure = underTest.delete(measureToDelete.getId());
 
         assertThat(deletedMeasure).isNotNull();
     }

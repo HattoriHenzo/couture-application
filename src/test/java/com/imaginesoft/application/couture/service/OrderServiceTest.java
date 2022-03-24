@@ -78,7 +78,7 @@ class OrderServiceTest implements WithAssertions {
     void givenOrder_whenDeleteOrder_thenOrderIsDeleted() {
         var orderToDelete = createNewOrder();
         when(repository.findById(anyLong())).thenReturn(Optional.of(orderToDelete));
-        var deletedOrder = underTest.delete(orderToDelete);
+        var deletedOrder = underTest.delete(orderToDelete.getId());
 
         assertThat(deletedOrder).isNotNull();
     }

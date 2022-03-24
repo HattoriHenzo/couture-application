@@ -105,6 +105,6 @@ class EmployeeServiceTest implements WithAssertions {
         var deletedEmployee = createNewEmployee();
         when(repository.findById(anyLong())).thenReturn(Optional.of(deletedEmployee));
 
-        assertThat(underTest.delete(deletedEmployee)).isNotNull();
+        assertThat(underTest.delete(deletedEmployee.getId())).isNotNull();
     }
 }

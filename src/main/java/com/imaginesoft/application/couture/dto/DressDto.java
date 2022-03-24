@@ -1,17 +1,15 @@
 package com.imaginesoft.application.couture.dto;
 
-import com.imaginesoft.application.couture.model.Measure;
-
 import java.util.List;
 
 public class DressDto {
 
     private Long id;
     private int amount;
-    private List<Measure> measures;
-    private String dressTypeName;
-    private String modelTypeName;
-    private String materialTypeName;
+    private List<MeasureDto> measures;
+    private DressTypeDto dressType;
+    private ModelTypeDto modelType;
+    private MaterialTypeDto materialType;
 
     public DressDto() {
     }
@@ -32,35 +30,35 @@ public class DressDto {
         this.amount = amount;
     }
 
-    public List<Measure> getMeasures() {
+    public List<MeasureDto> getMeasures() {
         return measures;
     }
 
-    public void setMeasures(List<Measure> measures) {
+    public void setMeasures(List<MeasureDto> measures) {
         this.measures = measures;
     }
 
-    public String getDressTypeName() {
-        return dressTypeName;
+    public DressTypeDto getDressType() {
+        return dressType;
     }
 
-    public void setDressTypeName(String dressTypeName) {
-        this.dressTypeName = dressTypeName;
+    public void setDressType(DressTypeDto dressType) {
+        this.dressType = dressType;
     }
 
-    public String getModelTypeName() {
-        return modelTypeName;
+    public ModelTypeDto getModelType() {
+        return modelType;
     }
 
-    public void setModelTypeName(String modelTypeName) {
-        this.modelTypeName = modelTypeName;
+    public void setModelType(ModelTypeDto modelType) {
+        this.modelType = modelType;
     }
 
-    public String getMaterialTypeName() {
-        return materialTypeName;
+    public MaterialTypeDto getMaterialType() {
+        return materialType;
     }
 
-    public void setMaterialTypeName(String materialTypeName) {
-        this.materialTypeName = materialTypeName;
+    public void setMaterialType(MaterialTypeDto materialType) {
+        this.materialType = materialType;
     }
 }

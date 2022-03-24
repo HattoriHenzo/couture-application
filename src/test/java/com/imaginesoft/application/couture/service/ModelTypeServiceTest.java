@@ -79,7 +79,7 @@ class ModelTypeServiceTest implements WithAssertions {
     void givenModelType_whenDeleteModelType_thenModelTypeIsDeleted() {
         var modelTypeToDelete = createNewModelType();
         when(repository.findById(anyLong())).thenReturn(Optional.of(modelTypeToDelete));
-        var deletedModelType = underTest.delete(modelTypeToDelete);
+        var deletedModelType = underTest.delete(modelTypeToDelete.getId());
 
         assertThat(deletedModelType).isNotNull();
     }

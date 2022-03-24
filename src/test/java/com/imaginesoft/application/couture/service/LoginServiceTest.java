@@ -93,6 +93,6 @@ public class LoginServiceTest implements WithAssertions {
         var deletedLogin = createNewLogin();
         when(repository.findById(anyLong())).thenReturn(Optional.of(deletedLogin));
 
-        assertThat(underTest.delete(deletedLogin)).isNotNull();
+        assertThat(underTest.delete(deletedLogin.getId())).isNotNull();
     }
 }
