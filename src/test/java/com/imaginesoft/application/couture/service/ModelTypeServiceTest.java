@@ -13,7 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static com.imaginesoft.application.couture.util.TestDataFactory.*;
+import static com.imaginesoft.application.couture.TestDataFactory.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -35,28 +35,24 @@ class ModelTypeServiceTest implements WithAssertions {
 
     @Test
     void givenModelTypes_whenFindingModelTypes_thenFindAllModelTypes() throws RecordNotFoundException {
-
         when(repository.findAll()).thenReturn(createNewModelTypes());
         assertThat(underTest.findAll()).isNotEmpty();
     }
 
     @Test
     void givenModelType_whenCreateModelType_thenModelTypeIsCreated() {
-
         var newModelType = createNewModelType();
         when(repository.save(newModelType)).thenReturn(newModelType);
 
-         var createdModelType = underTest.createOrUpdate(newModelType);
+        var createdModelType = underTest.createOrUpdate(newModelType);
 
         assertThat(createdModelType).isNotNull();
     }
 
     @Test
     void givenModelType_whenNameIsEmpty_thenModelTypeThrowException() {
-
         var newModelType = createNewModelType();
         newModelType.setName("");
-
         var exception = assertThrows(DomainRulesException.class,
                 () -> underTest.createOrUpdate(newModelType));
 
@@ -65,7 +61,6 @@ class ModelTypeServiceTest implements WithAssertions {
 
     @Test
     void givenModelType_whenUpdateModelType_thenModelTypeIsUpdated() {
-
         var modelType = createNewModelType();
         modelType.setName("SHIRT");
         when(repository.save(modelType)).thenReturn(modelType);
@@ -82,13 +77,10 @@ class ModelTypeServiceTest implements WithAssertions {
 
     @Test
     void givenModelType_whenDeleteModelType_thenModelTypeIsDeleted() {
-
         var modelTypeToDelete = createNewModelType();
         when(repository.findById(anyLong())).thenReturn(Optional.of(modelTypeToDelete));
-
-        var deletedModelType = underTest.delete(modelTypeToDelete);
+        var deletedModelType = underTest.delete(modelTypeToDelete.getId());
 
         assertThat(deletedModelType).isNotNull();
     }
-
 }

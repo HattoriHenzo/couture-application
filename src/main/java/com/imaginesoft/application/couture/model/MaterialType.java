@@ -6,12 +6,14 @@ import org.hibernate.Hibernate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
 @Entity
 @Table(name = "MATERIAL_TYPE")
 public class MaterialType extends GenericType {
 
+    @NotEmpty(message = "The image can't be empty")
     @Column(name = "IMAGE")
     private String image;
 

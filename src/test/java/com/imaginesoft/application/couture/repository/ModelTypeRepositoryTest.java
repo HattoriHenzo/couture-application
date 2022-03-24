@@ -1,16 +1,14 @@
 package com.imaginesoft.application.couture.repository;
 
-import com.imaginesoft.application.couture.model.ModelType;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.Optional;
-
-import static com.imaginesoft.application.couture.util.TestDataFactory.*;
+import static com.imaginesoft.application.couture.TestDataFactory.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assumptions.assumingThat;
 
 @DataJpaTest
 @ActiveProfiles("test")
@@ -20,8 +18,23 @@ class ModelTypeRepositoryTest implements WithAssertions {
     private ModelTypeRepository repository;
 
     @Test
-    void givenModelType_whenCreateModelType_thenModelTypeExists() {
+    void givenModelTypes_whenGettingModelTypes_thenGetAllModelTypes() {
+        assertThat(repository.findAll()).isNotEmpty();
+    }
 
+    @Test
+    void givenModelType_whenGettingModelTypeById_thenGetModelType() {
+        var foundModelType = repository.findById(MODEL_TYPE_ID);
+        assumingThat(foundModelType.isPresent(), () -> foundModelType.ifPresent(
+                value -> assertAll(
+                        () -> assertThat(value.getId()).isEqualTo(MODEL_TYPE_ID),
+                        () -> assertThat(value.getName()).isEqualTo(MODEL_TYPE_NAME)
+                )
+        ));
+    }
+
+    @Test
+    void givenModelType_whenCreateModelType_thenModelTypeExists() {
         var newModelType = createNewModelType();
         var createdModelType = repository.save(newModelType);
 
@@ -34,28 +47,28 @@ class ModelTypeRepositoryTest implements WithAssertions {
 
     @Test
     void givenModelType_whenUpdateModelType_thenModelTypeHasChanged() {
-
-        var newModelType = createNewModelType();
-
-        var modelTypeToUpdate = repository.save(newModelType);
-        modelTypeToUpdate.setName(MODEL_TYPE_EDITED_NAME);
-
-        var updatedModelType = repository.save(modelTypeToUpdate);
-
-        assertAll(
-                () -> assertThat(updatedModelType.getId()).isEqualTo(modelTypeToUpdate.getId()),
-                () -> assertThat(updatedModelType.getName()).isEqualTo(MODEL_TYPE_EDITED_NAME)
-        );
-
+        var modelTypeToUpdate = repository.findById(MODEL_TYPE_ID);
+        assumingThat(modelTypeToUpdate.isPresent(), () -> modelTypeToUpdate.ifPresent(
+                value -> {
+                    value.setName(MODEL_TYPE_EDITED_NAME);
+                    var updatedModelType = repository.save(value);
+                    assertAll(
+                            () -> assertThat(updatedModelType.getId()).isEqualTo(modelTypeToUpdate.get().getId()),
+                            () -> assertThat(updatedModelType.getName()).isEqualTo(modelTypeToUpdate.get().getName())
+                    );
+                }
+        ));
     }
 
     @Test
     void givenModelType_whenDeleteModelType_thenModelTypeDoesNotExists() {
-
         var modelTypeToDelete = repository.findById(MODEL_TYPE_ID);
-        repository.delete(modelTypeToDelete.get());
-        var deletedModelType = repository.findById(MODEL_TYPE_ID);
-
-        assertThat(deletedModelType).isNotPresent();
+        assumingThat(modelTypeToDelete.isPresent(), () -> modelTypeToDelete.ifPresent(
+                value -> {
+                    repository.delete(value);
+                    var deletedModelType = repository.findById(MODEL_TYPE_ID);
+                    assertThat(deletedModelType).isNotPresent();
+                }
+        ));
     }
 }

@@ -5,9 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import static com.imaginesoft.application.couture.util.TestDataFactory.*;
+import static com.imaginesoft.application.couture.TestDataFactory.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assumptions.assumingThat;
 
 @DataJpaTest
 @ActiveProfiles("test")
@@ -17,8 +18,25 @@ class LoginRepositoryTest {
     private LoginRepository repository;
 
     @Test
-    void givenLogin_whenCreateLogin_thenLoginExists() {
+    void givenLogins_whenGettingLogins_thenGetAllLogins() {
+        assertThat(repository.findAll()).isNotEmpty();
+    }
 
+    @Test
+    void givenLogin_whenGettingLoginById_thenGetLogin() {
+        var foundLogin = repository.findById(LOGIN_ID);
+        assumingThat(foundLogin.isPresent(), () -> foundLogin.ifPresent(
+                value -> assertAll(
+                        () -> assertThat(value.getId()).isEqualTo(LOGIN_ID),
+                        () -> assertThat(value.getUsername()).isEqualTo(LOGIN_USERNAME),
+                        () -> assertThat(value.getPassword()).isEqualTo(LOGIN_PASSWORD),
+                        () -> assertThat(value.getLoginCategory()).isEqualTo(LOGIN_CATEGORY)
+                )
+        ));
+    }
+
+    @Test
+    void givenLogin_whenCreateLogin_thenLoginExists() {
         var newLogin = createNewLogin();
         var createdLogin = repository.save(newLogin);
 
@@ -32,29 +50,30 @@ class LoginRepositoryTest {
 
     @Test
     void givenLogin_whenUpdateLogin_thenLoginHasChanged() {
-
-        var newLogin = createNewLogin();
-
-        var loginToUpdate = repository.save(newLogin);
-        loginToUpdate.setUsername(LOGIN_USERNAME);
-        loginToUpdate.setPassword(LOGIN_PASSWORD);
-
-        var updatedLogin = repository.save(loginToUpdate);
-
-        assertAll(
-                () -> assertThat(updatedLogin.getId()).isEqualTo(loginToUpdate.getId()),
-                () -> assertThat(updatedLogin.getUsername()).isEqualTo(LOGIN_USERNAME),
-                () -> assertThat(updatedLogin.getPassword()).isEqualTo(LOGIN_PASSWORD)
-        );
+        var loginToUpdate = repository.findById(LOGIN_ID);
+        assumingThat(loginToUpdate.isPresent(), () -> loginToUpdate.ifPresent(
+                value -> {
+                    value.setUsername(LOGIN_USERNAME);
+                    value.setPassword(LOGIN_PASSWORD);
+                    var updatedLogin = repository.save(value);
+                    assertAll(
+                            () -> assertThat(updatedLogin.getId()).isEqualTo(loginToUpdate.get().getId()),
+                            () -> assertThat(updatedLogin.getUsername()).isEqualTo(loginToUpdate.get().getUsername()),
+                            () -> assertThat(updatedLogin.getPassword()).isEqualTo(loginToUpdate.get().getPassword())
+                    );
+                }
+        ));
     }
 
     @Test
     void givenLogin_whenDeleteLogin_thenLoginDoesNotExists() {
-
         var loginToDelete = repository.findById(LOGIN_ID);
-        repository.delete(loginToDelete.get());
-        var deletedLogin = repository.findById(LOGIN_ID);
-
-        assertThat(deletedLogin).isNotPresent();
+        assumingThat(loginToDelete.isPresent(), () -> loginToDelete.ifPresent(
+                value -> {
+                    repository.delete(value);
+                    var deletedLogin = repository.findById(LOGIN_ID);
+                    assertThat(deletedLogin).isNotPresent();
+                }
+        ));
     }
 }

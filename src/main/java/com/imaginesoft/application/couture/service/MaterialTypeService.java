@@ -6,35 +6,11 @@ import com.imaginesoft.application.couture.service.generic.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class MaterialTypeService extends GenericService<MaterialType> {
 
-    private MaterialTypeRepository repository;
-
     @Autowired
     public MaterialTypeService(MaterialTypeRepository repository) {
-        this.repository = repository;
-    }
-
-    @Override
-    public MaterialType findById(Long id) {
-        return null;
-    }
-
-    @Override
-    public List<MaterialType> findAll() {
-        return null;
-    }
-
-    @Override
-    public MaterialType createOrUpdate(MaterialType materialType) {
-        return null;
-    }
-
-    @Override
-    public MaterialType delete(MaterialType materialType) {
-        return null;
+        super(repository);
     }
 }

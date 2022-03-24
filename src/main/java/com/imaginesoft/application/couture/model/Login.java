@@ -3,6 +3,7 @@ package com.imaginesoft.application.couture.model;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
 @Entity
@@ -14,9 +15,11 @@ public class Login {
     @Column(name = "ID")
     private Long id;
 
+    @NotEmpty(message = "The username can't be empty")
     @Column(name = "USERNAME")
     private String username;
 
+    @NotEmpty(message = "The password can't be empty")
     @Column(name = "PASSWORD")
     private String password;
 

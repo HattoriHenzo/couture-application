@@ -1,7 +1,6 @@
 package com.imaginesoft.application.couture.service;
 
 import com.imaginesoft.application.couture.controller.exception.RecordNotFoundException;
-import com.imaginesoft.application.couture.model.DressType;
 import com.imaginesoft.application.couture.repository.DressTypeRepository;
 import com.imaginesoft.application.couture.service.validator.field.DomainRulesException;
 import org.assertj.core.api.WithAssertions;
@@ -14,8 +13,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static com.imaginesoft.application.couture.util.TestDataFactory.createNewDressType;
-import static com.imaginesoft.application.couture.util.TestDataFactory.createNewDressTypes;
+import static com.imaginesoft.application.couture.TestDataFactory.createNewDressType;
+import static com.imaginesoft.application.couture.TestDataFactory.createNewDressTypes;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -37,14 +36,12 @@ class DressTypeServiceTest implements WithAssertions {
 
     @Test
     void givenDressTypes_whenFindingDressTypes_thenFindAllDressTypes() throws RecordNotFoundException {
-
         when(repository.findAll()).thenReturn(createNewDressTypes());
         assertThat(underTest.findAll()).isNotEmpty();
     }
 
     @Test
     void givenDressType_whenCreateDressType_thenDressTypeIsCreated() {
-
         var newDressType = createNewDressType();
         when(repository.save(newDressType)).thenReturn(newDressType);
         var createdDressType = underTest.createOrUpdate(newDressType);
@@ -85,7 +82,7 @@ class DressTypeServiceTest implements WithAssertions {
 
         var dressTypeToDelete = createNewDressType();
         when(repository.findById(anyLong())).thenReturn(Optional.of(dressTypeToDelete));
-        var deletedDressType = underTest.delete(dressTypeToDelete);
+        var deletedDressType = underTest.delete(dressTypeToDelete.getId());
 
         assertThat(deletedDressType).isNotNull();
     }

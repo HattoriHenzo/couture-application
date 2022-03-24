@@ -4,109 +4,100 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.imaginesoft.application.couture.controller.message.Success;
 import com.imaginesoft.application.couture.dto.DressTypeDto;
 import com.imaginesoft.application.couture.dto.ModelTypeDto;
-import com.imaginesoft.application.couture.util.DataFactory;
+import com.imaginesoft.application.couture.util.ApplicationDataFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
 import java.util.List;
 import java.util.Objects;
 
-import static com.imaginesoft.application.couture.util.TestDataFactory.createNewDressTypeDto;
+import static com.imaginesoft.application.couture.TestDataFactory.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 class ModelTypeControllerITest extends BaseIntegrationTest {
 
-    private static Long ID = 1L;
-    private static String NAME = "SHERPA";
-    private static String UPDATED_NAME = "UPDATED_NAME";
-
     @Test
     void integrationTest_For_FindAll() {
-
         webTestClient.get()
-                .uri(DataFactory.API_V1 + "/model-types")
+                .uri(ApplicationDataFactory.API_V1 + "/model-types")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
                 .consumeWith(result -> {
-                    assertThat(result.getResponseBody().getData()).isNotEmpty();
+                    assertThat(Objects.requireNonNull(result.getResponseBody()).getData()).isNotEmpty();
                 });
     }
 
     @Test
     void integrationTest_For_FindById() {
-
         webTestClient.get()
-                .uri(DataFactory.API_V1 + "/model-types/{ID}", ID)
+                .uri(ApplicationDataFactory.API_V1 + "/model-types/{ID}", MODEL_TYPE_ID)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
                 .consumeWith(result -> {
-                    var modelTypesDto = mapper.convertValue(Objects.requireNonNull(result.getResponseBody()).getData(),
+                    var modelTypes = mapper.convertValue(Objects.requireNonNull(result.getResponseBody()).getData(),
                             new TypeReference<List<ModelTypeDto>>() {
                             });
-                    var modelTypeDto = modelTypesDto.get(0);
+                    var foundModelType = modelTypes.get(0);
                     assertAll(
-                            () -> assertThat(modelTypeDto.getId()).isEqualTo(ID),
-                            () -> assertThat(modelTypeDto.getName()).isEqualTo(NAME)
+                            () -> assertThat(foundModelType.getId()).isEqualTo(MODEL_TYPE_ID),
+                            () -> assertThat(foundModelType.getName()).isEqualTo(MODEL_TYPE_NAME)
                     );
                 });
     }
 
     @Test
     void integrationTest_For_Create() {
-
-        var newModelTypeDto = createNewDressTypeDto();
+        var newModelType = createNewDressTypeDto();
 
         webTestClient.post()
-                .uri(DataFactory.API_V1 + "/model-types")
+                .uri(ApplicationDataFactory.API_V1 + "/model-types")
                 .accept(MediaType.APPLICATION_JSON)
-                .bodyValue(newModelTypeDto)
+                .bodyValue(newModelType)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
                 .consumeWith(result -> {
-                    var modelTypesDto = mapper.convertValue(Objects.requireNonNull(result.getResponseBody()).getData(),
+                    var modelTypes = mapper.convertValue(Objects.requireNonNull(result.getResponseBody()).getData(),
                             new TypeReference<List<ModelTypeDto>>() {
                             });
-                    var createdModelTypeDto = modelTypesDto.get(0);
+                    var createdModelType = modelTypes.get(0);
                     assertAll(
-                            () -> assertThat(createdModelTypeDto.getId()).isEqualTo(newModelTypeDto.getId()),
-                            () -> assertThat(createdModelTypeDto.getName()).isEqualTo(newModelTypeDto.getName())
+                            () -> assertThat(createdModelType.getId()).isEqualTo(newModelType.getId()),
+                            () -> assertThat(createdModelType.getName()).isEqualTo(newModelType.getName())
                     );
                 });
     }
 
     @Test
     void integrationTest_For_Update() {
-
-        var modelTypeToUpdateDto = createNewDressTypeDto();
-        modelTypeToUpdateDto.setName(UPDATED_NAME);
+        var modelTypeToUpdate = createNewDressTypeDto();
+        modelTypeToUpdate.setName(MODEL_TYPE_EDITED_NAME);
 
         webTestClient.put()
-                .uri(DataFactory.API_V1 + "/model-types")
+                .uri(ApplicationDataFactory.API_V1 + "/model-types")
                 .accept(MediaType.APPLICATION_JSON)
-                .bodyValue(modelTypeToUpdateDto)
+                .bodyValue(modelTypeToUpdate)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
                 .consumeWith(result -> {
-                    var modelTypesDto = mapper.convertValue(Objects.requireNonNull(result.getResponseBody()).getData(),
+                    var modelTypes = mapper.convertValue(Objects.requireNonNull(result.getResponseBody()).getData(),
                             new TypeReference<List<DressTypeDto>>() {
                             });
-                    var updatedModelTypeDto = modelTypesDto.get(0);
+                    var updatedModelType = modelTypes.get(0);
                     assertAll(
-                            () -> assertThat(updatedModelTypeDto.getId()).isEqualTo(modelTypeToUpdateDto.getId()),
-                            () -> assertThat(updatedModelTypeDto.getName()).isEqualTo(modelTypeToUpdateDto.getName())
+                            () -> assertThat(updatedModelType.getId()).isEqualTo(modelTypeToUpdate.getId()),
+                            () -> assertThat(updatedModelType.getName()).isEqualTo(modelTypeToUpdate.getName())
                     );
                 });
     }
 
     @Test
     void integrationTest_For_Delete() {
-
         webTestClient.delete()
-                .uri(DataFactory.API_V1 + "/model-types/{ID}", ID)
+                .uri(ApplicationDataFactory.API_V1 + "/model-types/{ID}", MODEL_TYPE_ID)
                 .exchange()
                 .expectStatus().isOk();
     }

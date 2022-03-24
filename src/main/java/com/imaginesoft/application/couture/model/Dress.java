@@ -1,8 +1,11 @@
 package com.imaginesoft.application.couture.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,22 +18,37 @@ public class Dress {
     @Column(name = "ID")
     private Long id;
 
+    @PositiveOrZero(message = "The amount can't be less than zero(0)")
     @Column(name = "AMOUNT")
     private int amount;
 
-    @OneToMany(mappedBy = "dress")
+    @OneToMany(
+            mappedBy = "dress",
+            cascade = {CascadeType.ALL,
+            CascadeType.REMOVE},
+            fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Measure> measures;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(
+            cascade = {CascadeType.PERSIST,
+            CascadeType.REMOVE},
+            fetch = FetchType.LAZY)
     @JoinColumn(name = "DRESS_TYPE_ID")
+    @JsonBackReference
     private DressType dressType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST,
+            CascadeType.REMOVE})
     @JoinColumn(name = "MODEL_TYPE_ID")
+    @JsonBackReference
     private ModelType modelType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MATERIAL_TYPE_ID")
+    @JsonBackReference
     private MaterialType materialType;
 
     public Dress() {

@@ -1,7 +1,6 @@
 package com.imaginesoft.application.couture.dto.generic;
 
 public abstract class GenericTypeDto {
-
     private Long id;
     private String name;
 

@@ -91,9 +91,9 @@ CREATE TABLE `employee` (
   FOREIGN KEY (`login_id`) REFERENCES `login` (`id`)
 );
 
--- Create Orders table
-DROP TABLE IF EXISTS `orders`;
-CREATE TABLE `orders` (
+-- Create Order table
+DROP TABLE IF EXISTS "order";
+CREATE TABLE "order" (
   `id` bigint(20) primary key auto_increment,
   `number` varchar(255) DEFAULT NULL,
   `date` datetime DEFAULT NULL,
