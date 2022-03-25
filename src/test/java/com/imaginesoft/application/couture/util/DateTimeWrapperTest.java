@@ -21,7 +21,6 @@ class DateTimeWrapperTest implements WithAssertions {
     private static final String EXPECTED_DATE = "2021-01-15";
     private static final String EXPECTED_DATE_TIME = "2021-01-15T12:20:10";
     private static final String EXPECTED_TIME = "12:20:10";
-    private static final Long EXPECTED_TIME_STAMP = 1610731210000L;
 
     private final static String DATE_FORMAT = "YYYY-MM-dd";
     private final static String DATE_TIME_FORMAT = "YYYY-MM-dd'T'HH:mm:ss";
@@ -65,10 +64,4 @@ class DateTimeWrapperTest implements WithAssertions {
                 () -> assertThat(dateTimeWrapper.getTime(FIXED_CLOCK, TIME_FORMAT)).isEqualTo(EXPECTED_TIME)
         );
     }
-
-    @Test
-    void givenDateTime_whenCallGetCurrentTimeStamp_thenReturnsTimeStamp() {
-        assertThat(dateTimeWrapper.getCurrentTimeStamp(FIXED_CLOCK)).isEqualTo(EXPECTED_TIME_STAMP);
-    }
-
 }
