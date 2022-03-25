@@ -44,7 +44,6 @@ class DateTimeWrapperTest implements WithAssertions {
 
     @Test
     void givenDate_whenCallGetDate_thenReturnsDate() {
-
         assertAll(
                 () -> assertThat(dateTimeWrapper.getCurrentDate(FIXED_CLOCK)).isEqualTo(EXPECTED_DATE),
                 () -> assertThat(dateTimeWrapper.getDate(FIXED_CLOCK, DATE_FORMAT)).isEqualTo(EXPECTED_DATE)
@@ -53,7 +52,6 @@ class DateTimeWrapperTest implements WithAssertions {
 
     @Test
     void givenDateTime_whenCallGetDateTime_thenReturnsDateTime() {
-
         assertAll(
                 () -> assertThat(dateTimeWrapper.getCurrentDateTime(FIXED_CLOCK)).isEqualTo(EXPECTED_DATE_TIME),
                 () -> assertThat(dateTimeWrapper.getDateTime(FIXED_CLOCK, DATE_TIME_FORMAT)).isEqualTo(EXPECTED_DATE_TIME)
@@ -62,7 +60,6 @@ class DateTimeWrapperTest implements WithAssertions {
 
     @Test
     void givenTime_whenCallGetTime_thenReturnsTime() {
-
         assertAll(
                 () -> assertThat(dateTimeWrapper.getCurrentTime(FIXED_CLOCK)).isEqualTo(EXPECTED_TIME),
                 () -> assertThat(dateTimeWrapper.getTime(FIXED_CLOCK, TIME_FORMAT)).isEqualTo(EXPECTED_TIME)
@@ -71,7 +68,6 @@ class DateTimeWrapperTest implements WithAssertions {
 
     @Test
     void givenDateTime_whenCallGetCurrentTimeStamp_thenReturnsTimeStamp() {
-
         assertThat(dateTimeWrapper.getCurrentTimeStamp(FIXED_CLOCK)).isEqualTo(EXPECTED_TIME_STAMP);
     }
 
