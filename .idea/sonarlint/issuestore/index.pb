@@ -135,8 +135,6 @@ Psrc/test/java/com/imaginesoft/application/couture/it/MeasureControllerITest.jav
 Tsrc/test/java/com/imaginesoft/application/couture/it/MeasureTypeControllerITest.java,1\b\1bddd37e561984ff0603f1fccea70f9552604e3e
 ‚
 Rsrc/test/java/com/imaginesoft/application/couture/it/ModelTypeControllerITest.java,9\0\903ba5fd84e7af59ce813b538f52c7102434a0b4
-~
-Nsrc/test/java/com/imaginesoft/application/couture/it/OrderControllerITest.java,2\1\2109d13db10c75f1b23c32a1ffbef4221e7f74d0
 }
 Msrc/test/java/com/imaginesoft/application/couture/it/BaseIntegrationTest.java,2\9\2934a81dc107489492a312fd15427e05f3e35eb7
 „
