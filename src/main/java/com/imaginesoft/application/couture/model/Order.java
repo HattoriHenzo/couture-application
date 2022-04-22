@@ -8,25 +8,25 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "\"ORDER\"")
+@Table(name = "\"order\"")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Long id;
 
     @NotEmpty(message = "The order number can't be empty")
-    @Column(name = "NUMBER")
+    @Column(name = "number")
     private String number;
 
-    @Column(name = "DATE")
+    @Column(name = "date")
     private LocalDateTime date;
 
-    @Column(name = "DELIVERY_DATE")
+    @Column(name = "delivery_date")
     private LocalDateTime deliveryDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CLIENT_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
     private Client client;
 
     public Order() {

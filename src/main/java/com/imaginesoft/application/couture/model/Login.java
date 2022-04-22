@@ -7,28 +7,28 @@ import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
 @Entity
-@Table(name = "LOGIN")
+@Table(name = "login")
 public class Login {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Long id;
 
     @NotEmpty(message = "The username can't be empty")
-    @Column(name = "USERNAME")
+    @Column(name = "username")
     private String username;
 
     @NotEmpty(message = "The password can't be empty")
-    @Column(name = "PASSWORD")
+    @Column(name = "password")
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "login_category")
+    private LoginCategory loginCategory;
 
     @OneToOne(mappedBy = "login")
     private Employee employee;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "LOGIN_CATEGORY")
-    private LoginCategory loginCategory;
 
     public Login() {
     }

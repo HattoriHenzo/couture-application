@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "DRESS_TYPE")
+@Table(name = "dress_type")
 public class DressType extends GenericType {
 
-    @OneToMany(mappedBy = "dressType", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "dressType", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Dress> dresses;
 

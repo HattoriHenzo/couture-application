@@ -8,25 +8,25 @@ import javax.validation.constraints.PositiveOrZero;
 import java.util.Objects;
 
 @Entity
-@Table(name = "MEASURE")
+@Table(name = "measure")
 public class Measure {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Long id;
 
     @PositiveOrZero(message = "The value can't be less than zero(0)")
-    @Column(name = "VALUE")
+    @Column(name = "value")
     private int value;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "MEASURE_TYPE_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "measure_type_id", referencedColumnName = "id")
     @JsonBackReference
     private MeasureType measureType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "DRESS_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "dress_id", referencedColumnName = "id")
     @JsonBackReference
     private Dress dress;
 

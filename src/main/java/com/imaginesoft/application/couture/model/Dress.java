@@ -10,44 +10,43 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "DRESS")
+@Table(name = "dress")
 public class Dress {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Long id;
 
     @PositiveOrZero(message = "The amount can't be less than zero(0)")
-    @Column(name = "AMOUNT")
+    @Column(name = "amount")
     private int amount;
 
     @OneToMany(
             mappedBy = "dress",
-            cascade = {CascadeType.ALL,
-            CascadeType.REMOVE},
+            cascade = {CascadeType.ALL},
             fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Measure> measures;
 
     @ManyToOne(
-            cascade = {CascadeType.PERSIST,
-            CascadeType.REMOVE},
+            cascade = {CascadeType.ALL},
             fetch = FetchType.LAZY)
-    @JoinColumn(name = "DRESS_TYPE_ID")
+    @JoinColumn(name = "dress_type_id", insertable = false, updatable = false)
     @JsonBackReference
     private DressType dressType;
 
     @ManyToOne(
             fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST,
-            CascadeType.REMOVE})
-    @JoinColumn(name = "MODEL_TYPE_ID")
+            cascade = {CascadeType.ALL})
+    @JoinColumn(name = "model_type_id", insertable = false, updatable = false)
     @JsonBackReference
     private ModelType modelType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MATERIAL_TYPE_ID")
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.ALL})
+    @JoinColumn(name = "material_type_id", insertable = false, updatable = false)
     @JsonBackReference
     private MaterialType materialType;
 

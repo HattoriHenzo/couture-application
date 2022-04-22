@@ -90,17 +90,14 @@ class DressControllerITest extends BaseIntegrationTest {
                             new TypeReference<List<DressDto>>() {
                             });
                     var updatedDress = dresses.get(0);
-                    assertAll(
-                            () -> assertThat(updatedDress.getId()).isEqualTo(dressToUpdate.getId()),
-                            () -> assertThat(updatedDress.getAmount()).isEqualTo(dressToUpdate.getAmount())
-                    );
+                    assertThat(dressToUpdate.getAmount()).isEqualTo(updatedDress.getAmount());
                 });
     }
 
     @Test
     void integrationTest_For_Delete() {
         webTestClient.delete()
-                .uri(ApplicationDataFactory.API_V1 + "/dresses/{ID}", ID)
+                .uri(ApplicationDataFactory.API_V1 + "/dresses/{ID}", DRESS_TO_DELETE)
                 .exchange()
                 .expectStatus().isOk();
     }

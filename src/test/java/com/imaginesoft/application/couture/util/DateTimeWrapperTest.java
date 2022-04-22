@@ -4,13 +4,16 @@ import com.imaginesoft.application.couture.configuration.TestApplicationConfig;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 
 import java.time.*;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+@ExtendWith(SpringExtension.class)
 @SpringJUnitWebConfig(TestApplicationConfig.class)
 class DateTimeWrapperTest implements WithAssertions {
 

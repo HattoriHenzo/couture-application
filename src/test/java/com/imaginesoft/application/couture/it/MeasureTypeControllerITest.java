@@ -96,7 +96,7 @@ class MeasureTypeControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_Delete() {
         webTestClient.delete()
-                .uri(ApplicationDataFactory.API_V1 + "/measure-types/{ID}", MEASURE_TYPE_ID)
+                .uri(ApplicationDataFactory.API_V1 + "/measure-types/{ID}", MEASURE_TYPE_TO_DELETE)
                 .exchange()
                 .expectStatus().isOk();
     }

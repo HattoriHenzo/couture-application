@@ -7,10 +7,10 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "EMPLOYEE")
+@Table(name = "employee")
 public class Employee extends GenericPerson {
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "login_id", referencedColumnName = "id")
     private Login login;
 

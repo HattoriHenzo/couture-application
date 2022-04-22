@@ -40,10 +40,10 @@ class LoginControllerITest extends BaseIntegrationTest {
                             });
                     var foundLogin = logins.get(0);
                     assertAll(
-                            () -> assertThat(foundLogin.getId()).isEqualTo(LOGIN_ID),
-                            () -> assertThat(foundLogin.getUsername()).isEqualTo(LOGIN_USERNAME),
-                            () -> assertThat(foundLogin.getPassword()).isEqualTo(LOGIN_PASSWORD),
-                            () -> assertThat(foundLogin.getLoginCategory()).isEqualTo(LOGIN_CATEGORY.name())
+                            () -> assertThat(LOGIN_ID).isEqualTo(foundLogin.getId()),
+                            () -> assertThat(LOGIN_USERNAME).isEqualTo(foundLogin.getUsername()),
+                            () -> assertThat(LOGIN_PASSWORD).isEqualTo(foundLogin.getPassword()),
+                            () -> assertThat(LOGIN_CATEGORY.name()).isEqualTo(foundLogin.getLoginCategory())
                     );
                 });
     }
@@ -65,10 +65,10 @@ class LoginControllerITest extends BaseIntegrationTest {
                             });
                     var createdLogin = logins.get(0);
                     assertAll(
-                            () -> assertThat(createdLogin.getId()).isEqualTo(newLogin.getId()),
-                            () -> assertThat(createdLogin.getUsername()).isEqualTo(newLogin.getUsername()),
-                            () -> assertThat(createdLogin.getPassword()).isEqualTo(newLogin.getPassword()),
-                            () -> assertThat(createdLogin.getLoginCategory()).isEqualTo(newLogin.getLoginCategory())
+                            () -> assertThat(newLogin.getId()).isEqualTo(createdLogin.getId()),
+                            () -> assertThat(newLogin.getUsername()).isEqualTo(createdLogin.getUsername()),
+                            () -> assertThat(newLogin.getPassword()).isEqualTo(createdLogin.getPassword()),
+                            () -> assertThat(newLogin.getLoginCategory()).isEqualTo(createdLogin.getLoginCategory())
                     );
                 });
     }
@@ -92,10 +92,10 @@ class LoginControllerITest extends BaseIntegrationTest {
                             });
                     var updatedLogin = logins.get(0);
                     assertAll(
-                            () -> assertThat(updatedLogin.getId()).isEqualTo(loginToUpdate.getId()),
-                            () -> assertThat(updatedLogin.getUsername()).isEqualTo(loginToUpdate.getUsername()),
-                            () -> assertThat(updatedLogin.getPassword()).isEqualTo(loginToUpdate.getPassword()),
-                            () -> assertThat(updatedLogin.getLoginCategory()).isEqualTo(loginToUpdate.getLoginCategory())
+                            () -> assertThat(loginToUpdate.getId()).isEqualTo(updatedLogin.getId()),
+                            () -> assertThat(loginToUpdate.getUsername()).isEqualTo(updatedLogin.getUsername()),
+                            () -> assertThat(loginToUpdate.getPassword()).isEqualTo(updatedLogin.getPassword()),
+                            () -> assertThat(loginToUpdate.getLoginCategory()).isEqualTo(updatedLogin.getLoginCategory())
                     );
                 });
     }
@@ -103,7 +103,7 @@ class LoginControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_Delete() {
         webTestClient.delete()
-                .uri(ApplicationDataFactory.API_V1 + "/logins/{ID}", ID)
+                .uri(ApplicationDataFactory.API_V1 + "/logins/{ID}", LOGIN_TO_DELETE)
                 .exchange()
                 .expectStatus().isOk();
     }

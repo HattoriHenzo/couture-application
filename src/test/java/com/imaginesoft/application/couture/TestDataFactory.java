@@ -20,6 +20,7 @@ public class TestDataFactory {
     public static final String SUCCESS_DATE = "2022-01-04";
 
     public static final Long EMPLOYEE_ID = 3L;
+    public static final Long EMPLOYEE_TO_DELETE = 1L;
     public static final String EMPLOYEE_FIRST_NAME = "JEANNE";
     public static final String EMPLOYEE_EDITED_FIRST_NAME = "GERALD";
     public static final String EMPLOYEE_LAST_NAME = "SOSSOU";
@@ -37,15 +38,18 @@ public class TestDataFactory {
     public static final Gender CLIENT_GENDER_MALE = Gender.MALE;
 
     public static final Long DRESS_ID = 1L;
+    public static final Long DRESS_TO_DELETE = 4L;
     public static final int DRESS_AMOUNT = 500;
     public static final int DRESS_NEGATIVE_AMOUNT = -500;
     public static final int DRESS_EDITED_AMOUNT = 1500;
 
     public static final Long DRESS_TYPE_ID = 1L;
+    public static final Long DRESS_TYPE_TO_DELETE = 3L;
     public static final String DRESS_TYPE_NAME = "PANTS";
     public static final String DRESS_TYPE_EDITED_NAME = "T-SHIRT";
 
     public static final Long MODEL_TYPE_ID = 3L;
+    public static final Long MODEL_TYPE_TO_DELETE = 4L;
     public static final String MODEL_TYPE_NAME = "SWEAT";
     public static final String MODEL_TYPE_EDITED_NAME = "AFRICAN";
 
@@ -55,6 +59,7 @@ public class TestDataFactory {
     public static final String MEASURE_TYPE_EDITED_NAME = "HARM";
 
     public static final Long MEASURE_ID = 1L;
+    public static final Long MEASURE_TO_DELETE = 2L;
     public static final int MEASURE_VALUE = 5;
     public static final int MEASURE_EDITED_VALUE = 12;
 
@@ -65,12 +70,14 @@ public class TestDataFactory {
     public static final String MATERIAL_TYPE_EDITED_IMAGE = "/image/path/edited";
 
     public static final Long ORDER_ID = 1L;
+    public static final Long ORDER_TO_DELETE = 2L;
     public static final String ORDER_NUMBER = "order-00001";
     public static final String ORDER_EDITED_NUMBER = "order-00002";
     public static final LocalDateTime ORDER_DATE = LocalDateTime.parse("2021-09-20 18:00:00", DateTimeFormatter.ofPattern(DATE_TIME_PATTERN));
     public static final LocalDateTime ORDER_DELIVERY_DATE = LocalDateTime.parse("2021-09-30 18:00:00", DateTimeFormatter.ofPattern(DATE_TIME_PATTERN));
 
     public static final Long LOGIN_ID = 1L;
+    public static final Long LOGIN_TO_DELETE = 2L;
     public static final String LOGIN_USERNAME = "username_1";
     public static final String LOGIN_PASSWORD = "password_1";
     public static final LoginCategory LOGIN_CATEGORY = LoginCategory.ADMINISTRATOR;
@@ -258,7 +265,11 @@ public class TestDataFactory {
         newEmployeeDto.setLastName(EMPLOYEE_LAST_NAME);
         newEmployeeDto.setTelephone(EMPLOYEE_TELEPHONE);
         newEmployeeDto.setGender(EMPLOYEE_GENDER_MALE.name());
-        newEmployeeDto.setLogin(createNewLoginDto());
+        var loginDto = createNewLoginDto();
+        loginDto.setId(3L);
+        loginDto.setUsername("username_3");
+        loginDto.setPassword("password_3");
+        newEmployeeDto.setLogin(loginDto);
 
         return newEmployeeDto;
     }
@@ -270,7 +281,6 @@ public class TestDataFactory {
         newClientDto.setLastName(CLIENT_LAST_NAME);
         newClientDto.setGender(Gender.MALE.name());
         newClientDto.setTelephone(CLIENT_TELEPHONE);
-
         return newClientDto;
     }
 

@@ -12,12 +12,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "MEASURE_TYPE")
+@Table(name = "measure_type")
 public class MeasureType extends GenericType {
 
     @OneToMany(
             mappedBy = "measureType",
-            cascade = CascadeType.ALL)
+            cascade = {CascadeType.ALL})
     @JsonManagedReference
     private List<Measure> measures;
 

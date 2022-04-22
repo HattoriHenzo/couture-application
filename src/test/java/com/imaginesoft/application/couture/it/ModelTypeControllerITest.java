@@ -97,7 +97,7 @@ class ModelTypeControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_Delete() {
         webTestClient.delete()
-                .uri(ApplicationDataFactory.API_V1 + "/model-types/{ID}", MODEL_TYPE_ID)
+                .uri(ApplicationDataFactory.API_V1 + "/model-types/{ID}", MODEL_TYPE_TO_DELETE)
                 .exchange()
                 .expectStatus().isOk();
     }

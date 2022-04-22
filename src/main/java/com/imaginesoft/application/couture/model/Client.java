@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "CLIENT")
+@Table(name = "client")
 public class Client extends GenericPerson {
 
     @OneToMany(mappedBy = "client",
-               cascade = {CascadeType.ALL, CascadeType.REMOVE})
+               cascade = {CascadeType.ALL})
     private List<Order> orders;
 
     public Client() {

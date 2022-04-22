@@ -96,7 +96,7 @@ class OrderControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_Delete() {
         webTestClient.delete()
-                .uri(ApplicationDataFactory.API_V1 + "/orders/{ID}", ORDER_ID)
+                .uri(ApplicationDataFactory.API_V1 + "/orders/{ID}", ORDER_TO_DELETE)
                 .exchange()
                 .expectStatus().isOk();
     }

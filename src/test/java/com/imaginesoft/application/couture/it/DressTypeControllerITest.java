@@ -96,7 +96,7 @@ class DressTypeControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_Delete() {
         webTestClient.delete()
-                .uri(ApplicationDataFactory.API_V1 + "/dress-types/{ID}", DRESS_TYPE_ID)
+                .uri(ApplicationDataFactory.API_V1 + "/dress-types/{ID}", DRESS_TYPE_TO_DELETE)
                 .exchange()
                 .expectStatus().isOk();
     }

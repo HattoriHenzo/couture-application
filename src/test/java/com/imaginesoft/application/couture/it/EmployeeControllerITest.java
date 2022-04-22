@@ -106,7 +106,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
     @Test
     void integrationTest_For_Delete() {
         webTestClient.delete()
-                .uri(ApplicationDataFactory.API_V1 + "/employees/{ID}", EMPLOYEE_ID)
+                .uri(ApplicationDataFactory.API_V1 + "/employees/{ID}", EMPLOYEE_TO_DELETE)
                 .exchange()
                 .expectStatus().isOk();
     }

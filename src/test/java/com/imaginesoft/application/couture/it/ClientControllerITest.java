@@ -22,9 +22,7 @@ class ClientControllerITest extends BaseIntegrationTest {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
-                .consumeWith(result -> {
-                    assertThat(Objects.requireNonNull(result.getResponseBody()).getData()).isNotEmpty();
-                });
+                .consumeWith(result -> assertThat(Objects.requireNonNull(result.getResponseBody()).getData()).isNotEmpty());
     }
 
     @Test
@@ -106,7 +104,7 @@ class ClientControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_Delete() {
         webTestClient.delete()
-                .uri(ApplicationDataFactory.API_V1 + "/clients/{ID}", CLIENT_ID)
+                .uri(ApplicationDataFactory.API_V1 + "/clients/{ID}", CLIENT_TO_DELETE)
                 .exchange()
                  .expectStatus().isOk();
     }
