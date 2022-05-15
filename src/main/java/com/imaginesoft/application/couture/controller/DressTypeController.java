@@ -17,7 +17,7 @@ import javax.validation.Valid;
 
 
 @RestController
-@RequestMapping(value = ApplicationDataFactory.API_V1)
+@RequestMapping(value = ApplicationDataFactory.API_V1_APPLICATION)
 public class DressTypeController extends GenericController<DressTypeDto, DressType> {
 
     @Autowired

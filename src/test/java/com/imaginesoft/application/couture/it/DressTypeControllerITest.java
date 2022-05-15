@@ -18,7 +18,7 @@ class DressTypeControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_FindAll() {
         webTestClient.get()
-                .uri(ApplicationDataFactory.API_V1 + "/dress-types")
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/dress-types")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -30,7 +30,7 @@ class DressTypeControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_FindById() {
         webTestClient.get()
-                .uri(ApplicationDataFactory.API_V1 + "/dress-types/{ID}", DRESS_TYPE_ID)
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/dress-types/{ID}", DRESS_TYPE_ID)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -51,7 +51,7 @@ class DressTypeControllerITest extends BaseIntegrationTest {
         var newDressTypeDto = createNewDressTypeDto();
 
         webTestClient.post()
-                .uri(ApplicationDataFactory.API_V1 + "/dress-types")
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/dress-types")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(newDressTypeDto)
                 .exchange()
@@ -75,7 +75,7 @@ class DressTypeControllerITest extends BaseIntegrationTest {
         dressTypeToUpdate.setName(DRESS_TYPE_EDITED_NAME);
 
         webTestClient.put()
-                .uri(ApplicationDataFactory.API_V1 + "/dress-types")
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/dress-types")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(dressTypeToUpdate)
                 .exchange()
@@ -96,7 +96,7 @@ class DressTypeControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_Delete() {
         webTestClient.delete()
-                .uri(ApplicationDataFactory.API_V1 + "/dress-types/{ID}", DRESS_TYPE_TO_DELETE)
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/dress-types/{ID}", DRESS_TYPE_TO_DELETE)
                 .exchange()
                 .expectStatus().isOk();
     }

@@ -2,7 +2,7 @@ package com.imaginesoft.application.couture.it;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.imaginesoft.application.couture.controller.message.Success;
-import com.imaginesoft.application.couture.dto.LoginDto;
+import com.imaginesoft.application.couture.configuration.security.dto.LoginDto;
 import com.imaginesoft.application.couture.util.ApplicationDataFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -18,19 +18,17 @@ class LoginControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_FindAll() {
         webTestClient.get()
-                .uri(ApplicationDataFactory.API_V1 + "/logins")
+                .uri(ApplicationDataFactory.API_V1_ADMIN + "/logins")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
-                .consumeWith(result -> {
-                    assertThat(Objects.requireNonNull(result.getResponseBody()).getData()).isNotEmpty();
-                });
+                .consumeWith(result -> assertThat(Objects.requireNonNull(result.getResponseBody()).getData()).isNotEmpty());
     }
 
     @Test
     void integrationTest_For_FindById() {
         webTestClient.get()
-                .uri(ApplicationDataFactory.API_V1 + "/logins/{ID}", LOGIN_ID)
+                .uri(ApplicationDataFactory.API_V1_ADMIN + "/logins/{ID}", LOGIN_ID)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -53,7 +51,7 @@ class LoginControllerITest extends BaseIntegrationTest {
         var newLogin = createNewLoginDto();
 
         webTestClient.post()
-                .uri(ApplicationDataFactory.API_V1 + "/logins")
+                .uri(ApplicationDataFactory.API_V1_ADMIN + "/logins")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(newLogin)
                 .exchange()
@@ -80,7 +78,7 @@ class LoginControllerITest extends BaseIntegrationTest {
         loginToUpdate.setPassword(LOGIN_EDITED_PASSWORD);
 
         webTestClient.put()
-                .uri(ApplicationDataFactory.API_V1 + "/logins")
+                .uri(ApplicationDataFactory.API_V1_ADMIN + "/logins")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(loginToUpdate)
                 .exchange()
@@ -103,7 +101,7 @@ class LoginControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_Delete() {
         webTestClient.delete()
-                .uri(ApplicationDataFactory.API_V1 + "/logins/{ID}", LOGIN_TO_DELETE)
+                .uri(ApplicationDataFactory.API_V1_ADMIN + "/logins/{ID}", LOGIN_TO_DELETE)
                 .exchange()
                 .expectStatus().isOk();
     }

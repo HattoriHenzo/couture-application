@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = ApplicationDataFactory.API_V1)
+@RequestMapping(value = ApplicationDataFactory.API_V1_APPLICATION)
 public class ClientController extends GenericController<ClientDto, Client> {
 
     @Autowired

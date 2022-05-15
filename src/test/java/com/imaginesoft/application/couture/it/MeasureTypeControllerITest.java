@@ -18,7 +18,7 @@ class MeasureTypeControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_FindAll() {
         webTestClient.get()
-                .uri(ApplicationDataFactory.API_V1 + "/measure-types")
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/measure-types")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -30,7 +30,7 @@ class MeasureTypeControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_FindById() {
         webTestClient.get()
-                .uri(ApplicationDataFactory.API_V1 + "/measure-types/{ID}", MEASURE_TYPE_ID)
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/measure-types/{ID}", MEASURE_TYPE_ID)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -51,7 +51,7 @@ class MeasureTypeControllerITest extends BaseIntegrationTest {
         var newMeasureType = createNewMeasureTypeDto();
 
         webTestClient.post()
-                .uri(ApplicationDataFactory.API_V1 + "/measure-types")
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/measure-types")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(newMeasureType)
                 .exchange()
@@ -75,7 +75,7 @@ class MeasureTypeControllerITest extends BaseIntegrationTest {
         measureTypeToUpdate.setName(MEASURE_TYPE_EDITED_NAME);
 
         webTestClient.put()
-                .uri(ApplicationDataFactory.API_V1 + "/measure-types")
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/measure-types")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(measureTypeToUpdate)
                 .exchange()
@@ -96,7 +96,7 @@ class MeasureTypeControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_Delete() {
         webTestClient.delete()
-                .uri(ApplicationDataFactory.API_V1 + "/measure-types/{ID}", MEASURE_TYPE_TO_DELETE)
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/measure-types/{ID}", MEASURE_TYPE_TO_DELETE)
                 .exchange()
                 .expectStatus().isOk();
     }

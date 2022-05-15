@@ -18,7 +18,7 @@ class MeasureControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_FindAll() {
         webTestClient.get()
-                .uri(ApplicationDataFactory.API_V1 + "/measures")
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/measures")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -30,7 +30,7 @@ class MeasureControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_FindById() {
         webTestClient.get()
-                .uri(ApplicationDataFactory.API_V1 + "/measures/{ID}", MEASURE_ID)
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/measures/{ID}", MEASURE_ID)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -52,7 +52,7 @@ class MeasureControllerITest extends BaseIntegrationTest {
         var newMeasure = createNewMeasureDto();
 
         webTestClient.post()
-                .uri(ApplicationDataFactory.API_V1 + "/measures")
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/measures")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(newMeasure)
                 .exchange()
@@ -77,7 +77,7 @@ class MeasureControllerITest extends BaseIntegrationTest {
         measureToUpdate.setValue(MEASURE_EDITED_VALUE);
 
         webTestClient.put()
-                .uri(ApplicationDataFactory.API_V1 + "/measures")
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/measures")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(measureToUpdate)
                 .exchange()
@@ -99,7 +99,7 @@ class MeasureControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_Delete() {
         webTestClient.delete()
-                .uri(ApplicationDataFactory.API_V1 + "/measures/{ID}", MEASURE_TO_DELETE)
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/measures/{ID}", MEASURE_TO_DELETE)
                 .exchange()
                 .expectStatus().isOk();
     }

@@ -19,7 +19,7 @@ class MaterialTypeControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_FindAll() {
         webTestClient.get()
-                .uri(ApplicationDataFactory.API_V1 + "/material-types")
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/material-types")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -31,7 +31,7 @@ class MaterialTypeControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_FindById() {
         webTestClient.get()
-                .uri(ApplicationDataFactory.API_V1 + "/material-types/{ID}", MATERIAL_TYPE_ID)
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/material-types/{ID}", MATERIAL_TYPE_ID)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -53,7 +53,7 @@ class MaterialTypeControllerITest extends BaseIntegrationTest {
         var newMaterialTypeDto = createNewMaterialTypeDto();
 
         webTestClient.post()
-                .uri(ApplicationDataFactory.API_V1 + "/material-types")
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/material-types")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(newMaterialTypeDto)
                 .exchange()
@@ -78,7 +78,7 @@ class MaterialTypeControllerITest extends BaseIntegrationTest {
         materialTypeToUpdate.setName(MATERIAL_TYPE_EDITED_NAME);
 
         webTestClient.put()
-                .uri(ApplicationDataFactory.API_V1 + "/material-types")
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/material-types")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(materialTypeToUpdate)
                 .exchange()
@@ -99,7 +99,7 @@ class MaterialTypeControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_Delete() {
         webTestClient.delete()
-                .uri(ApplicationDataFactory.API_V1 + "/dress-types/{ID}", MATERIAL_TYPE_ID)
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/dress-types/{ID}", MATERIAL_TYPE_ID)
                 .exchange()
                 .expectStatus().isOk();
     }

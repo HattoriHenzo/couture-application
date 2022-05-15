@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.Clock;
 
@@ -32,6 +33,7 @@ class MaterialTypeControllerTest extends BaseControllerTest {
 
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenId_whenCallFindById_thenReturns_200_OK() throws Exception {
         var materialType = createNewMaterialType();
@@ -41,7 +43,7 @@ class MaterialTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(materialType, MaterialTypeDto.class)).thenReturn(materialTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/material-types/{id}", ID)
+        mockMvc.perform(get(ApplicationDataFactory.API_V1_APPLICATION + "/material-types/{id}", ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is("OK")))
@@ -49,15 +51,17 @@ class MaterialTypeControllerTest extends BaseControllerTest {
                 .andExpect(jsonPath("$.data", hasSize(1)));
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenId_whenCallFindById_thenReturns_400_BAD_REQUEST() throws Exception {
         when(service.findById(anyLong())).thenReturn(new MaterialType());
 
-        mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/material-types/ID", BAD_PATH_PARAM)
+        mockMvc.perform(get(ApplicationDataFactory.API_V1_APPLICATION + "/material-types/ID", BAD_PATH_PARAM)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenId_whenCallFindById_thenReturns_404_NOT_FOUND() throws Exception {
         when(service.findById(anyLong())).thenReturn(new MaterialType());
@@ -67,6 +71,7 @@ class MaterialTypeControllerTest extends BaseControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenAll_whenCallFindAll_thenReturns_200_OK() throws Exception {
         var materialType = createNewMaterialType();
@@ -77,7 +82,7 @@ class MaterialTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(materialType, MaterialTypeDto.class)).thenReturn(materialTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/material-types")
+        mockMvc.perform(get(ApplicationDataFactory.API_V1_APPLICATION + "/material-types")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isOk(),
@@ -87,6 +92,7 @@ class MaterialTypeControllerTest extends BaseControllerTest {
                 );
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenAll_whenCallFindAll_thenReturns_404_BAD_REQUEST() throws Exception {
         when(service.findAll()).thenReturn(createNewMaterialTypes());
@@ -96,6 +102,7 @@ class MaterialTypeControllerTest extends BaseControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenMaterialType_whenCallCreate_thenReturns_400_BAD_REQUEST() throws Exception {
         var materialTypeRequest = BAD_BODY;
@@ -108,12 +115,13 @@ class MaterialTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(createdMaterialType, MaterialTypeDto.class)).thenReturn(materialTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(post(ApplicationDataFactory.API_V1 + "/material-types")
+        mockMvc.perform(post(ApplicationDataFactory.API_V1_APPLICATION + "/material-types")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(materialTypeRequest)))
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenMaterialType_whenCallCreate_thenReturns_200_OK() throws Exception {
         var materialTypeRequest = createNewMaterialTypeDto();
@@ -126,7 +134,7 @@ class MaterialTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(createdMaterialType, MaterialTypeDto.class)).thenReturn(materialTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(post(ApplicationDataFactory.API_V1 + "/material-types")
+        mockMvc.perform(post(ApplicationDataFactory.API_V1_APPLICATION + "/material-types")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(materialTypeRequest)))
                 .andExpectAll(
@@ -138,6 +146,7 @@ class MaterialTypeControllerTest extends BaseControllerTest {
                 );
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenMeasureType_whenCallUpdate_thenReturns_200_OK() throws Exception {
         var materialTypeRequest = createNewMaterialTypeDto();
@@ -150,7 +159,7 @@ class MaterialTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(createdMaterialType, MaterialTypeDto.class)).thenReturn(materialTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(put(ApplicationDataFactory.API_V1 + "/material-types")
+        mockMvc.perform(put(ApplicationDataFactory.API_V1_APPLICATION + "/material-types")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(materialTypeRequest)))
                 .andExpectAll(
@@ -162,6 +171,7 @@ class MaterialTypeControllerTest extends BaseControllerTest {
                 );
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenMaterialType_whenCallUpdate_thenReturns_400_BAD_REQUEST() throws Exception {
         var materialTypeRequest = BAD_BODY;
@@ -174,12 +184,13 @@ class MaterialTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(createdMaterialType, MaterialTypeDto.class)).thenReturn(materialTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(put(ApplicationDataFactory.API_V1 + "/material-types")
+        mockMvc.perform(put(ApplicationDataFactory.API_V1_APPLICATION + "/material-types")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(materialTypeRequest)))
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenMaterialType_whenCallDelete_thenReturns_200_OK() throws Exception {
         var materialTypeToDelete = createNewMaterialType();
@@ -191,7 +202,7 @@ class MaterialTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(deletedMaterialType, MaterialTypeDto.class)).thenReturn(materialTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/material-types/{id}", ID)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/material-types/{id}", ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isOk(),
@@ -202,6 +213,7 @@ class MaterialTypeControllerTest extends BaseControllerTest {
                 );
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenMaterialType_whenCallDelete_thenReturns_400_BAD_REQUEST() throws Exception {
         var materialTypeToDelete = createNewMaterialType();
@@ -213,11 +225,12 @@ class MaterialTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(deletedMaterialType, MaterialTypeDto.class)).thenReturn(materialTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/material-types/ID", BAD_PATH_PARAM)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/material-types/ID", BAD_PATH_PARAM)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenMaterialType_whenCallDelete_thenReturns_404_NOT_FOUND() throws Exception {
         var materialTypeToDelete = createNewMaterialType();
@@ -229,7 +242,7 @@ class MaterialTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(deletedMaterialType, MaterialTypeDto.class)).thenReturn(materialTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/material-types/{id}", ID)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/material-types/{id}", ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isNotFound(),

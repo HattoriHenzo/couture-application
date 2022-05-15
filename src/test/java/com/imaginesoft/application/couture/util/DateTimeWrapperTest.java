@@ -13,7 +13,6 @@ import java.time.*;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@ExtendWith(SpringExtension.class)
 @SpringJUnitWebConfig(TestApplicationConfig.class)
 class DateTimeWrapperTest implements WithAssertions {
 

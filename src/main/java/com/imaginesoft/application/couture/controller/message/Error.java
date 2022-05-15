@@ -4,6 +4,10 @@ import org.springframework.http.HttpStatus;
 
 public class Error extends Response {
 
+    public Error() {
+        super();
+    }
+
     public Error(HttpStatus status, String date, String message, Object... data) {
         super(status, date, message, data);
     }

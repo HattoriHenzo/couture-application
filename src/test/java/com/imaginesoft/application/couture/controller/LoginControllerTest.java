@@ -1,21 +1,21 @@
 package com.imaginesoft.application.couture.controller;
 
-import com.imaginesoft.application.couture.dto.LoginDto;
-import com.imaginesoft.application.couture.model.Login;
-import com.imaginesoft.application.couture.service.LoginService;
+import com.imaginesoft.application.couture.configuration.security.controller.LoginController;
+import com.imaginesoft.application.couture.configuration.security.model.Login;
+import com.imaginesoft.application.couture.configuration.security.dto.LoginDto;
 import com.imaginesoft.application.couture.util.ApplicationDataFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.Clock;
 
 import static com.imaginesoft.application.couture.TestDataFactory.*;
 import static org.hamcrest.Matchers.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -24,24 +24,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(LoginController.class)
 class LoginControllerTest extends BaseControllerTest {
 
-    @MockBean
-    private LoginService service;
-
     @BeforeEach
     void setUp() {
 
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenId_whenCallFindById_thenReturns_200_OK() throws Exception {
         var login = createNewLogin();
         var loginResponse = createNewLoginDto();
 
-        when(service.findById(anyLong())).thenReturn(login);
+        when(service.findById(login.getId())).thenReturn(login);
         when(mapper.performMapping(login, LoginDto.class)).thenReturn(loginResponse);
-        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(dateTime.getCurrentDateTime(ArgumentMatchers.any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/logins/{id}", ID)
+        mockMvc.perform(get(ApplicationDataFactory.API_V1_ADMIN + "/logins/{id}", LOGIN_ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is("OK")))
@@ -49,24 +47,35 @@ class LoginControllerTest extends BaseControllerTest {
                 .andExpect(jsonPath("$.data", hasSize(1)));
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
-    void givenId_whenCallFindById_thenReturns_400_BAD_REQUEST() throws Exception {
-        when(service.findById(anyLong())).thenReturn(new Login());
+    void givenId_whenCallLoadUserByUsername_thenReturns_200_OK() throws Exception {
+        var login = createNewLogin();
+        var loginResponse = createNewLoginDto();
 
-        mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/logins/ID", BAD_PATH_PARAM)
+        when(service.loadUserByUsername(login.getUsername())).thenReturn(login);
+        when(mapper.performMapping(login, LoginDto.class)).thenReturn(loginResponse);
+        when(dateTime.getCurrentDateTime(ArgumentMatchers.any(Clock.class))).thenReturn(SUCCESS_DATE);
+
+        mockMvc.perform(get(ApplicationDataFactory.API_V1_ADMIN + "/logins/{id}", LOGIN_ID)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", is("OK")))
+                .andExpect(jsonPath("$.date", is(SUCCESS_DATE)))
+                .andExpect(jsonPath("$.data", hasSize(1)));
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenId_whenCallFindById_thenReturns_404_NOT_FOUND() throws Exception {
-        when(service.findById(anyLong())).thenReturn(new Login());
+        when(service.loadUserByUsername(anyString())).thenReturn(new Login());
 
-        mockMvc.perform(get(BAD_URI, ID)
+        mockMvc.perform(get(BAD_URI, LOGIN_ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenAll_whenCallFindAll_thenReturns_200_OK() throws Exception {
         var login = createNewLogin();
@@ -75,9 +84,9 @@ class LoginControllerTest extends BaseControllerTest {
 
         when(service.findAll()).thenReturn(logins);
         when(mapper.performMapping(login, LoginDto.class)).thenReturn(loginResponse);
-        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(dateTime.getCurrentDateTime(ArgumentMatchers.any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/logins")
+        mockMvc.perform(get(ApplicationDataFactory.API_V1_ADMIN + "/logins")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isOk(),
@@ -87,6 +96,7 @@ class LoginControllerTest extends BaseControllerTest {
                 );
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenAll_whenCallFindAll_thenReturns_404_BAD_REQUEST() throws Exception {
         when(service.findAll()).thenReturn(createNewLogins());
@@ -96,24 +106,7 @@ class LoginControllerTest extends BaseControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    @Test
-    void givenLogin_whenCallCreate_thenReturns_400_BAD_REQUEST() throws Exception {
-        var loginRequest = BAD_BODY;
-        var loginToCreate = createNewLogin();
-        var createdLogin = createNewLogin();
-        var loginResponse = createNewLoginDto();
-
-        when(mapper.performMapping(loginRequest, Login.class)).thenReturn(loginToCreate);
-        when(service.createOrUpdate(loginToCreate)).thenReturn(createdLogin);
-        when(mapper.performMapping(createdLogin, LoginDto.class)).thenReturn(loginResponse);
-        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
-
-        mockMvc.perform(post(ApplicationDataFactory.API_V1 + "/logins")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(loginRequest)))
-                .andExpect(status().isBadRequest());
-    }
-
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenLogin_whenCallCreate_thenReturns_200_OK() throws Exception {
         var loginRequest = createNewLoginDto();
@@ -124,9 +117,9 @@ class LoginControllerTest extends BaseControllerTest {
         when(mapper.performMapping(loginRequest, Login.class)).thenReturn(loginToCreate);
         when(service.createOrUpdate(loginToCreate)).thenReturn(createdLogin);
         when(mapper.performMapping(createdLogin, LoginDto.class)).thenReturn(loginResponse);
-        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(dateTime.getCurrentDateTime(ArgumentMatchers.any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(post(ApplicationDataFactory.API_V1 + "/logins")
+        mockMvc.perform(post(ApplicationDataFactory.API_V1_ADMIN + "/logins")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpectAll(
@@ -138,19 +131,21 @@ class LoginControllerTest extends BaseControllerTest {
                 );
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenLogin_whenCallUpdate_thenReturns_200_OK() throws Exception {
         var loginRequest = createNewLoginDto();
         var loginToCreate = createNewLogin();
+        loginToCreate.setUsername("");
         var createdLogin = createNewLogin();
         var loginResponse = createNewLoginDto();
 
         when(mapper.performMapping(loginRequest, Login.class)).thenReturn(loginToCreate);
         when(service.createOrUpdate(loginToCreate)).thenReturn(createdLogin);
         when(mapper.performMapping(createdLogin, LoginDto.class)).thenReturn(loginResponse);
-        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(dateTime.getCurrentDateTime(ArgumentMatchers.any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(put(ApplicationDataFactory.API_V1 + "/logins")
+        mockMvc.perform(put(ApplicationDataFactory.API_V1_ADMIN + "/logins")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpectAll(
@@ -162,6 +157,7 @@ class LoginControllerTest extends BaseControllerTest {
                 );
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenLogin_whenCallUpdate_thenReturns_400_BAD_REQUEST() throws Exception {
         var loginRequest = BAD_BODY;
@@ -172,26 +168,27 @@ class LoginControllerTest extends BaseControllerTest {
         when(mapper.performMapping(loginRequest, Login.class)).thenReturn(loginToCreate);
         when(service.createOrUpdate(loginToCreate)).thenReturn(createdLogin);
         when(mapper.performMapping(createdLogin, LoginDto.class)).thenReturn(loginResponse);
-        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(dateTime.getCurrentDateTime(ArgumentMatchers.any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(put(ApplicationDataFactory.API_V1 + "/logins")
+        mockMvc.perform(put(ApplicationDataFactory.API_V1_ADMIN + "/logins")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenLogin_whenCallDelete_thenReturns_200_OK() throws Exception {
         var loginToDelete = createNewLogin();
         var deletedLogin = loginToDelete;
         var loginResponse = createNewLoginDto();
 
-        when(service.findById(ID)).thenReturn(loginToDelete);
-        when(service.delete(loginToDelete.getId())).thenReturn(deletedLogin);
+        when(service.findById(LOGIN_ID)).thenReturn(loginToDelete);
+        when(service.delete(LOGIN_ID)).thenReturn(deletedLogin);
         when(mapper.performMapping(deletedLogin, LoginDto.class)).thenReturn(loginResponse);
-        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(dateTime.getCurrentDateTime(ArgumentMatchers.any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/logins/{id}", ID)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_ADMIN + "/logins/{id}", LOGIN_ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isOk(),
@@ -202,34 +199,19 @@ class LoginControllerTest extends BaseControllerTest {
                 );
     }
 
-    @Test
-    void givenLogin_whenCallDelete_thenReturns_400_BAD_REQUEST() throws Exception {
-        var loginToDelete = createNewLogin();
-        var deletedLogin = loginToDelete;
-        var loginResponse = createNewLoginDto();
-
-        when(service.findById(ID)).thenReturn(loginToDelete);
-        when(service.delete(loginToDelete.getId())).thenReturn(deletedLogin);
-        when(mapper.performMapping(deletedLogin, LoginDto.class)).thenReturn(loginResponse);
-        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
-
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/logins/ID", BAD_PATH_PARAM)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
-    }
-
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenLogin_whenCallDelete_thenReturns_404_NOT_FOUND() throws Exception {
         var loginToDelete = createNewLogin();
         var deletedLogin = loginToDelete;
         var loginResponse = createNewLoginDto();
 
-        when(service.findById(ID)).thenReturn(null);
+        when(service.findById(LOGIN_ID)).thenReturn(null);
         when(service.delete(loginToDelete.getId())).thenReturn(deletedLogin);
         when(mapper.performMapping(deletedLogin, LoginDto.class)).thenReturn(loginResponse);
-        when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
+        when(dateTime.getCurrentDateTime(ArgumentMatchers.any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/logins/{id}", ID)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_ADMIN + "/logins/{id}", LOGIN_ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isNotFound(),

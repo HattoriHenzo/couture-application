@@ -9,7 +9,11 @@ public abstract class Response {
     private String message;
     private Object[] data;
 
-    public Response(HttpStatus status, String date, String message, Object... data) {
+    protected Response() {
+
+    }
+
+    protected Response(HttpStatus status, String date, String message, Object... data) {
         this.status = status;
         this.date = date;
         this.message = message;

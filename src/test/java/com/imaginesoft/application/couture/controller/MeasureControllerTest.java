@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.Clock;
 
@@ -31,6 +32,7 @@ class MeasureControllerTest extends BaseControllerTest {
     void setUp() {
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenId_whenCallFindById_thenReturns_200_OK() throws Exception {
         var measure = createNewMeasure();
@@ -40,7 +42,7 @@ class MeasureControllerTest extends BaseControllerTest {
         when(mapper.performMapping(measure, MeasureDto.class)).thenReturn(measureResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/measures/{id}", ID)
+        mockMvc.perform(get(ApplicationDataFactory.API_V1_APPLICATION + "/measures/{id}", ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is("OK")))
@@ -48,15 +50,17 @@ class MeasureControllerTest extends BaseControllerTest {
                 .andExpect(jsonPath("$.data", hasSize(1)));
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenId_whenCallFindById_thenReturns_400_BAD_REQUEST() throws Exception {
         when(service.findById(anyLong())).thenReturn(new Measure());
 
-        mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/measures/ID", BAD_PATH_PARAM)
+        mockMvc.perform(get(ApplicationDataFactory.API_V1_APPLICATION + "/measures/ID", BAD_PATH_PARAM)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenId_whenCallFindById_thenReturns_404_NOT_FOUND() throws Exception {
         when(service.findById(anyLong())).thenReturn(new Measure());
@@ -66,6 +70,7 @@ class MeasureControllerTest extends BaseControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenAll_whenCallFindAll_thenReturns_200_OK() throws Exception {
         var measure = createNewMeasure();
@@ -76,7 +81,7 @@ class MeasureControllerTest extends BaseControllerTest {
         when(mapper.performMapping(measure, MeasureDto.class)).thenReturn(measureResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/measures")
+        mockMvc.perform(get(ApplicationDataFactory.API_V1_APPLICATION + "/measures")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isOk(),
@@ -86,6 +91,7 @@ class MeasureControllerTest extends BaseControllerTest {
                 );
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenAll_whenCallFindAll_thenReturns_404_BAD_REQUEST() throws Exception {
         when(service.findAll()).thenReturn(createNewMeasures());
@@ -95,6 +101,7 @@ class MeasureControllerTest extends BaseControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenMaterialType_whenCallCreate_thenReturns_400_BAD_REQUEST() throws Exception {
         var measureRequest = BAD_BODY;
@@ -107,12 +114,13 @@ class MeasureControllerTest extends BaseControllerTest {
         when(mapper.performMapping(createdMeasure, MeasureDto.class)).thenReturn(measureResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(post(ApplicationDataFactory.API_V1 + "/measures")
+        mockMvc.perform(post(ApplicationDataFactory.API_V1_APPLICATION + "/measures")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(measureRequest)))
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenMaterialType_whenCallCreate_thenReturns_200_OK() throws Exception {
         var measureRequest = createNewMeasureDto();
@@ -125,7 +133,7 @@ class MeasureControllerTest extends BaseControllerTest {
         when(mapper.performMapping(createdMeasure, MeasureDto.class)).thenReturn(measureResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(post(ApplicationDataFactory.API_V1 + "/measures")
+        mockMvc.perform(post(ApplicationDataFactory.API_V1_APPLICATION + "/measures")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(measureRequest)))
                 .andExpectAll(
@@ -137,6 +145,7 @@ class MeasureControllerTest extends BaseControllerTest {
                 );
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenMeasureType_whenCallUpdate_thenReturns_200_OK() throws Exception {
         var measureRequest = createNewMeasureDto();
@@ -149,7 +158,7 @@ class MeasureControllerTest extends BaseControllerTest {
         when(mapper.performMapping(createdMeasure, MeasureDto.class)).thenReturn(measureResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(put(ApplicationDataFactory.API_V1 + "/measures")
+        mockMvc.perform(put(ApplicationDataFactory.API_V1_APPLICATION + "/measures")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(measureRequest)))
                 .andExpectAll(
@@ -161,6 +170,7 @@ class MeasureControllerTest extends BaseControllerTest {
                 );
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenMaterialType_whenCallUpdate_thenReturns_400_BAD_REQUEST() throws Exception {
         var measureRequest = BAD_BODY;
@@ -173,12 +183,13 @@ class MeasureControllerTest extends BaseControllerTest {
         when(mapper.performMapping(createdMeasure, MeasureDto.class)).thenReturn(measureResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(put(ApplicationDataFactory.API_V1 + "/measures")
+        mockMvc.perform(put(ApplicationDataFactory.API_V1_APPLICATION + "/measures")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(measureRequest)))
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenMaterialType_whenCallDelete_thenReturns_200_OK() throws Exception {
         var measureToDelete = createNewMeasure();
@@ -190,7 +201,7 @@ class MeasureControllerTest extends BaseControllerTest {
         when(mapper.performMapping(deletedMaterialType, MeasureDto.class)).thenReturn(measureResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/measures/{id}", ID)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/measures/{id}", ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isOk(),
@@ -201,6 +212,7 @@ class MeasureControllerTest extends BaseControllerTest {
                 );
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenMaterialType_whenCallDelete_thenReturns_400_BAD_REQUEST() throws Exception {
         var measureToDelete = createNewMeasure();
@@ -212,11 +224,12 @@ class MeasureControllerTest extends BaseControllerTest {
         when(mapper.performMapping(deletedMeasure, MeasureDto.class)).thenReturn(measureResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/measures/ID", BAD_PATH_PARAM)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/measures/ID", BAD_PATH_PARAM)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenMaterialType_whenCallDelete_thenReturns_404_NOT_FOUND() throws Exception {
         var measureToDelete = createNewMeasure();
@@ -228,7 +241,7 @@ class MeasureControllerTest extends BaseControllerTest {
         when(mapper.performMapping(deletedMeasure, MeasureDto.class)).thenReturn(measureResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/measures/{id}", ID)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/measures/{id}", ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isNotFound(),

@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = ApplicationDataFactory.API_V1)
+@RequestMapping(value = ApplicationDataFactory.API_V1_ADMIN)
 public class EmployeeController extends GenericController<EmployeeDto, Employee> {
 
     @Autowired

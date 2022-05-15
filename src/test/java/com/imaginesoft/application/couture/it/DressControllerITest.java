@@ -18,7 +18,7 @@ class DressControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_FindAll() {
         webTestClient.get()
-                .uri(ApplicationDataFactory.API_V1 + "/dresses")
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/dresses")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -28,7 +28,7 @@ class DressControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_FindById() {
         webTestClient.get()
-                .uri(ApplicationDataFactory.API_V1 + "/dresses/{ID}", DRESS_ID)
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/dresses/{ID}", DRESS_ID)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -52,7 +52,7 @@ class DressControllerITest extends BaseIntegrationTest {
         var newDress = createNewDressDto();
 
         webTestClient.post()
-                .uri(ApplicationDataFactory.API_V1 + "/dresses")
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/dresses")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(newDress)
                 .exchange()
@@ -79,7 +79,7 @@ class DressControllerITest extends BaseIntegrationTest {
         dressToUpdate.setAmount(DRESS_EDITED_AMOUNT);
 
         webTestClient.put()
-                .uri(ApplicationDataFactory.API_V1 + "/dresses")
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/dresses")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(dressToUpdate)
                 .exchange()
@@ -97,7 +97,7 @@ class DressControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_Delete() {
         webTestClient.delete()
-                .uri(ApplicationDataFactory.API_V1 + "/dresses/{ID}", DRESS_TO_DELETE)
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/dresses/{ID}", DRESS_TO_DELETE)
                 .exchange()
                 .expectStatus().isOk();
     }

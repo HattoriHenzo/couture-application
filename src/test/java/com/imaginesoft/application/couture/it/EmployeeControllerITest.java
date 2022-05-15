@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
     @Test
     void integrationTest_For_FindAll() {
         webTestClient.get()
-                .uri(ApplicationDataFactory.API_V1 + "/employees")
+                .uri(ApplicationDataFactory.API_V1_ADMIN + "/employees")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
     @Test
     void integrationTest_For_FindById() {
         webTestClient.get()
-                .uri(ApplicationDataFactory.API_V1 + "/employees/{ID}", EMPLOYEE_ID)
+                .uri(ApplicationDataFactory.API_V1_ADMIN + "/employees/{ID}", EMPLOYEE_ID)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -55,7 +55,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
         var newEmployee = createNewEmployeeDto();
 
         webTestClient.post()
-                .uri(ApplicationDataFactory.API_V1 + "/employees")
+                .uri(ApplicationDataFactory.API_V1_ADMIN + "/employees")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(newEmployee)
                 .exchange()
@@ -82,7 +82,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
         employeeToUpdate.setFirstName(EMPLOYEE_EDITED_FIRST_NAME);
 
         webTestClient.put()
-                .uri(ApplicationDataFactory.API_V1 + "/employees")
+                .uri(ApplicationDataFactory.API_V1_ADMIN + "/employees")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(employeeToUpdate)
                 .exchange()
@@ -106,7 +106,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
     @Test
     void integrationTest_For_Delete() {
         webTestClient.delete()
-                .uri(ApplicationDataFactory.API_V1 + "/employees/{ID}", EMPLOYEE_TO_DELETE)
+                .uri(ApplicationDataFactory.API_V1_ADMIN + "/employees/{ID}", EMPLOYEE_TO_DELETE)
                 .exchange()
                 .expectStatus().isOk();
     }

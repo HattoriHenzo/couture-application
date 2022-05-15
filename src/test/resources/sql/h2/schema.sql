@@ -74,7 +74,11 @@ CREATE TABLE `login` (
   `id` bigint(20) primary key auto_increment,
   `username` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
-  `login_category` varchar(255) DEFAULT NULL,
+  `login_role` varchar(255) DEFAULT NULL,
+  `credentials_non_expired` bool DEFAULT TRUE,
+  `account_non_expired` bool DEFAULT TRUE,
+  `account_non_locked` bool DEFAULT TRUE,
+  `enabled` bool DEFAULT TRUE,
   PRIMARY KEY (`id`)
 );
 

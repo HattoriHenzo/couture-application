@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
 
 @RestController
-@RequestMapping(value = ApplicationDataFactory.API_V1)
+@RequestMapping(value = ApplicationDataFactory.API_V1_APPLICATION)
 public class DressController extends GenericController<DressDto, Dress> {
 
     @Autowired

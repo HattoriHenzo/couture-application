@@ -79,7 +79,11 @@ CREATE TABLE `login` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `login_category` varchar(255) NOT NULL,
+  `login_role` varchar(255) NOT NULL,
+  `credentials_non_expired` bool DEFAULT TRUE,
+  `account_non_expired` bool DEFAULT TRUE,
+  `account_non_locked` bool DEFAULT TRUE,
+  `enabled` bool DEFAULT TRUE,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -154,10 +158,10 @@ INSERT INTO measure(id, value, dress_id, measure_type_id) VALUES(3, 5, 1, 3);
 INSERT INTO measure(id, value, dress_id, measure_type_id) VALUES(4, 5, 1, 3);
 
 -- Inserting data in Login table
-INSERT INTO login(id, username, password, login_category) VALUES(1, 'username_1', 'password_1', 'ADMINISTRATOR');
-INSERT INTO login(id, username, password, login_category) VALUES(2, 'username_2', 'password_2', 'EMPLOYEE');
-INSERT INTO login(id, username, password, login_category) VALUES(3, 'username_3', 'password_3', 'MANAGER');
-INSERT INTO login(id, username, password, login_category) VALUES(4, 'username_4', 'password_4', 'ADMINISTRATOR');
+INSERT INTO login(id, username, password, login_role, credentials_non_expired, account_non_expired, account_non_locked, enabled) VALUES(1, 'username_1', 'password_1', 'ADMIN', true, true, true, true);
+INSERT INTO login(id, username, password, login_role, credentials_non_expired, account_non_expired, account_non_locked, enabled) VALUES(2, 'username_2', 'password_2', 'EMPLOYEE', true, true, true, true);
+INSERT INTO login(id, username, password, login_role, credentials_non_expired, account_non_expired, account_non_locked, enabled) VALUES(3, 'username_3', 'password_3', 'MANAGER', true, true, true, true);
+INSERT INTO login(id, username, password, login_role, credentials_non_expired, account_non_expired, account_non_locked, enabled) VALUES(4, 'username_4', 'password_4', 'ADMIN', true, true, true, true);
 
 -- Inserting data in Employee table
 INSERT INTO employee(id, first_name, last_name, gender, telephone, login_id) VALUES(1, 'KOKOU', 'KOFFI', 'MALE', '99990262', 1);

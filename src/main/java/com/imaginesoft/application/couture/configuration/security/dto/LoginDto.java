@@ -1,4 +1,4 @@
-package com.imaginesoft.application.couture.dto;
+package com.imaginesoft.application.couture.configuration.security.dto;
 
 public class LoginDto {
 
@@ -8,6 +8,14 @@ public class LoginDto {
     private String employeeFirstName;
     private String employeeLastName;
     private String loginCategory;
+
+    private boolean credentialsNonExpired;
+
+    private boolean accountNonExpired;
+
+    private boolean accountNonLocked;
+
+    private boolean enabled;
 
     public LoginDto() {
     }
@@ -58,5 +66,37 @@ public class LoginDto {
 
     public void setLoginCategory(String loginCategory) {
         this.loginCategory = loginCategory;
+    }
+
+    public boolean isCredentialsNonExpired() {
+        return credentialsNonExpired;
+    }
+
+    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+        this.credentialsNonExpired = credentialsNonExpired;
+    }
+
+    public boolean isAccountNonExpired() {
+        return accountNonExpired;
+    }
+
+    public void setAccountNonExpired(boolean accountNonExpired) {
+        this.accountNonExpired = accountNonExpired;
+    }
+
+    public boolean isAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

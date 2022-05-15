@@ -1,5 +1,8 @@
 package com.imaginesoft.application.couture;
 
+import com.imaginesoft.application.couture.configuration.security.dto.LoginDto;
+import com.imaginesoft.application.couture.configuration.security.model.Login;
+import com.imaginesoft.application.couture.configuration.security.model.LoginRole;
 import com.imaginesoft.application.couture.dto.*;
 import com.imaginesoft.application.couture.model.*;
 
@@ -15,7 +18,7 @@ public class TestDataFactory {
 
     public static final Long ID = 1L;
     public static final String BAD_URI = "/bad/uri";
-    public static final String BAD_PATH_PARAM = "/\\param\\";
+    public static final String BAD_PATH_PARAM = "param";
     public static final String BAD_BODY = "bad body";
     public static final String SUCCESS_DATE = "2022-01-04";
 
@@ -80,7 +83,7 @@ public class TestDataFactory {
     public static final Long LOGIN_TO_DELETE = 2L;
     public static final String LOGIN_USERNAME = "username_1";
     public static final String LOGIN_PASSWORD = "password_1";
-    public static final LoginCategory LOGIN_CATEGORY = LoginCategory.ADMINISTRATOR;
+    public static final LoginRole LOGIN_CATEGORY = LoginRole.ADMIN;
     public static final String LOGIN_EDITED_USERNAME = "username_5";
     public static final String LOGIN_EDITED_PASSWORD = "password_5";
 
@@ -152,7 +155,7 @@ public class TestDataFactory {
 
     public static DressType createNewDressType() {
         var newDressType = new DressType();
-        newDressType.setId(DRESS_ID);
+        newDressType.setId(DRESS_TYPE_ID);
         newDressType.setName(DRESS_TYPE_NAME);
         newDressType.setDresses(createNewDresses());
 
@@ -226,7 +229,10 @@ public class TestDataFactory {
         newLogin.setUsername(LOGIN_USERNAME);
         newLogin.setPassword(LOGIN_PASSWORD);
         newLogin.setLoginCategory(LOGIN_CATEGORY);
-
+        newLogin.setCredentialsNonExpired(true);
+        newLogin.setAccountNonExpired(true);
+        newLogin.setAccountNonLocked(true);
+        newLogin.setEnabled(true);
         return newLogin;
     }
 
@@ -362,6 +368,10 @@ public class TestDataFactory {
         newLoginDto.setUsername(LOGIN_USERNAME);
         newLoginDto.setPassword(LOGIN_PASSWORD);
         newLoginDto.setLoginCategory(LOGIN_CATEGORY.name());
+        newLoginDto.setCredentialsNonExpired(true);
+        newLoginDto.setAccountNonExpired(true);
+        newLoginDto.setAccountNonLocked(true);
+        newLoginDto.setEnabled(true);
 
         return newLoginDto;
     }

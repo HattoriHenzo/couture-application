@@ -19,7 +19,7 @@ class ModelTypeControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_FindAll() {
         webTestClient.get()
-                .uri(ApplicationDataFactory.API_V1 + "/model-types")
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/model-types")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -31,7 +31,7 @@ class ModelTypeControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_FindById() {
         webTestClient.get()
-                .uri(ApplicationDataFactory.API_V1 + "/model-types/{ID}", MODEL_TYPE_ID)
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/model-types/{ID}", MODEL_TYPE_ID)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -52,7 +52,7 @@ class ModelTypeControllerITest extends BaseIntegrationTest {
         var newModelType = createNewDressTypeDto();
 
         webTestClient.post()
-                .uri(ApplicationDataFactory.API_V1 + "/model-types")
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/model-types")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(newModelType)
                 .exchange()
@@ -76,7 +76,7 @@ class ModelTypeControllerITest extends BaseIntegrationTest {
         modelTypeToUpdate.setName(MODEL_TYPE_EDITED_NAME);
 
         webTestClient.put()
-                .uri(ApplicationDataFactory.API_V1 + "/model-types")
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/model-types")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(modelTypeToUpdate)
                 .exchange()
@@ -97,7 +97,7 @@ class ModelTypeControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_Delete() {
         webTestClient.delete()
-                .uri(ApplicationDataFactory.API_V1 + "/model-types/{ID}", MODEL_TYPE_TO_DELETE)
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/model-types/{ID}", MODEL_TYPE_TO_DELETE)
                 .exchange()
                 .expectStatus().isOk();
     }

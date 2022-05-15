@@ -1,10 +1,13 @@
 package com.imaginesoft.application.couture.it;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.imaginesoft.application.couture.controller.ClientController;
 import com.imaginesoft.application.couture.controller.message.Success;
 import com.imaginesoft.application.couture.dto.ClientDto;
 import com.imaginesoft.application.couture.util.ApplicationDataFactory;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.http.MediaType;
 
 import java.util.List;
@@ -18,7 +21,7 @@ class ClientControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_FindAll() {
         webTestClient.get()
-                .uri(ApplicationDataFactory.API_V1 + "/clients")
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/clients")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -28,7 +31,7 @@ class ClientControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_FindById() {
         webTestClient.get()
-                .uri(ApplicationDataFactory.API_V1 + "/clients/{ID}", CLIENT_ID)
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/clients/{ID}", CLIENT_ID)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Success.class)
@@ -52,7 +55,7 @@ class ClientControllerITest extends BaseIntegrationTest {
         var newClient = createNewClientDto();
 
         webTestClient.post()
-                .uri(ApplicationDataFactory.API_V1 + "/clients")
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/clients")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(newClient)
                 .exchange()
@@ -79,7 +82,7 @@ class ClientControllerITest extends BaseIntegrationTest {
         clientToUpdate.setFirstName(CLIENT_EDITED_FIRST_NAME);
 
         webTestClient.put()
-                .uri(ApplicationDataFactory.API_V1 + "/clients")
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/clients")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(clientToUpdate)
                 .exchange()
@@ -104,7 +107,7 @@ class ClientControllerITest extends BaseIntegrationTest {
     @Test
     void integrationTest_For_Delete() {
         webTestClient.delete()
-                .uri(ApplicationDataFactory.API_V1 + "/clients/{ID}", CLIENT_TO_DELETE)
+                .uri(ApplicationDataFactory.API_V1_APPLICATION + "/clients/{ID}", CLIENT_TO_DELETE)
                 .exchange()
                  .expectStatus().isOk();
     }

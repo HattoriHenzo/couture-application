@@ -1,5 +1,6 @@
 package com.imaginesoft.application.couture.repository;
 
+import com.imaginesoft.application.couture.configuration.security.repository.LoginRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -30,7 +31,11 @@ class LoginRepositoryTest {
                         () -> assertThat(value.getId()).isEqualTo(LOGIN_ID),
                         () -> assertThat(value.getUsername()).isEqualTo(LOGIN_USERNAME),
                         () -> assertThat(value.getPassword()).isEqualTo(LOGIN_PASSWORD),
-                        () -> assertThat(value.getLoginCategory()).isEqualTo(LOGIN_CATEGORY)
+                        () -> assertThat(value.getLoginCategory()).isEqualTo(LOGIN_CATEGORY),
+                        () -> assertThat(value.isCredentialsNonExpired()).isTrue(),
+                        () -> assertThat(value.isAccountNonExpired()).isTrue(),
+                        () -> assertThat(value.isAccountNonLocked()).isTrue(),
+                        () -> assertThat(value.isEnabled()).isTrue()
                 )
         ));
     }
@@ -44,7 +49,11 @@ class LoginRepositoryTest {
                 () -> assertThat(createdLogin).isNotNull(),
                 () -> assertThat(createdLogin.getUsername()).isEqualTo(LOGIN_USERNAME),
                 () -> assertThat(createdLogin.getPassword()).isEqualTo(LOGIN_PASSWORD),
-                () -> assertThat(createdLogin.getLoginCategory()).isEqualTo(LOGIN_CATEGORY)
+                () -> assertThat(createdLogin.getLoginCategory()).isEqualTo(LOGIN_CATEGORY),
+                () -> assertThat(createdLogin.isCredentialsNonExpired()).isTrue(),
+                () -> assertThat(createdLogin.isAccountNonExpired()).isTrue(),
+                () -> assertThat(createdLogin.isAccountNonLocked()).isTrue(),
+                () -> assertThat(createdLogin.isEnabled()).isTrue()
         );
     }
 
@@ -59,7 +68,11 @@ class LoginRepositoryTest {
                     assertAll(
                             () -> assertThat(updatedLogin.getId()).isEqualTo(loginToUpdate.get().getId()),
                             () -> assertThat(updatedLogin.getUsername()).isEqualTo(loginToUpdate.get().getUsername()),
-                            () -> assertThat(updatedLogin.getPassword()).isEqualTo(loginToUpdate.get().getPassword())
+                            () -> assertThat(updatedLogin.getPassword()).isEqualTo(loginToUpdate.get().getPassword()),
+                            () -> assertThat(updatedLogin.isCredentialsNonExpired()).isTrue(),
+                            () -> assertThat(updatedLogin.isAccountNonExpired()).isTrue(),
+                            () -> assertThat(updatedLogin.isAccountNonLocked()).isTrue(),
+                            () -> assertThat(updatedLogin.isEnabled()).isTrue()
                     );
                 }
         ));

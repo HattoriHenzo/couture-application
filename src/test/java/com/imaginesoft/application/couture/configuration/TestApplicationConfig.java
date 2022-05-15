@@ -1,5 +1,7 @@
 package com.imaginesoft.application.couture.configuration;
 
+import com.imaginesoft.application.couture.configuration.security.ApplicationSecurityConfig;
+import com.imaginesoft.application.couture.configuration.security.service.LoginService;
 import com.imaginesoft.application.couture.util.DateTimeWrapper;
 import com.imaginesoft.application.couture.util.MapperWrapper;
 import com.imaginesoft.application.couture.util.ModelMapperWrapper;

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.Clock;
 
@@ -33,6 +34,7 @@ class DressTypeControllerTest extends BaseControllerTest {
 
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenId_whenCallFindById_thenReturns_200_OK() throws Exception {
         var dressType = createNewDressType();
@@ -42,7 +44,7 @@ class DressTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(dressType, DressTypeDto.class)).thenReturn(dressTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/dress-types/{id}", ID)
+        mockMvc.perform(get(ApplicationDataFactory.API_V1_APPLICATION + "/dress-types/{id}", ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is("OK")))
@@ -50,15 +52,17 @@ class DressTypeControllerTest extends BaseControllerTest {
                 .andExpect(jsonPath("$.data", hasSize(1)));
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenId_whenCallFindById_thenReturns_400_BAD_REQUEST() throws Exception {
         when(service.findById(anyLong())).thenReturn(createNewDressType());
 
-        mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/dress-types/ID", BAD_PATH_PARAM)
+        mockMvc.perform(get(ApplicationDataFactory.API_V1_APPLICATION + "/dress-types/ID", BAD_PATH_PARAM)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenId_whenCallFindById_thenReturns_404_NOT_FOUND() throws Exception {
         when(service.findById(anyLong())).thenReturn(createNewDressType());
@@ -68,6 +72,7 @@ class DressTypeControllerTest extends BaseControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenAll_whenCallFindAll_thenReturns_200_OK() throws Exception {
         var dressType = createNewDressType();
@@ -78,7 +83,7 @@ class DressTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(dressType, DressTypeDto.class)).thenReturn(dressTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/dress-types")
+        mockMvc.perform(get(ApplicationDataFactory.API_V1_APPLICATION + "/dress-types")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isOk(),
@@ -88,6 +93,7 @@ class DressTypeControllerTest extends BaseControllerTest {
                 );
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenAll_whenCallFindAll_thenReturns_404_BAD_REQUEST() throws Exception {
         when(service.findAll()).thenReturn(TestDataFactory.createNewDressTypes());
@@ -97,6 +103,7 @@ class DressTypeControllerTest extends BaseControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenDressType_whenCallCreate_thenReturns_400_BAD_REQUEST() throws Exception {
         var dressTypeRequest = BAD_BODY;
@@ -109,12 +116,13 @@ class DressTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(createdDressType, DressTypeDto.class)).thenReturn(dressTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(post(ApplicationDataFactory.API_V1 + "/dress-types")
+        mockMvc.perform(post(ApplicationDataFactory.API_V1_APPLICATION + "/dress-types")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dressTypeRequest)))
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenDressType_whenCallCreate_thenReturns_200_OK() throws Exception {
         var dressTypeRequest = TestDataFactory.createNewDressTypeDto();
@@ -127,7 +135,7 @@ class DressTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(dressTypeClient, DressTypeDto.class)).thenReturn(dressTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(post(ApplicationDataFactory.API_V1 + "/dress-types")
+        mockMvc.perform(post(ApplicationDataFactory.API_V1_APPLICATION + "/dress-types")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dressTypeRequest)))
                 .andExpectAll(
@@ -139,6 +147,7 @@ class DressTypeControllerTest extends BaseControllerTest {
                 );
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenDressType_whenCallUpdate_thenReturns_200_OK() throws Exception {
         var dressTypeRequest = TestDataFactory.createNewDressTypeDto();
@@ -151,7 +160,7 @@ class DressTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(createdDressType, DressTypeDto.class)).thenReturn(dressTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(put(ApplicationDataFactory.API_V1 + "/dress-types")
+        mockMvc.perform(put(ApplicationDataFactory.API_V1_APPLICATION + "/dress-types")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dressTypeRequest)))
                 .andExpectAll(
@@ -163,6 +172,7 @@ class DressTypeControllerTest extends BaseControllerTest {
                 );
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenDressType_whenCallUpdate_thenReturns_400_BAD_REQUEST() throws Exception {
         var dressTypeRequest = BAD_BODY;
@@ -175,12 +185,13 @@ class DressTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(createdDressType, DressTypeDto.class)).thenReturn(dressTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(put(ApplicationDataFactory.API_V1 + "/dress-types")
+        mockMvc.perform(put(ApplicationDataFactory.API_V1_APPLICATION + "/dress-types")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dressTypeRequest)))
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenClient_whenCallDelete_thenReturns_200_OK() throws Exception {
         var dressTypeToDelete = createNewDressType();
@@ -192,7 +203,7 @@ class DressTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(deletedDressType, DressTypeDto.class)).thenReturn(dressTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/dress-types/{id}", ID)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/dress-types/{id}", ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isOk(),
@@ -203,6 +214,7 @@ class DressTypeControllerTest extends BaseControllerTest {
                 );
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenDressType_whenCallDelete_thenReturns_400_BAD_REQUEST() throws Exception {
         var dressTypeToDelete = createNewDressType();
@@ -214,23 +226,24 @@ class DressTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(deletedDressType, DressTypeDto.class)).thenReturn(dressTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/dress-types/ID", BAD_PATH_PARAM)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/dress-types/ID", BAD_PATH_PARAM)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenDressType_whenCallDelete_thenReturns_404_NOT_FOUND() throws Exception {
-        var dressTypeToDelete = TestDataFactory.createNewDressType();
+        var dressTypeToDelete = createNewDressType();
         var deletedDressType = dressTypeToDelete;
-        var dressTypeResponse = TestDataFactory.createNewDressTypeDto();
+        var dressTypeResponse = createNewDressTypeDto();
 
-        when(service.findById(ID)).thenReturn(null);
+        when(service.findById(DRESS_TYPE_ID)).thenReturn(null);
         when(service.delete(dressTypeToDelete.getId())).thenReturn(deletedDressType);
         when(mapper.performMapping(deletedDressType, DressTypeDto.class)).thenReturn(dressTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/dress-types/{id}", ID)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/dress-types/{id}", DRESS_TYPE_ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isNotFound(),

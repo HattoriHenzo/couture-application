@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.lang.reflect.InvocationTargetException;
 
 @RestController
-@RequestMapping(value = ApplicationDataFactory.API_V1)
+@RequestMapping(value = ApplicationDataFactory.API_V1_APPLICATION)
 public class MeasureTypeController extends GenericController<MeasureTypeDto, MeasureType> {
 
     @Autowired

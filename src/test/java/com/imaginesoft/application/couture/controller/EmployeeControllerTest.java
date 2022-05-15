@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.Clock;
 
@@ -32,6 +33,7 @@ class EmployeeControllerTest extends BaseControllerTest {
 
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenId_whenCallFindById_thenReturns_200_OK() throws Exception {
         var employee = createNewEmployee();
@@ -41,7 +43,7 @@ class EmployeeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(employee, EmployeeDto.class)).thenReturn(employeeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/employees/{id}", ID)
+        mockMvc.perform(get(ApplicationDataFactory.API_V1_ADMIN + "/employees/{id}", ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is("OK")))
@@ -49,15 +51,17 @@ class EmployeeControllerTest extends BaseControllerTest {
                 .andExpect(jsonPath("$.data", hasSize(1)));
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenId_whenCallFindById_thenReturns_400_BAD_REQUEST() throws Exception {
         when(service.findById(anyLong())).thenReturn(new Employee());
 
-        mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/employees/ID", BAD_PATH_PARAM)
+        mockMvc.perform(get(ApplicationDataFactory.API_V1_ADMIN + "/employees/ID", BAD_PATH_PARAM)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenId_whenCallFindById_thenReturns_404_NOT_FOUND() throws Exception {
         when(service.findById(anyLong())).thenReturn(new Employee());
@@ -67,6 +71,7 @@ class EmployeeControllerTest extends BaseControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenAll_whenCallFindAll_thenReturns_200_OK() throws Exception {
         var employee = createNewEmployee();
@@ -77,7 +82,7 @@ class EmployeeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(employee, EmployeeDto.class)).thenReturn(employeeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/employees")
+        mockMvc.perform(get(ApplicationDataFactory.API_V1_ADMIN + "/employees")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isOk(),
@@ -87,6 +92,7 @@ class EmployeeControllerTest extends BaseControllerTest {
                 );
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenAll_whenCallFindAll_thenReturns_404_BAD_REQUEST() throws Exception {
         when(service.findAll()).thenReturn(createNewEmployees());
@@ -96,6 +102,7 @@ class EmployeeControllerTest extends BaseControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenEmployee_whenCallCreate_thenReturns_400_BAD_REQUEST() throws Exception {
         var employeeRequest = BAD_BODY;
@@ -108,12 +115,13 @@ class EmployeeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(createdEmployee, EmployeeDto.class)).thenReturn(employeeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(post(ApplicationDataFactory.API_V1 + "/employees")
+        mockMvc.perform(post(ApplicationDataFactory.API_V1_ADMIN + "/employees")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(employeeRequest)))
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenEmployee_whenCallCreate_thenReturns_200_OK() throws Exception {
         var employeeRequest = createNewEmployeeDto();
@@ -126,7 +134,7 @@ class EmployeeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(createdEmployee, EmployeeDto.class)).thenReturn(employeeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(post(ApplicationDataFactory.API_V1 + "/employees")
+        mockMvc.perform(post(ApplicationDataFactory.API_V1_ADMIN + "/employees")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(employeeRequest)))
                 .andExpectAll(
@@ -138,6 +146,7 @@ class EmployeeControllerTest extends BaseControllerTest {
                 );
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenEmployee_whenCallUpdate_thenReturns_200_OK() throws Exception {
         var employeeRequest = createNewEmployeeDto();
@@ -150,7 +159,7 @@ class EmployeeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(createdEmployee, EmployeeDto.class)).thenReturn(employeeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(put(ApplicationDataFactory.API_V1 + "/employees")
+        mockMvc.perform(put(ApplicationDataFactory.API_V1_ADMIN + "/employees")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(employeeRequest)))
                 .andExpectAll(
@@ -162,6 +171,7 @@ class EmployeeControllerTest extends BaseControllerTest {
                 );
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenEmployee_whenCallUpdate_thenReturns_400_BAD_REQUEST() throws Exception {
         var employeeRequest = BAD_BODY;
@@ -174,12 +184,13 @@ class EmployeeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(createdEmployee, EmployeeDto.class)).thenReturn(employeeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(put(ApplicationDataFactory.API_V1 + "/employees")
+        mockMvc.perform(put(ApplicationDataFactory.API_V1_ADMIN + "/employees")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(employeeRequest)))
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenEmployee_whenCallDelete_thenReturns_200_OK() throws Exception {
         var employeeToDelete = createNewEmployee();
@@ -191,7 +202,7 @@ class EmployeeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(deletedEmployee, EmployeeDto.class)).thenReturn(employeeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/employees/{id}", ID)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_ADMIN + "/employees/{id}", ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isOk(),
@@ -202,6 +213,7 @@ class EmployeeControllerTest extends BaseControllerTest {
                 );
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenEmployee_whenCallDelete_thenReturns_400_BAD_REQUEST() throws Exception {
         var employeeToDelete = createNewEmployee();
@@ -213,11 +225,12 @@ class EmployeeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(deletedEmployee, EmployeeDto.class)).thenReturn(employeeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/employees/ID", BAD_PATH_PARAM)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_ADMIN + "/employees/ID", BAD_PATH_PARAM)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenEmployee_whenCallDelete_thenReturns_404_NOT_FOUND() throws Exception {
         var employeeToDelete = createNewEmployee();
@@ -229,7 +242,7 @@ class EmployeeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(deletedEmployee, EmployeeDto.class)).thenReturn(employeeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/employees/{id}", ID)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_ADMIN + "/employees/{id}", ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isNotFound(),

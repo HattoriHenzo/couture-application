@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.Clock;
 
@@ -32,6 +33,7 @@ class ModelTypeControllerTest extends BaseControllerTest {
 
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenId_whenCallFindById_thenReturns_200_OK() throws Exception {
         var modelType = createNewModelType();
@@ -41,7 +43,7 @@ class ModelTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(modelType, ModelTypeDto.class)).thenReturn(modelTypeDto);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/model-types/{id}", ID)
+        mockMvc.perform(get(ApplicationDataFactory.API_V1_APPLICATION + "/model-types/{id}", ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is("OK")))
@@ -49,15 +51,17 @@ class ModelTypeControllerTest extends BaseControllerTest {
                 .andExpect(jsonPath("$.data", hasSize(1)));
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenId_whenCallFindById_thenReturns_400_BAD_REQUEST() throws Exception {
         when(service.findById(anyLong())).thenReturn(new ModelType());
 
-        mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/model-types/ID", BAD_PATH_PARAM)
+        mockMvc.perform(get(ApplicationDataFactory.API_V1_APPLICATION + "/model-types/ID", BAD_PATH_PARAM)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenId_whenCallFindById_thenReturns_404_NOT_FOUND() throws Exception {
         when(service.findById(anyLong())).thenReturn(new ModelType());
@@ -67,6 +71,7 @@ class ModelTypeControllerTest extends BaseControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenAll_whenCallFindAll_thenReturns_200_OK() throws Exception {
         var modelType = createNewModelType();
@@ -77,7 +82,7 @@ class ModelTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(modelType, ModelTypeDto.class)).thenReturn(modelTypeDto);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(get(ApplicationDataFactory.API_V1 + "/model-types")
+        mockMvc.perform(get(ApplicationDataFactory.API_V1_APPLICATION + "/model-types")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isOk(),
@@ -87,6 +92,7 @@ class ModelTypeControllerTest extends BaseControllerTest {
                 );
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenAll_whenCallFindAll_thenReturns_404_BAD_REQUEST() throws Exception {
         when(service.findAll()).thenReturn(createNewModelTypes());
@@ -96,6 +102,7 @@ class ModelTypeControllerTest extends BaseControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenModelType_whenCallCreate_thenReturns_400_BAD_REQUEST() throws Exception {
         var modelTypeRequest = BAD_BODY;
@@ -108,12 +115,13 @@ class ModelTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(createdModelType, ModelTypeDto.class)).thenReturn(modelTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(post(ApplicationDataFactory.API_V1 + "/model-types")
+        mockMvc.perform(post(ApplicationDataFactory.API_V1_APPLICATION + "/model-types")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(modelTypeRequest)))
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenModelType_whenCallCreate_thenReturns_200_OK() throws Exception {
         var modelTypeRequest = createNewModelTypeDto();
@@ -126,7 +134,7 @@ class ModelTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(createdModelType, ModelTypeDto.class)).thenReturn(modelTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(post(ApplicationDataFactory.API_V1 + "/model-types")
+        mockMvc.perform(post(ApplicationDataFactory.API_V1_APPLICATION + "/model-types")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(modelTypeRequest)))
                 .andExpectAll(
@@ -138,6 +146,7 @@ class ModelTypeControllerTest extends BaseControllerTest {
                 );
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenModelType_whenCallUpdate_thenReturns_200_OK() throws Exception {
         var modelTypeRequest = createNewModelTypeDto();
@@ -150,7 +159,7 @@ class ModelTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(createdModelType, ModelTypeDto.class)).thenReturn(modelTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(put(ApplicationDataFactory.API_V1 + "/model-types")
+        mockMvc.perform(put(ApplicationDataFactory.API_V1_APPLICATION + "/model-types")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(modelTypeRequest)))
                 .andExpectAll(
@@ -162,6 +171,7 @@ class ModelTypeControllerTest extends BaseControllerTest {
                 );
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenModelType_whenCallUpdate_thenReturns_400_BAD_REQUEST() throws Exception {
         var modelTypeRequest = BAD_BODY;
@@ -174,12 +184,13 @@ class ModelTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(createdModelType, ModelTypeDto.class)).thenReturn(modelTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(put(ApplicationDataFactory.API_V1 + "/model-types")
+        mockMvc.perform(put(ApplicationDataFactory.API_V1_APPLICATION + "/model-types")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(modelTypeRequest)))
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenModelType_whenCallDelete_thenReturns_200_OK() throws Exception {
         var modelTypeToDelete = createNewModelType();
@@ -191,7 +202,7 @@ class ModelTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(deletedModelType, ModelTypeDto.class)).thenReturn(modelTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/model-types/{id}", ID)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/model-types/{id}", ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isOk(),
@@ -202,6 +213,7 @@ class ModelTypeControllerTest extends BaseControllerTest {
                 );
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenModelType_whenCallDelete_thenReturns_400_BAD_REQUEST() throws Exception {
         var modelTypeToDelete = createNewModelType();
@@ -213,11 +225,12 @@ class ModelTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(deletedModelType, ModelTypeDto.class)).thenReturn(modelTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/model-types/ID", BAD_PATH_PARAM)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/model-types/ID", BAD_PATH_PARAM)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenModelType_whenCallDelete_thenReturns_404_NOT_FOUND() throws Exception {
         var modelTypeToDelete = createNewModelType();
@@ -229,7 +242,7 @@ class ModelTypeControllerTest extends BaseControllerTest {
         when(mapper.performMapping(deletedModelType, ModelTypeDto.class)).thenReturn(modelTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1 + "/model-types/{id}", ID)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/model-types/{id}", ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isNotFound(),

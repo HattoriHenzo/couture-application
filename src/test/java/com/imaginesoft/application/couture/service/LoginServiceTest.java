@@ -1,8 +1,8 @@
 package com.imaginesoft.application.couture.service;
 
+import com.imaginesoft.application.couture.configuration.security.service.LoginService;
 import com.imaginesoft.application.couture.controller.exception.RecordNotFoundException;
-import com.imaginesoft.application.couture.model.LoginCategory;
-import com.imaginesoft.application.couture.repository.LoginRepository;
+import com.imaginesoft.application.couture.configuration.security.repository.LoginRepository;
 import com.imaginesoft.application.couture.service.validator.field.DomainRulesException;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class LoginServiceTest implements WithAssertions {
+class LoginServiceTest implements WithAssertions {
 
     @Mock
     private LoginRepository repository;
@@ -38,6 +38,12 @@ public class LoginServiceTest implements WithAssertions {
     void givenLogin_whenFindingLogin_thenFindAllLogins() throws RecordNotFoundException {
         when(repository.findAll()).thenReturn(createNewLogins());
         assertThat(underTest.findAll()).isNotEmpty();
+    }
+
+    @Test
+    void givenUserName_whenLoadingUserByUserName_thenUserIsFound() {
+        when(repository.findByUsername(LOGIN_USERNAME)).thenReturn(Optional.of(createNewLogin()));
+        assertThat(underTest.loadUserByUsername(LOGIN_USERNAME).getUsername()).isEqualTo(LOGIN_USERNAME);
     }
 
     @Test
