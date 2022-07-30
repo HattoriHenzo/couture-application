@@ -61,9 +61,6 @@ Wsrc/test/java/com/imaginesoft/application/couture/repository/MeasureRepositoryT
 Ysrc/test/java/com/imaginesoft/application/couture/repository/ModelTypeRepositoryTest.java,d\6\d6006fb0c122547fddf4b80c18d9ba473407f390
 Ü
 Vsrc/test/java/com/imaginesoft/application/couture/repository/ClientRepositoryTest.java,3\4\343233bb101a5edcf20cbbfac874cc5103dcbe40
-:
-
-.gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
 v
 Fsrc/main/java/com/imaginesoft/application/couture/dto/EmployeeDto.java,c\7\c7655b650d66d21ac18b95655c630e7ec8c74e1d
 Ö
@@ -166,8 +163,6 @@ Osrc/test/java/com/imaginesoft/application/couture/service/DressServiceTest.java
 Ssrc/test/java/com/imaginesoft/application/couture/service/DressTypeServiceTest.java,1\d\1d912e28347668714370873562d92ab91ed5cb11
 Ç
 Rsrc/test/java/com/imaginesoft/application/couture/service/EmployeeServiceTest.java,6\8\68b2319ce5f5e21304182d4a045f4d2b30471059
-
-Osrc/test/java/com/imaginesoft/application/couture/service/LoginServiceTest.java,4\3\43b7337fb82fc58a59dffbe95419029624517c65
 Ü
 Vsrc/test/java/com/imaginesoft/application/couture/service/MaterialTypeServiceTest.java,8\2\827080c9b801ebbe60d021155299a63d032ae9e2
 Å

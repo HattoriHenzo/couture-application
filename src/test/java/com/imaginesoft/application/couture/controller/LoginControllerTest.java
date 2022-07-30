@@ -27,9 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(LoginController.class)
 class LoginControllerTest extends BaseControllerTest {
 
-    @MockBean
-    private LoginService service;
-
     @BeforeEach
     void setUp() {
 
