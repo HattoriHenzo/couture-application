@@ -2,7 +2,7 @@ package com.imaginesoft.application.couture.it;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.imaginesoft.application.couture.controller.message.Success;
-import com.imaginesoft.application.couture.configuration.security.dto.LoginDto;
+import com.imaginesoft.application.couture.dto.LoginDto;
 import com.imaginesoft.application.couture.util.ApplicationDataFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;

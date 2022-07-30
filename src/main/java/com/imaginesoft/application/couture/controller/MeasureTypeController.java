@@ -1,19 +1,18 @@
 package com.imaginesoft.application.couture.controller;
 
-import com.imaginesoft.application.couture.controller.exception.RecordNotFoundException;
-import com.imaginesoft.application.couture.controller.generic.GenericController;
+import com.imaginesoft.application.couture.controller.exception.BadRequestException;
+import com.imaginesoft.application.couture.controller.exception.ResourceNotFoundException;
+import com.imaginesoft.application.couture.generic.controller.GenericController;
 import com.imaginesoft.application.couture.controller.message.Response;
 import com.imaginesoft.application.couture.dto.MeasureTypeDto;
 import com.imaginesoft.application.couture.model.MeasureType;
-import com.imaginesoft.application.couture.service.generic.GenericService;
+import com.imaginesoft.application.couture.generic.service.GenericService;
 import com.imaginesoft.application.couture.util.ApplicationDataFactory;
 import com.imaginesoft.application.couture.util.DateTimeWrapper;
 import com.imaginesoft.application.couture.util.MapperWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.lang.reflect.InvocationTargetException;
 
 @RestController
 @RequestMapping(value = ApplicationDataFactory.API_V1_APPLICATION)
@@ -26,31 +25,31 @@ public class MeasureTypeController extends GenericController<MeasureTypeDto, Mea
 
     @Override
     @GetMapping("/measure-types/{id}")
-    protected ResponseEntity<Response> findById(@PathVariable("id") Long id) throws RecordNotFoundException {
+    protected ResponseEntity<Response> findById(@PathVariable("id") Long id) throws ResourceNotFoundException {
         return super.findById(id);
     }
 
     @Override
     @GetMapping("/measure-types")
-    protected ResponseEntity<Response> findAll() throws RecordNotFoundException {
+    protected ResponseEntity<Response> findAll() throws ResourceNotFoundException {
         return super.findAll();
     }
 
     @Override
     @PostMapping("/measure-types")
-    protected ResponseEntity<Response> create(@RequestBody MeasureTypeDto measureTypeDto) {
+    protected ResponseEntity<Response> create(@RequestBody MeasureTypeDto measureTypeDto) throws BadRequestException {
         return super.create(measureTypeDto);
     }
 
     @Override
     @PutMapping("/measure-types")
-    protected ResponseEntity<Response> update(@RequestBody MeasureTypeDto measureTypeDto) {
+    protected ResponseEntity<Response> update(@RequestBody MeasureTypeDto measureTypeDto) throws BadRequestException {
         return super.update(measureTypeDto);
     }
 
     @Override
     @DeleteMapping("/measure-types/{id}")
-    protected ResponseEntity<Response> delete(@PathVariable("id") Long id) throws RecordNotFoundException {
+    protected ResponseEntity<Response> delete(@PathVariable("id") Long id) throws ResourceNotFoundException {
         return super.delete(id);
     }
 }

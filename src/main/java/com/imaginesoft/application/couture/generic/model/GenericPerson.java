@@ -1,4 +1,4 @@
-package com.imaginesoft.application.couture.model.generic;
+package com.imaginesoft.application.couture.generic.model;
 
 import com.imaginesoft.application.couture.model.Gender;
 

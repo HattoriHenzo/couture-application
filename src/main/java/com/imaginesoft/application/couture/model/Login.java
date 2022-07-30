@@ -1,6 +1,5 @@
-package com.imaginesoft.application.couture.configuration.security.model;
+package com.imaginesoft.application.couture.model;
 
-import com.imaginesoft.application.couture.model.Employee;
 import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

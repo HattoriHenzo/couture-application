@@ -3,6 +3,7 @@ package com.imaginesoft.application.couture.controller;
 import com.imaginesoft.application.couture.dto.EmployeeDto;
 import com.imaginesoft.application.couture.model.Employee;
 import com.imaginesoft.application.couture.service.EmployeeService;
+import com.imaginesoft.application.couture.service.exception.DomainRecordNotFoundException;
 import com.imaginesoft.application.couture.util.ApplicationDataFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -233,16 +234,13 @@ class EmployeeControllerTest extends BaseControllerTest {
     @WithMockUser(username = "spring", roles = {"ADMIN"})
     @Test
     void givenEmployee_whenCallDelete_thenReturns_404_NOT_FOUND() throws Exception {
-        var employeeToDelete = createNewEmployee();
-        var deletedEmployee = employeeToDelete;
-        var employeeResponse = createNewEmployeeDto();
+        var deletedEmployee = createNewEmployee();
 
-        when(service.findById(ID)).thenReturn(null);
-        when(service.delete(employeeToDelete.getId())).thenReturn(deletedEmployee);
-        when(mapper.performMapping(deletedEmployee, EmployeeDto.class)).thenReturn(employeeResponse);
+        when(service.delete(anyLong())).thenThrow(DomainRecordNotFoundException.class);
+        when(mapper.performMapping(deletedEmployee, EmployeeDto.class)).thenReturn(null);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1_ADMIN + "/employees/{id}", ID)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_ADMIN + "/employees/{id}", anyLong())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isNotFound(),

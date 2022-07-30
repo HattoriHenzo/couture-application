@@ -1,8 +1,8 @@
 package com.imaginesoft.application.couture;
 
-import com.imaginesoft.application.couture.configuration.security.dto.LoginDto;
-import com.imaginesoft.application.couture.configuration.security.model.Login;
-import com.imaginesoft.application.couture.configuration.security.model.LoginRole;
+import com.imaginesoft.application.couture.dto.LoginDto;
+import com.imaginesoft.application.couture.model.Login;
+import com.imaginesoft.application.couture.model.LoginRole;
 import com.imaginesoft.application.couture.dto.*;
 import com.imaginesoft.application.couture.model.*;
 

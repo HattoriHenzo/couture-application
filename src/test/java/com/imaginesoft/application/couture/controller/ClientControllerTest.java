@@ -3,6 +3,7 @@ package com.imaginesoft.application.couture.controller;
 import com.imaginesoft.application.couture.dto.ClientDto;
 import com.imaginesoft.application.couture.model.Client;
 import com.imaginesoft.application.couture.service.ClientService;
+import com.imaginesoft.application.couture.service.exception.DomainRecordNotFoundException;
 import com.imaginesoft.application.couture.util.ApplicationDataFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -236,15 +237,12 @@ class ClientControllerTest extends BaseControllerTest {
     @Test
     void givenClient_whenCallDelete_thenReturns_404_NOT_FOUND() throws Exception {
         var clientToDelete = createNewClient();
-        var deletedClient = clientToDelete;
-        var clientResponse = createNewClientDto();
 
-        when(service.findById(ID)).thenReturn(null);
-        when(service.delete(clientToDelete.getId())).thenReturn(deletedClient);
-        when(mapper.performMapping(deletedClient, ClientDto.class)).thenReturn(clientResponse);
+        when(service.delete(anyLong())).thenThrow(DomainRecordNotFoundException.class);
+        when(mapper.performMapping(clientToDelete, ClientDto.class)).thenReturn(null);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/clients/{id}", ID)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/clients/{id}", anyLong())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isNotFound(),

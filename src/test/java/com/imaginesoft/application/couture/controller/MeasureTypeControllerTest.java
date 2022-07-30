@@ -3,6 +3,7 @@ package com.imaginesoft.application.couture.controller;
 import com.imaginesoft.application.couture.dto.MeasureTypeDto;
 import com.imaginesoft.application.couture.model.MeasureType;
 import com.imaginesoft.application.couture.service.MeasureTypeService;
+import com.imaginesoft.application.couture.service.exception.DomainRecordNotFoundException;
 import com.imaginesoft.application.couture.util.ApplicationDataFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -194,12 +195,11 @@ class MeasureTypeControllerTest extends BaseControllerTest {
     @Test
     void givenMeasureType_whenCallDelete_thenReturns_200_OK() throws Exception {
         var measureTypeToDelete = createNewMeasureType();
-        var deletedMeasureType = measureTypeToDelete;
         var measureTypeResponse = createNewMeasureTypeDto();
 
         when(service.findById(ID)).thenReturn(measureTypeToDelete);
-        when(service.delete(measureTypeToDelete.getId())).thenReturn(deletedMeasureType);
-        when(mapper.performMapping(deletedMeasureType, MeasureTypeDto.class)).thenReturn(measureTypeResponse);
+        when(service.delete(measureTypeToDelete.getId())).thenReturn(measureTypeToDelete);
+        when(mapper.performMapping(measureTypeToDelete, MeasureTypeDto.class)).thenReturn(measureTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
         mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/measure-types/{id}", ID)
@@ -217,12 +217,11 @@ class MeasureTypeControllerTest extends BaseControllerTest {
     @Test
     void givenMeasureType_whenCallDelete_thenReturns_400_BAD_REQUEST() throws Exception {
         var measureTypeToDelete = createNewMeasureType();
-        var deletedMeasureType = measureTypeToDelete;
         var measureTypeResponse = createNewMeasureTypeDto();
 
         when(service.findById(ID)).thenReturn(measureTypeToDelete);
-        when(service.delete(measureTypeToDelete.getId())).thenReturn(deletedMeasureType);
-        when(mapper.performMapping(deletedMeasureType, MeasureTypeDto.class)).thenReturn(measureTypeResponse);
+        when(service.delete(measureTypeToDelete.getId())).thenReturn(measureTypeToDelete);
+        when(mapper.performMapping(measureTypeToDelete, MeasureTypeDto.class)).thenReturn(measureTypeResponse);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
         mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/measure-types/ID", BAD_PATH_PARAM)
@@ -234,15 +233,12 @@ class MeasureTypeControllerTest extends BaseControllerTest {
     @Test
     void givenMeasureType_whenCallDelete_thenReturns_404_NOT_FOUND() throws Exception {
         var measureTypeToDelete = createNewMeasureType();
-        var deletedMeasureType = measureTypeToDelete;
-        var measureTypeResponse = createNewMeasureTypeDto();
 
-        when(service.findById(ID)).thenReturn(null);
-        when(service.delete(measureTypeToDelete.getId())).thenReturn(deletedMeasureType);
-        when(mapper.performMapping(deletedMeasureType, MeasureTypeDto.class)).thenReturn(measureTypeResponse);
+        when(service.delete(anyLong())).thenThrow(DomainRecordNotFoundException.class);
+        when(mapper.performMapping(measureTypeToDelete, MeasureTypeDto.class)).thenReturn(null);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/measure-types/{id}", ID)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/measure-types/{id}", anyLong())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isNotFound(),

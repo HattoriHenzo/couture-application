@@ -3,6 +3,7 @@ package com.imaginesoft.application.couture.controller;
 import com.imaginesoft.application.couture.dto.MaterialTypeDto;
 import com.imaginesoft.application.couture.model.MaterialType;
 import com.imaginesoft.application.couture.service.MaterialTypeService;
+import com.imaginesoft.application.couture.service.exception.DomainRecordNotFoundException;
 import com.imaginesoft.application.couture.util.ApplicationDataFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -234,15 +235,12 @@ class MaterialTypeControllerTest extends BaseControllerTest {
     @Test
     void givenMaterialType_whenCallDelete_thenReturns_404_NOT_FOUND() throws Exception {
         var materialTypeToDelete = createNewMaterialType();
-        var deletedMaterialType = materialTypeToDelete;
-        var materialTypeResponse = createNewMaterialTypeDto();
 
-        when(service.findById(ID)).thenReturn(null);
-        when(service.delete(materialTypeToDelete.getId())).thenReturn(deletedMaterialType);
-        when(mapper.performMapping(deletedMaterialType, MaterialTypeDto.class)).thenReturn(materialTypeResponse);
+        when(service.delete(anyLong())).thenThrow(DomainRecordNotFoundException.class);
+        when(mapper.performMapping(materialTypeToDelete, MaterialTypeDto.class)).thenReturn(null);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/material-types/{id}", ID)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/material-types/{id}", anyLong())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isNotFound(),

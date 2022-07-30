@@ -1,11 +1,12 @@
 package com.imaginesoft.application.couture.controller;
 
-import com.imaginesoft.application.couture.controller.exception.RecordNotFoundException;
-import com.imaginesoft.application.couture.controller.generic.GenericController;
+import com.imaginesoft.application.couture.controller.exception.BadRequestException;
+import com.imaginesoft.application.couture.controller.exception.ResourceNotFoundException;
+import com.imaginesoft.application.couture.generic.controller.GenericController;
 import com.imaginesoft.application.couture.controller.message.Response;
 import com.imaginesoft.application.couture.dto.MeasureDto;
 import com.imaginesoft.application.couture.model.Measure;
-import com.imaginesoft.application.couture.service.generic.GenericService;
+import com.imaginesoft.application.couture.generic.service.GenericService;
 import com.imaginesoft.application.couture.util.ApplicationDataFactory;
 import com.imaginesoft.application.couture.util.DateTimeWrapper;
 import com.imaginesoft.application.couture.util.MapperWrapper;
@@ -24,31 +25,31 @@ public class MeasureController extends GenericController<MeasureDto, Measure> {
 
     @Override
     @GetMapping("/measures/{id}")
-    protected ResponseEntity<Response> findById(@PathVariable("id") Long id) throws RecordNotFoundException {
+    protected ResponseEntity<Response> findById(@PathVariable("id") Long id) throws ResourceNotFoundException {
         return super.findById(id);
     }
 
     @Override
     @GetMapping("/measures")
-    protected ResponseEntity<Response> findAll() throws RecordNotFoundException {
+    protected ResponseEntity<Response> findAll() throws ResourceNotFoundException {
         return super.findAll();
     }
 
     @Override
     @PostMapping("/measures")
-    protected ResponseEntity<Response> create(@RequestBody MeasureDto measureDto) {
+    protected ResponseEntity<Response> create(@RequestBody MeasureDto measureDto) throws BadRequestException {
         return super.create(measureDto);
     }
 
     @Override
     @PutMapping("/measures")
-    protected ResponseEntity<Response> update(@RequestBody MeasureDto measureDto) {
+    protected ResponseEntity<Response> update(@RequestBody MeasureDto measureDto) throws BadRequestException {
         return super.update(measureDto);
     }
 
     @Override
     @DeleteMapping("/measures/{id}")
-    protected ResponseEntity<Response> delete(@PathVariable("id") Long id) throws RecordNotFoundException {
+    protected ResponseEntity<Response> delete(@PathVariable("id") Long id) throws ResourceNotFoundException {
         return super.delete(id);
     }
 }

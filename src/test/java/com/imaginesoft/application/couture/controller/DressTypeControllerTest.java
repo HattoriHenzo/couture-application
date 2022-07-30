@@ -3,6 +3,7 @@ package com.imaginesoft.application.couture.controller;
 import com.imaginesoft.application.couture.dto.DressTypeDto;
 import com.imaginesoft.application.couture.model.DressType;
 import com.imaginesoft.application.couture.service.DressTypeService;
+import com.imaginesoft.application.couture.service.exception.DomainRecordNotFoundException;
 import com.imaginesoft.application.couture.util.ApplicationDataFactory;
 import com.imaginesoft.application.couture.TestDataFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -235,15 +236,12 @@ class DressTypeControllerTest extends BaseControllerTest {
     @Test
     void givenDressType_whenCallDelete_thenReturns_404_NOT_FOUND() throws Exception {
         var dressTypeToDelete = createNewDressType();
-        var deletedDressType = dressTypeToDelete;
-        var dressTypeResponse = createNewDressTypeDto();
 
-        when(service.findById(DRESS_TYPE_ID)).thenReturn(null);
-        when(service.delete(dressTypeToDelete.getId())).thenReturn(deletedDressType);
-        when(mapper.performMapping(deletedDressType, DressTypeDto.class)).thenReturn(dressTypeResponse);
+        when(service.delete(anyLong())).thenThrow(DomainRecordNotFoundException.class);
+        when(mapper.performMapping(dressTypeToDelete, DressTypeDto.class)).thenReturn(null);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/dress-types/{id}", DRESS_TYPE_ID)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/dress-types/{id}", anyLong())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isNotFound(),

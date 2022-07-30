@@ -1,8 +1,9 @@
 package com.imaginesoft.application.couture.service;
 
-import com.imaginesoft.application.couture.controller.exception.RecordNotFoundException;
+import com.imaginesoft.application.couture.controller.exception.ResourceNotFoundException;
 import com.imaginesoft.application.couture.repository.MaterialTypeRepository;
-import com.imaginesoft.application.couture.service.validator.field.DomainRulesException;
+import com.imaginesoft.application.couture.service.exception.DomainRecordNotFoundException;
+import com.imaginesoft.application.couture.service.exception.DomainRulesException;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ class MaterialTypeServiceTest implements WithAssertions {
     }
 
     @Test
-    void givenMaterialTypes_whenFindingMaterialTypes_thenFindAllMaterialTypes() throws RecordNotFoundException {
+    void givenMaterialTypes_whenFindingMaterialTypes_thenFindAllMaterialTypes() throws DomainRecordNotFoundException {
         when(repository.findAll()).thenReturn(createNewMaterialTypes());
         assertThat(underTest.findAll()).isNotEmpty();
     }

@@ -1,7 +1,7 @@
-package com.imaginesoft.application.couture.configuration.security;
+package com.imaginesoft.application.couture.configuration;
 
 
-import com.imaginesoft.application.couture.configuration.security.service.LoginService;
+import com.imaginesoft.application.couture.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,12 +11,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static com.imaginesoft.application.couture.configuration.security.model.LoginRole.*;
+import static com.imaginesoft.application.couture.model.LoginRole.*;
 import static com.imaginesoft.application.couture.util.ApplicationDataFactory.API_V1_ADMIN;
 import static com.imaginesoft.application.couture.util.ApplicationDataFactory.API_V1_APPLICATION;
 
-@Configuration
 @EnableWebSecurity
+@Configuration
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final LoginService service;

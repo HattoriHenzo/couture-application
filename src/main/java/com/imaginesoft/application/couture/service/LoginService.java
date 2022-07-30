@@ -1,9 +1,9 @@
-package com.imaginesoft.application.couture.configuration.security.service;
+package com.imaginesoft.application.couture.service;
 
-import com.imaginesoft.application.couture.configuration.security.model.Login;
-import com.imaginesoft.application.couture.configuration.security.repository.LoginRepository;
-import com.imaginesoft.application.couture.controller.exception.RecordNotFoundException;
-import com.imaginesoft.application.couture.service.generic.GenericService;
+import com.imaginesoft.application.couture.model.Login;
+import com.imaginesoft.application.couture.repository.LoginRepository;
+import com.imaginesoft.application.couture.generic.service.GenericService;
+import com.imaginesoft.application.couture.service.exception.DomainRecordNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class LoginService implements UserDetailsService {
+public class LoginService extends GenericService<Login> implements UserDetailsService {
 
     private LoginRepository repository;
 
@@ -21,6 +21,7 @@ public class LoginService implements UserDetailsService {
 
     @Autowired
     public LoginService(LoginRepository repository) {
+        super(repository);
         this.repository = repository;
         this.genericService = new SimpleLoginService(this.repository);
     }
@@ -31,18 +32,22 @@ public class LoginService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("Can't find the user %s", username)));
     }
 
-    public Login findById(Long id) throws RecordNotFoundException {
+    @Override
+    public Login findById(Long id) throws DomainRecordNotFoundException {
         return genericService.findById(id);
     }
 
-    public List<Login> findAll() throws RecordNotFoundException {
+    @Override
+    public List<Login> findAll() throws DomainRecordNotFoundException {
         return genericService.findAll();
     }
 
+    @Override
     public Login createOrUpdate(Login login) {
         return genericService.createOrUpdate(login);
     }
 
+    @Override
     public Login delete(Long id) {
         return genericService.delete(id);
     }
