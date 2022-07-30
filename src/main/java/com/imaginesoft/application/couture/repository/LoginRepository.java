@@ -1,6 +1,6 @@
-package com.imaginesoft.application.couture.configuration.security.repository;
+package com.imaginesoft.application.couture.repository;
 
-import com.imaginesoft.application.couture.configuration.security.model.Login;
+import com.imaginesoft.application.couture.model.Login;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

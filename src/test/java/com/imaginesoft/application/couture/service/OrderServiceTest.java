@@ -1,8 +1,9 @@
 package com.imaginesoft.application.couture.service;
 
-import com.imaginesoft.application.couture.controller.exception.RecordNotFoundException;
+import com.imaginesoft.application.couture.controller.exception.ResourceNotFoundException;
 import com.imaginesoft.application.couture.repository.OrderRepository;
-import com.imaginesoft.application.couture.service.validator.field.DomainRulesException;
+import com.imaginesoft.application.couture.service.exception.DomainRecordNotFoundException;
+import com.imaginesoft.application.couture.service.exception.DomainRulesException;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ class OrderServiceTest implements WithAssertions {
     }
 
     @Test
-    void givenOrders_whenFindingOrders_thenFindAllOrders() throws RecordNotFoundException {
+    void givenOrders_whenFindingOrders_thenFindAllOrders() throws DomainRecordNotFoundException {
         when(repository.findAll()).thenReturn(createNewOrders());
         assertThat(underTest.findAll()).isNotEmpty();
     }

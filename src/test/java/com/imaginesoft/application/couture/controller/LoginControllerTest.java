@@ -1,13 +1,15 @@
 package com.imaginesoft.application.couture.controller;
 
-import com.imaginesoft.application.couture.configuration.security.controller.LoginController;
-import com.imaginesoft.application.couture.configuration.security.model.Login;
-import com.imaginesoft.application.couture.configuration.security.dto.LoginDto;
+import com.imaginesoft.application.couture.model.Login;
+import com.imaginesoft.application.couture.dto.LoginDto;
+import com.imaginesoft.application.couture.service.LoginService;
+import com.imaginesoft.application.couture.service.exception.DomainRecordNotFoundException;
 import com.imaginesoft.application.couture.util.ApplicationDataFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
@@ -15,6 +17,7 @@ import java.time.Clock;
 
 import static com.imaginesoft.application.couture.TestDataFactory.*;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -180,12 +183,11 @@ class LoginControllerTest extends BaseControllerTest {
     @Test
     void givenLogin_whenCallDelete_thenReturns_200_OK() throws Exception {
         var loginToDelete = createNewLogin();
-        var deletedLogin = loginToDelete;
         var loginResponse = createNewLoginDto();
 
         when(service.findById(LOGIN_ID)).thenReturn(loginToDelete);
-        when(service.delete(LOGIN_ID)).thenReturn(deletedLogin);
-        when(mapper.performMapping(deletedLogin, LoginDto.class)).thenReturn(loginResponse);
+        when(service.delete(LOGIN_ID)).thenReturn(loginToDelete);
+        when(mapper.performMapping(loginToDelete, LoginDto.class)).thenReturn(loginResponse);
         when(dateTime.getCurrentDateTime(ArgumentMatchers.any(Clock.class))).thenReturn(SUCCESS_DATE);
 
         mockMvc.perform(delete(ApplicationDataFactory.API_V1_ADMIN + "/logins/{id}", LOGIN_ID)
@@ -203,15 +205,12 @@ class LoginControllerTest extends BaseControllerTest {
     @Test
     void givenLogin_whenCallDelete_thenReturns_404_NOT_FOUND() throws Exception {
         var loginToDelete = createNewLogin();
-        var deletedLogin = loginToDelete;
-        var loginResponse = createNewLoginDto();
 
-        when(service.findById(LOGIN_ID)).thenReturn(null);
-        when(service.delete(loginToDelete.getId())).thenReturn(deletedLogin);
-        when(mapper.performMapping(deletedLogin, LoginDto.class)).thenReturn(loginResponse);
+        when(service.delete(anyLong())).thenThrow(DomainRecordNotFoundException.class);
+        when(mapper.performMapping(loginToDelete, LoginDto.class)).thenReturn(null);
         when(dateTime.getCurrentDateTime(ArgumentMatchers.any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1_ADMIN + "/logins/{id}", LOGIN_ID)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_ADMIN + "/logins/{id}", anyLong())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isNotFound(),

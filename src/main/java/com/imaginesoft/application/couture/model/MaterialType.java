@@ -1,7 +1,7 @@
 package com.imaginesoft.application.couture.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.imaginesoft.application.couture.model.generic.GenericType;
+import com.imaginesoft.application.couture.generic.model.GenericType;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;

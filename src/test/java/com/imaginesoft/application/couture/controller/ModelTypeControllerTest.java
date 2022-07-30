@@ -3,6 +3,7 @@ package com.imaginesoft.application.couture.controller;
 import com.imaginesoft.application.couture.dto.ModelTypeDto;
 import com.imaginesoft.application.couture.model.ModelType;
 import com.imaginesoft.application.couture.service.ModelTypeService;
+import com.imaginesoft.application.couture.service.exception.DomainRecordNotFoundException;
 import com.imaginesoft.application.couture.util.ApplicationDataFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -234,15 +235,12 @@ class ModelTypeControllerTest extends BaseControllerTest {
     @Test
     void givenModelType_whenCallDelete_thenReturns_404_NOT_FOUND() throws Exception {
         var modelTypeToDelete = createNewModelType();
-        var deletedModelType = modelTypeToDelete;
-        var modelTypeResponse = createNewModelTypeDto();
 
-        when(service.findById(ID)).thenReturn(null);
-        when(service.delete(modelTypeToDelete.getId()   )).thenReturn(deletedModelType);
-        when(mapper.performMapping(deletedModelType, ModelTypeDto.class)).thenReturn(modelTypeResponse);
+        when(service.delete(anyLong())).thenThrow(DomainRecordNotFoundException.class);
+        when(mapper.performMapping(modelTypeToDelete, ModelTypeDto.class)).thenReturn(null);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/model-types/{id}", ID)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/model-types/{id}", anyLong())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isNotFound(),

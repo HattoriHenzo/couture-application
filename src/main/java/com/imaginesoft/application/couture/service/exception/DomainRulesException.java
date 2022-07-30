@@ -1,4 +1,4 @@
-package com.imaginesoft.application.couture.service.validator.field;
+package com.imaginesoft.application.couture.service.exception;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;

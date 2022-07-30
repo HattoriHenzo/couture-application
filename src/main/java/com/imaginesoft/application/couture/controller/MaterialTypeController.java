@@ -1,11 +1,12 @@
 package com.imaginesoft.application.couture.controller;
 
-import com.imaginesoft.application.couture.controller.exception.RecordNotFoundException;
-import com.imaginesoft.application.couture.controller.generic.GenericController;
+import com.imaginesoft.application.couture.controller.exception.BadRequestException;
+import com.imaginesoft.application.couture.controller.exception.ResourceNotFoundException;
+import com.imaginesoft.application.couture.generic.controller.GenericController;
 import com.imaginesoft.application.couture.controller.message.Response;
 import com.imaginesoft.application.couture.dto.MaterialTypeDto;
 import com.imaginesoft.application.couture.model.MaterialType;
-import com.imaginesoft.application.couture.service.generic.GenericService;
+import com.imaginesoft.application.couture.generic.service.GenericService;
 import com.imaginesoft.application.couture.util.ApplicationDataFactory;
 import com.imaginesoft.application.couture.util.DateTimeWrapper;
 import com.imaginesoft.application.couture.util.MapperWrapper;
@@ -24,31 +25,31 @@ public class MaterialTypeController extends GenericController<MaterialTypeDto, M
 
     @Override
     @GetMapping("/material-types/{id}")
-    protected ResponseEntity<Response> findById(@PathVariable("id") Long id) throws RecordNotFoundException {
+    protected ResponseEntity<Response> findById(@PathVariable("id") Long id) throws ResourceNotFoundException {
         return super.findById(id);
     }
 
     @Override
     @GetMapping("/material-types")
-    protected ResponseEntity<Response> findAll() throws RecordNotFoundException {
+    protected ResponseEntity<Response> findAll() throws ResourceNotFoundException {
         return super.findAll();
     }
 
     @Override
     @PostMapping("/material-types")
-    protected ResponseEntity<Response> create(@RequestBody MaterialTypeDto materialTypeDto) {
+    protected ResponseEntity<Response> create(@RequestBody MaterialTypeDto materialTypeDto) throws BadRequestException {
         return super.create(materialTypeDto);
     }
 
     @Override
     @PutMapping("/material-types")
-    protected ResponseEntity<Response> update(@RequestBody MaterialTypeDto materialTypeDto) {
+    protected ResponseEntity<Response> update(@RequestBody MaterialTypeDto materialTypeDto) throws BadRequestException {
         return super.update(materialTypeDto);
     }
 
     @Override
     @DeleteMapping("/material-types/{id}")
-    protected ResponseEntity<Response> delete(@PathVariable("id") Long id) throws RecordNotFoundException {
+    protected ResponseEntity<Response> delete(@PathVariable("id") Long id) throws ResourceNotFoundException {
         return super.delete(id);
     }
 }

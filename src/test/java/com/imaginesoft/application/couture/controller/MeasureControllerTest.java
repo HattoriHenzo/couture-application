@@ -3,6 +3,7 @@ package com.imaginesoft.application.couture.controller;
 import com.imaginesoft.application.couture.dto.MeasureDto;
 import com.imaginesoft.application.couture.model.Measure;
 import com.imaginesoft.application.couture.service.MeasureService;
+import com.imaginesoft.application.couture.service.exception.DomainRecordNotFoundException;
 import com.imaginesoft.application.couture.util.ApplicationDataFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -233,15 +234,12 @@ class MeasureControllerTest extends BaseControllerTest {
     @Test
     void givenMaterialType_whenCallDelete_thenReturns_404_NOT_FOUND() throws Exception {
         var measureToDelete = createNewMeasure();
-        var deletedMeasure = measureToDelete;
-        var measureResponse = createNewMeasureDto();
 
-        when(service.findById(ID)).thenReturn(null);
-        when(service.delete(measureToDelete.getId())).thenReturn(deletedMeasure);
-        when(mapper.performMapping(deletedMeasure, MeasureDto.class)).thenReturn(measureResponse);
+        when(service.delete(anyLong())).thenThrow(DomainRecordNotFoundException.class);
+        when(mapper.performMapping(measureToDelete, MeasureDto.class)).thenReturn(null);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/measures/{id}", ID)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/measures/{id}", anyLong())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isNotFound(),

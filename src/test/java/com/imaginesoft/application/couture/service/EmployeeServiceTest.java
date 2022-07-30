@@ -1,9 +1,9 @@
 package com.imaginesoft.application.couture.service;
 
-import com.imaginesoft.application.couture.controller.exception.RecordNotFoundException;
-import com.imaginesoft.application.couture.model.Client;
+import com.imaginesoft.application.couture.controller.exception.ResourceNotFoundException;
 import com.imaginesoft.application.couture.repository.EmployeeRepository;
-import com.imaginesoft.application.couture.service.validator.field.DomainRulesException;
+import com.imaginesoft.application.couture.service.exception.DomainRecordNotFoundException;
+import com.imaginesoft.application.couture.service.exception.DomainRulesException;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ class EmployeeServiceTest implements WithAssertions {
     }
 
     @Test
-    void givenEmployee_whenFindingEmployee_thenFindAllEmployees() throws RecordNotFoundException {
+    void givenEmployee_whenFindingEmployee_thenFindAllEmployees() throws DomainRecordNotFoundException {
         when(repository.findAll()).thenReturn(createNewEmployees());
         assertThat(underTest.findAll()).isNotEmpty();
     }

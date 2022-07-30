@@ -1,8 +1,9 @@
 package com.imaginesoft.application.couture.service;
 
-import com.imaginesoft.application.couture.controller.exception.RecordNotFoundException;
+import com.imaginesoft.application.couture.controller.exception.ResourceNotFoundException;
 import com.imaginesoft.application.couture.repository.MeasureTypeRepository;
-import com.imaginesoft.application.couture.service.validator.field.DomainRulesException;
+import com.imaginesoft.application.couture.service.exception.DomainRecordNotFoundException;
+import com.imaginesoft.application.couture.service.exception.DomainRulesException;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ class MeasureTypeServiceTest implements WithAssertions {
     }
 
     @Test
-    void givenMeasureTypes_whenFindingMeasureTypes_thenFindAllMeasureTypes() throws RecordNotFoundException {
+    void givenMeasureTypes_whenFindingMeasureTypes_thenFindAllMeasureTypes() throws DomainRecordNotFoundException {
         when(repository.findAll()).thenReturn(createNewMeasureTypes());
         assertThat(underTest.findAll()).isNotEmpty();
     }

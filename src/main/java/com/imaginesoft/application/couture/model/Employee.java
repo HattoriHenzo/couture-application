@@ -1,7 +1,6 @@
 package com.imaginesoft.application.couture.model;
 
-import com.imaginesoft.application.couture.configuration.security.model.Login;
-import com.imaginesoft.application.couture.model.generic.GenericPerson;
+import com.imaginesoft.application.couture.generic.model.GenericPerson;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;

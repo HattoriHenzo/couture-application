@@ -1,8 +1,9 @@
 package com.imaginesoft.application.couture.service;
 
-import com.imaginesoft.application.couture.controller.exception.RecordNotFoundException;
+import com.imaginesoft.application.couture.controller.exception.ResourceNotFoundException;
 import com.imaginesoft.application.couture.repository.ModelTypeRepository;
-import com.imaginesoft.application.couture.service.validator.field.DomainRulesException;
+import com.imaginesoft.application.couture.service.exception.DomainRecordNotFoundException;
+import com.imaginesoft.application.couture.service.exception.DomainRulesException;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ class ModelTypeServiceTest implements WithAssertions {
     }
 
     @Test
-    void givenModelTypes_whenFindingModelTypes_thenFindAllModelTypes() throws RecordNotFoundException {
+    void givenModelTypes_whenFindingModelTypes_thenFindAllModelTypes() throws DomainRecordNotFoundException {
         when(repository.findAll()).thenReturn(createNewModelTypes());
         assertThat(underTest.findAll()).isNotEmpty();
     }

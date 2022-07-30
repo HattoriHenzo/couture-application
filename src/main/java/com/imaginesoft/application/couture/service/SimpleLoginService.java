@@ -1,7 +1,7 @@
-package com.imaginesoft.application.couture.configuration.security.service;
+package com.imaginesoft.application.couture.service;
 
-import com.imaginesoft.application.couture.configuration.security.model.Login;
-import com.imaginesoft.application.couture.service.generic.GenericService;
+import com.imaginesoft.application.couture.model.Login;
+import com.imaginesoft.application.couture.generic.service.GenericService;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public class SimpleLoginService extends GenericService<Login> {

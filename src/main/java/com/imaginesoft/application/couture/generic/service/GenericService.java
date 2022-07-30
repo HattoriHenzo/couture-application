@@ -1,7 +1,7 @@
-package com.imaginesoft.application.couture.service.generic;
+package com.imaginesoft.application.couture.generic.service;
 
-import com.imaginesoft.application.couture.controller.exception.RecordNotFoundException;
-import com.imaginesoft.application.couture.service.validator.field.DomainRulesException;
+import com.imaginesoft.application.couture.service.exception.DomainRecordNotFoundException;
+import com.imaginesoft.application.couture.service.exception.DomainRulesException;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.validation.ConstraintViolation;
@@ -44,35 +44,36 @@ public abstract class GenericService<M> {
         return validator.validate(object);
     }
 
-    public M findById(Long id) throws RecordNotFoundException {
+    public M findById(Long id) throws DomainRecordNotFoundException {
         var model = repository.findById(id);
         return model.orElseThrow(
-                () -> new RecordNotFoundException("No record found")
+                () -> new DomainRecordNotFoundException("No record found")
         );
     }
 
-    public List<M> findAll() throws RecordNotFoundException {
+    public List<M> findAll() throws DomainRecordNotFoundException {
         var models = repository.findAll();
         if(models.isEmpty()) {
-            throw new RecordNotFoundException("No record found");
+            throw new DomainRecordNotFoundException("No record found");
         }
         return models;
     }
 
-    public M createOrUpdate(M model) {
+    public M createOrUpdate(M model) throws DomainRulesException {
         validateDomainRecord(model);
         return repository.save(model);
     }
 
     public M delete(Long id) {
-        var modelToDelete = repository.findById(id);
-        var deletedModel = new AtomicReference<M>();
+        var foundModel = repository.findById(id);
+        //var deletedModel = new AtomicReference<M>();
 
-        modelToDelete.ifPresent(value -> {
-            repository.delete(value);
-            deletedModel.set(modelToDelete.get());
-        });
-
-        return deletedModel.get();
+//        modelToDelete.ifPresentOrElse(value -> {
+//            repository.delete(value);
+//            deletedModel.set(modelToDelete.get());
+//        }, () -> { throw new DomainRecordNotFoundException("No record found"); });
+        var modelToDelete = foundModel.orElseThrow(() -> { throw new DomainRecordNotFoundException("No record found"); });
+        repository.delete(modelToDelete);
+        return modelToDelete;
     }
 }

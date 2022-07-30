@@ -2,8 +2,8 @@ package com.imaginesoft.application.couture.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.imaginesoft.application.couture.configuration.ApplicationConfig;
-import com.imaginesoft.application.couture.configuration.security.ApplicationSecurityConfig;
-import com.imaginesoft.application.couture.configuration.security.service.LoginService;
+import com.imaginesoft.application.couture.configuration.ApplicationSecurityConfig;
+import com.imaginesoft.application.couture.service.LoginService;
 import com.imaginesoft.application.couture.util.DateTimeWrapper;
 import com.imaginesoft.application.couture.util.MapperWrapper;
 import org.assertj.core.api.WithAssertions;
@@ -29,5 +29,4 @@ public abstract class BaseControllerTest implements WithAssertions {
 
     @MockBean
     protected LoginService service;
-
 }

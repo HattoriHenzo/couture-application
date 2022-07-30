@@ -1,4 +1,4 @@
-package com.imaginesoft.application.couture.configuration.security.dto;
+package com.imaginesoft.application.couture.dto;
 
 public class LoginDto {
 

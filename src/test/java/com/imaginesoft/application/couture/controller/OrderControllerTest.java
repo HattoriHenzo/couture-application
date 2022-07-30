@@ -6,6 +6,7 @@ import com.imaginesoft.application.couture.dto.OrderDto;
 import com.imaginesoft.application.couture.model.MaterialType;
 import com.imaginesoft.application.couture.model.Order;
 import com.imaginesoft.application.couture.service.OrderService;
+import com.imaginesoft.application.couture.service.exception.DomainRecordNotFoundException;
 import com.imaginesoft.application.couture.util.ApplicationDataFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -237,15 +238,12 @@ class OrderControllerTest extends BaseControllerTest {
     @Test
     void givenMaterialType_whenCallDelete_thenReturns_404_NOT_FOUND() throws Exception {
         var orderToDelete = createNewOrder();
-        var deletedOrder = orderToDelete;
-        var orderResponse = createNewOrderDto();
 
-        when(service.findById(ID)).thenReturn(null);
-        when(service.delete(orderToDelete.getId())).thenReturn(deletedOrder);
-        when(mapper.performMapping(deletedOrder, OrderDto.class)).thenReturn(orderResponse);
+        when(service.delete(anyLong())).thenThrow(DomainRecordNotFoundException.class);
+        when(mapper.performMapping(orderToDelete, OrderDto.class)).thenReturn(null);
         when(dateTime.getCurrentDateTime(any(Clock.class))).thenReturn(SUCCESS_DATE);
 
-        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/orders/{id}", ID)
+        mockMvc.perform(delete(ApplicationDataFactory.API_V1_APPLICATION + "/orders/{id}", anyLong())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         status().isNotFound(),
