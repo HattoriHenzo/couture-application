@@ -1,6 +1,6 @@
 # Couture-Application
 
-This application is for Tailors and has the puprpose to help them managed theirs activities
+This application is for Tailors and has the purpose to help them managed theirs activities
 The features of the application are the followings:
 
 - Client management
