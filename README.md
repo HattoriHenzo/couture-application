@@ -13,16 +13,27 @@ The application is an API and will be available for many clients such as: `Java`
 
 ## Database Structure
 GenericPerson(Id, FirstName, LastName, Telephone, Gender)
+
 Employee(Id, FirstName, LastName, Telephone, Gender)
+
 User(Id, FirstName, LastName, Telephone, Login, Password, Category, Gender)
+
 Client(Id, FirstName, LastName, Telephone, Gender)
+
 Order(Id, Number, Date, DeliveryDate, #IdClient)
+
 Dress(Id, Amount, #IdOrder, #IdDressType, #IdModelType, #IdMaterialType)
+
 Measure(Id, Type, Value, #IdDress, #IdMeasureType)
+
 GenericType(Id, Name)
+
 DressType(Id, Name)
+
 ModelType(Id, Name)
+
 MaterialType(Id, Name, Image)
+
 MeasureType(Id, Name, Description)
 
 ![CoutureApp-Diagram](https://github.com/HattoriHenzo/couture-application/assets/5141285/ea5f8ad9-f0b9-4af8-a1c7-26bdb2fc454b)
